@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>
+    Living Hope {% block title %}{% endblock %}
+  </title>
+  {% load staticfiles %}
+  <link href="{% static 'livinghope/bootstrap/css/bootstrap.css'%}" rel="stylesheet" type="text/css">
+  <!--     <link href="{% static 'livinghope/bootstrap/css/bootstrap-mods.css'%}" rel="stylesheet" type="text/css"> -->
+  <link rel="icon" type="image/png" href="{% static 'livinghope/leaf1.png' %}">  
+  <link href="{% static 'livinghope/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="{% static 'livinghope/bootstrap/js/bootstrap.js' %}"></script>
+  <script src="{% static 'livinghope/backstretch.js' %}"></script>
+  <script>
+    $(document).ready(function(){
+      $.backstretch("{% static 'livinghope/backgrounds/7.png' %}")
+    })
+  </script>
+  <style>
+    .container{
+      background-color:white;
+      /*opacity:0.95;*/
+
+    }
+    /*this is to make hte container a max size*/
+    .container-fluid {
+      margin-right: auto;
+      margin-left: auto;
+      padding-left:30px;
+      padding-right:30px;
+      max-width: 975px; /* or 950px */
+    }
+  </style>
+  {% block headloaders %}{% endblock %}
+</head>
+<body>
+  <div class="container container-fluid">
+      <div class="page-header">
+        <div class="row">
+        <div class="col-md-7">
+          <a href="{% url 'livinghope.views.home' %}">
+            <img class="img-responsive" src="{% static 'livinghope/logo4.jpg' %}">
+          </a>
+        </div>
+        {% if services %}
+        <div class="col-md-4 pull-right">
+          {% for service in services %}
+            <address class="text-right text-bottom">
+              <br>
+              {{service.get_day_display}} Service @ {{service.start_time}} {{service.location.name}}<br>
+              {{service.location.street_address}}<br>
+              {{service.location.city}}, {{service.location.state}} {{service.location.zip_code}}
+            </address>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="collapse navbar-collapse">
+        <!-- <a class="navbar-brand" href="#">LivingHope</a> -->
+        <ul class="nav navbar-nav">
+          <li><a href="{% url 'livinghope.views.home' %}">Home</a></li>
+          <li class="dropdown">
+            <a href="#" class="Dropdown-toggle" data-toggle="dropdown">
+            About Us <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Our Story</a></li>
+              <li><a href="{% url 'statement_of_faith' %}">Statement of Faith</a></li>
+              <li><a href="{% url 'livinghope.views.leaders' %}">Our Leaders</a></li>
+              <li><a href="#">Our Denomination</a></li>
+            </ul>   
+          </li>
+          <li><a href="{% url 'services' %}">Sunday Service</a></li>
+          <li><a href="{% url 'ministries' %}">Ministries</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Missions <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Missions Policy</a></li>
+                <li><a href="{% url 'livinghope.views.missionaries' %}">Our Missionaries</a></li>
+              </ul>
+          </li>
+          <li><a href="{% url 'livinghope.views.sermon_series' %}">Sermons</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Events</a></li>
+<!--           <li><a href="#">Calendar</a></li> -->
+          <li><a href="{% url 'prayer' %}">Prayer</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="wellllll">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+
+</body>
+</html>

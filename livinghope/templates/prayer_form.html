@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+    <h2>Prayer</h2>
+    <div class="row">
+        <div class="col-md-7">
+            <p>
+                We would love to pray for you! If you have a prayer request you would like to submit to us, please fill out our prayer request form. <br><br>
+
+                Additionally, we would love for you to join us at on our of prayer meetings where we gather as a community to share life together and pray for each other in person. The schedule for prayer meeting(s) can be found below:
+            </p>    
+            {% if prayer_meetings %}
+                <ul class="list-group">
+                    {% for prayer_meeting in prayer_meetings %}
+                        <li class="list-group-item">
+                            <p>
+                                Prayer meeting at {{prayer_meeting.location.name}}<br>
+                                {{prayer_meeting.get_day_display}} starting at {{prayer_meeting.start_time}}
+                            </p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <div class="col-md-5 well">
+            <h3>Submit a Prayer Request</h3>
+            {{form.non_field_errors}}
+            <form role="form" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{field.id_for_label}}">{{field.label}}
+                        {% if field.help_text %}<small>{{field.help_text}}</small>{%endif%}</label>
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {{field}}
+                </div>
+                {% endfor %}
+                <input type="submit" class="btn btn-primary" value="Submit"/>
+            </form>
+        </div>
+    </div>
+{% endblock %}

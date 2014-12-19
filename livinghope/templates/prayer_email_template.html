@@ -1,0 +1,7 @@
+You've received a prayer request from {% if name %}{{name}}{% else %}an unknown sender{% endif %}. The prayer request is as follows:
+
+-----------------------
+{{prayer_request|safe}}
+-----------------------
+{% if prayer_meeting %}This prayer request is OK to share in prayer meeting.{% endif %}
+{% if follow_up %}The sender would like to be followed up with.{% endif %}

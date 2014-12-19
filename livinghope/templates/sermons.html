@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block headloaders %}
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $("#sermonlisting tr:not(.sermon)").hide();
+        $("#sermonlisting tr:first-child").show();
+        
+        $("#sermonlisting tr.sermon").click(function(){
+            if ($(this).next("tr").is(":visible")){
+                $(".details").hide();
+            }
+            else{
+                $(".details").hide();
+                $(this).next("tr").show();
+            }
+            $(this).find(".arrow").toggleClass("up");
+        });
+
+        $('#sermon-series-selector').on('change', function(){
+            var series_id = $(this).val();
+            window.location.href = "{% url 'livinghope.views.sermon_series' %}" + series_id;
+        })
+    });
+  </script>
+  <style type="text/css">
+      .details {    
+        -webkit-transition: all .15s ease; 
+        -moz-transition: all .15s ease; 
+        -ms-transition: all .15s ease;
+        -o-transition: all .15s ease; 
+        transition: all .15s ease;
+      }
+
+      .sermon:hover {background-color:#E4E4E4;}
+      .sermon td { 
+        cursor:pointer; 
+        border-bottom:2px solid #E4E4E4; 
+        font-size:12px;}
+
+      .details td {
+        font-size:12px;
+      }
+      #sermonlisting div.arrow { 
+        background:transparent url({% static 'livinghope/arrows.png' %}) no-repeat scroll 0px -16px;
+        width:16px; 
+        height:16px; 
+        display:block;
+      }
+      #sermonlisting div.up { 
+        background-position:0px 0px;
+      }
+  </style>
+{% endblock %}
+
+{% block content %}
+<h2>{{series.name}}</h2>
+
+<div class="row">
+  <div class="col-md-3">
+    <select class="form-control" id="sermon-series-selector">
+      {% for s in all_series %}
+        {% ifequal series.id s.id %}
+          <option value={{s.id}} selected>{{s.name}}</option>
+        {% else %}
+          <option value={{s.id}}>{{s.name}}</option>
+        {% endifequal %}
+      {% endfor %}
+    </select>
+  </div>
+</div>
+{% if sermons %}
+  <table class="table" id="sermonlisting">
+    <thead>
+      <tr>
+        <th>Title</th><th>Passage</th><th>Series</th><th>Author</th><th></th>
+      </tr>
+    </thead>
+    {% for sermon in sermons %}
+      <tr class="sermon">
+        <td>{{sermon.title}}</td>
+        <td>{{sermon.passage}}</td>
+        <td>{{sermon.sermon_series.name}}</td>
+        <td>{{sermon.author}}</td>
+        <td><div class="arrow"></div></td>
+      </tr>
+      <tr class="details">
+        <td>
+            <p>
+              Scripture: {{sermon.passage}}<br>
+              Author: {{sermon.author}}<br>
+              Date: {{sermon.sermon_date}}
+            </p>
+        </td>
+        <td colspan=5>
+          <div class="row">
+            <audio class="col-md-12" controls>
+              <source type="audio/mpeg" src="{{sermon.recording.url}}">
+              Your browser does not support audio.
+            </audio>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <a href="#">Sermon Transcript</a><br>
+              <a href="#">Download Audio File</a>
+            </div>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  No Sermons
+{% endif %}
+
+{% endblock %}  

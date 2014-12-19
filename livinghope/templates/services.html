@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Sunday Service</h2>
+<div class="row">
+    <div class="col-md-6">
+        <p>
+            We believe that the Christian life lived out and the power of the resurrection is made manifest in the context of community. Worshipping together is a means to live out the Gospel in community.<br><br>
+
+            We welcome you to join us for weekly worship services. Details below:
+        </p>
+        {% if services %}
+            <ul class="list-group">
+                {% for service in services %}
+                    <li class="list-group-item">
+                        <p>
+                            {{service.location.name}} {{service.get_day_display}} Service<br>
+                            {{service.location.street_address}}<br>
+                            {{service.location.city}}, {{service.location.state}} {{service.location.zip_code}}
+                        </p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h4>Worship Order</h4>
+        <ul class="list-group">
+            <li class="list-group-item">
+                Call to Worship
+            </li>
+            <li class="list-group-item">
+                Praise and Worship
+            </li>
+            <li class="list-group-item">
+                Message
+            </li>
+            <li class="list-group-item">
+                Prayer and Response
+            </li>
+            <li class="list-group-item">
+                Offering
+            </li>
+            <li class="list-group-item">
+                Praise and Worship
+            </li>
+            <li class="list-group-item">
+                Announcements
+            </li>
+            <li class="list-group-item">
+                Fellowship and Covenantal Meal
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

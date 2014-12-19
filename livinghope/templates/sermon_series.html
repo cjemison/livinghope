@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block headloaders %}
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+<style>
+.series-image{
+    box-shadow:0;
+    transition:box-shadow 0.25s;
+}
+.series-image:hover{
+        box-shadow: 0px 0px 10px 0px #666,
+              0px 5px 10px 0px #000;}
+}
+</style>
+{% endblock %}
+{% block title %} | Sermon Series{%endblock %}
+
+{% block content %}
+<h2>Sermon Series</h2>
+<hr>
+
+{% for series_row in all_series_in_rows %}
+  <div class="row" style="padding-bottom:20px">
+    {% for series in series_row %}
+    <div class='col-md-4'>
+        <!-- MUST PUT PASSAGE INFO IN -->
+    	<a href="{% url 'livinghope.views.sermon_series' series.id %}">
+        <img class="img-responsive series-image" style="padding-bottom;20px" src="{{series.series_image_thumbnail.url}}" data-html='true' data-toggle="tooltip" data-placement="top" title="{{series.name}} <br>{%if series.end_date%}{{series.start_date}} - {{series.end_date}}{% else %}Current Series{% endif %} <br> The Gospel of Mark">
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+{% endfor %}
+</div>
+{% endblock %}
