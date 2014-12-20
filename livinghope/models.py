@@ -63,8 +63,7 @@ class BannerImage(models.Model):
                                 blank=True,
                                 null=True)
     order = models.IntegerField(max_length=2)
-    link_to = models.URLField(blank=True, null=True)
-    # link_to = models.CharField(blank=True, null=True)
+    link_to = models.CharField(max_length=100, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -127,8 +126,9 @@ class SermonSeries(models.Model):
     series_image_thumbnail = models.ImageField(upload_to='./sermon_series_thumb/',
                                     blank=True,
                                     null=True)
-    # passage_range = models.CharField(max_length=50)
-    # current_series = models.BooleanField(default=False)
+    passage_range = models.CharField(max_length=50)
+    current_series = models.BooleanField(default=False)
+
     def __unicode__(self):
         return self.name
 
