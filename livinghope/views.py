@@ -107,6 +107,13 @@ class Contact(FormView):
         context['locations'] = Location.objects.filter(church=True)
         return context
 
+    def form_valid(self, form):
+        form.send_contact_email()
+        success_message = "Thanks for submitting your message!"
+        messages.success(self.request, success_message)
+        return super(Contact, self).form_valid(form)
+
+
 def statement_of_faith(request):
     return render(request, 'statement_of_faith.html')
 

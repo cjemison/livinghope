@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^statement-of-faith/$', views.statement_of_faith, name='statement_of_faith'),
     url(r'^services/$', views.services, name='services'),
     url(r'^ministries/$', views.ministries, name='ministries'),
+    url(r'^contact/$', views.Contact.as_view(), name='contact'),
 
 )
 

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block headloaders %}
+    <script>
+        $(document).ready(function(){
+            $('#contact-submit-button').click(function(){
+                $(this).attr('disabled','disabled');
+                $('#contact-form').submit();
+            })
+
+        })
+    </script>
+{% endblock %}
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+    <h2>Contact Us</h2>
+    <div class="row">
+        <div class="col-md-4">
+            {% if locations %}
+                <ul class="list-group">
+                    {% for location in locations %}
+                        <li class="list-group-item">
+                            <p>
+                            <strong>{{location.name}}</strong><br>
+                            {{location.street_address}}<br>
+                            {{location.city}}, {{location.state}} {{location.zip_code}}
+                            </p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <div class="col-md-8 well">
+            <h3>Send us a message</h3>
+            {{form.non_field_errors}}
+            <form id="contact-form" role="form" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{field.id_for_label}}">{{field.label}}</label>
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                {{error}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {{field}}
+                </div>
+                {% endfor %}
+                <input id="contact-submit-button" type="submit" class="btn btn-primary" value="Submit"/>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
