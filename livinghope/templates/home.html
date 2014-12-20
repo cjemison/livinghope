@@ -18,13 +18,13 @@
         {% for image in banner_images %}
           {% if forloop.counter0 == 0 %}
             <div class="item active">
-              <img src="{{image.image.url}}" width="100%">
-            </div>
           {% else %}
             <div class="item">
-              <img src="{{image.image.url}}" width="100%">
-            </div>
           {% endif %}
+                <a href="{{image.link_to}}">
+                <img src="{{image.image.url}}" width="100%">
+                </a>
+            </div>
         {% endfor %}
       </div>
       <!-- Controls -->

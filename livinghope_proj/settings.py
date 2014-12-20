@@ -124,7 +124,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'livinghope',
-    # 'south',
+    'south',
     'debug_toolbar',
     'captcha',
 )

@@ -63,7 +63,8 @@ class BannerImage(models.Model):
                                 blank=True,
                                 null=True)
     order = models.IntegerField(max_length=2)
-    link_to = models.CharField(max_length=100, blank=True, null=True)
+    #must be hardcoded pretty much UGH!!!
+    link_to = models.CharField(max_length=100, blank=True, null=True, default='#')
 
     def __unicode__(self):
         return self.name
