@@ -7,8 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from livinghope.models import SermonSeries, Sermon, Author, BannerImage
 from livinghope.models import Missionary, Leader, SmallGroup, Service
-from livinghope.models import PrayerMeeting
-from livinghope.forms import PrayerForm
+from livinghope.models import PrayerMeeting, Location
+from livinghope.forms import PrayerForm, ContactForm
 import math
 
 def queryset_to_rows(queryset, num_cols):
@@ -96,6 +96,16 @@ class Prayer(FormView):
 
         messages.success(self.request, success_message)
         return super(Prayer, self).form_valid(form)
+
+class Contact(FormView):
+    template_name = 'contact_form.html'
+    form_class = ContactForm
+    success_url = reverse_lazy('contact')
+
+    def get_context_data(self, **kwargs):
+        context = super(Contact, self).get_context_data(**kwargs)
+        context['locations'] = Location.objects.filter(church=True)
+        return context
 
 def statement_of_faith(request):
     return render(request, 'statement_of_faith.html')

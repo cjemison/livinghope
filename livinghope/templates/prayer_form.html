@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block headloaders %}
+    <script>
+        $(document).ready(function(){
+            $('#prayer-submit-button').click(function(){
+                $(this).attr('disabled','disabled');
+                $('#prayer-form').submit();
+            })
+
+        })
+    </script>
+{% endblock %}
 
 {% block content %}
 {% if messages %}
@@ -34,7 +45,7 @@
         <div class="col-md-5 well">
             <h3>Submit a Prayer Request</h3>
             {{form.non_field_errors}}
-            <form role="form" method="post">
+            <form id="prayer-form" role="form" method="post">
                 {% csrf_token %}
                 {% for field in form %}
                 <div class="form-group">
@@ -50,7 +61,7 @@
                     {{field}}
                 </div>
                 {% endfor %}
-                <input type="submit" class="btn btn-primary" value="Submit"/>
+                <input id="prayer-submit-button" type="submit" class="btn btn-primary" value="Submit"/>
             </form>
         </div>
     </div>

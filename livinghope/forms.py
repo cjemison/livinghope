@@ -8,7 +8,28 @@ from django.core.mail import send_mail
 #     def __init__(self, *args, **kwargs):
 #         super(CaptchaField, self).__init__()
 
+class ContactForm(forms.Form):
+    your_name = forms.CharField(label='Your Name', max_length=100,
+                                required=True,
+                                widget=forms.TextInput(attrs={'class':'form-control'}))
+    your_email = forms.EmailField(label='Your Email', max_length=100,
+                                  required=True,
+                                  widget=forms.TextInput(attrs={'class':'form-control'}))
+    your_message =  forms.CharField(label='Your Message', required=True,
+                                widget=forms.Textarea(attrs={'class':'form-control'}))
+    captcha = CaptchaField(widget=CaptchaTextInput(attrs={'class':'form-control'}))
 
+    def send_contact_email(self):
+        name = self.cleaned_data.get('your_name', 'unknown')
+        email = self.cleaned_data['your_email']
+        message = self.cleaned_data['your_message']
+        
+        subject = "Living Hope message from %s" % name
+        context = {'name':name, 'email': email,
+                    'message':message}
+        body = render_to_string('contact_email_template.html', context)
+        send_mail(subject, body, 'prayer@onelivinghope.com',
+                 ['rhsiao2@gmail.com'], fail_silently=False)
 
 class PrayerForm(forms.Form):
     your_name = forms.CharField(label='Your name', max_length=100,

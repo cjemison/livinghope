@@ -76,6 +76,7 @@ class Location(models.Model):
     state = models.CharField(max_length=30)
     zip_code = models.CharField(max_length=10)
 
+    church = models.BooleanField(default=False)
     def __unicode__(self):
         return "%s - %s %s" % (self.name, self.city, self.state)
 
@@ -124,7 +125,8 @@ class SermonSeries(models.Model):
     series_image = models.ImageField(upload_to='./sermon_series/',
                                     blank=True,
                                     null=True)
-    series_image_thumbnail = models.ImageField(upload_to='./sermon_series_thumb/')
+    series_image_thumbnail = models.ImageField(upload_to='./sermon_series_thumb/',
+                                               null=True)
     passage_range = models.CharField(max_length=50)
     current_series = models.BooleanField(default=False)
 

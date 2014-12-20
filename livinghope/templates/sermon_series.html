@@ -30,7 +30,17 @@ $(function () {
     <div class='col-md-4'>
         <!-- MUST PUT PASSAGE INFO IN -->
     	<a href="{% url 'livinghope.views.sermon_series' series.id %}">
-        <img class="img-responsive series-image" style="padding-bottom;20px" src="{{series.series_image_thumbnail.url}}" data-html='true' data-toggle="tooltip" data-placement="top" title="{{series.name}} <br>{%if series.end_date%}{{series.start_date}} - {{series.end_date}}{% else %}Current Series{% endif %} <br> {{series.passage_range}}">
+        <img class="img-responsive series-image" style="padding-bottom;20px" src="{{series.series_image_thumbnail.url}}" data-html='true' data-toggle="tooltip" data-placement="top" title="{{series.name}} <br>
+        {%if not series.current_series%}
+          {%if series.end_date%}
+          {{series.start_date}} - {{series.end_date}}
+          {%else%}
+          Ongoing from {{series.start_date}}
+          {%endif%}
+        {% else %}
+          Current Series
+        {% endif %} 
+        <br> {{series.passage_range}}">
       </a>
     </div>
     {% endfor %}

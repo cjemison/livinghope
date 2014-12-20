@@ -125,10 +125,11 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'livinghope',
     'south',
-    'debug_toolbar',
     'captcha',
 )
 
+if DEBUG:
+    INSTALLED_APPS += ('debug_toolbar',)
 
 SOUTH_MIGRATION_MODULES = {
     'captcha': 'captcha.south_migrations',
