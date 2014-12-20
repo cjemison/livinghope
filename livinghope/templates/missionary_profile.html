@@ -1,6 +1,100 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block headloaders %}
+<script>
+    $(document).ready(function(){
+        $('.image-link').magnificPopup({
+            type:'image',
+            removalDelay: 300,
+
+            // Class that is added to popup wrapper and background
+            // make it unique to apply your CSS animations just to this exact popup
+            mainClass: 'mfp-fade',
+            closeOnContentClick: true
+        });
+    })
+</script>
+<style>
+/* overlay at start */
+.mfp-fade.mfp-bg {
+  opacity: 0;
+
+  -webkit-transition: all 0.15s ease-out;
+  -moz-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+}
+/* overlay animate in */
+.mfp-fade.mfp-bg.mfp-ready {
+  opacity: 0.8;
+}
+/* overlay animate out */
+.mfp-fade.mfp-bg.mfp-removing {
+  opacity: 0;
+}
+
+/* content at start */
+.mfp-fade.mfp-wrap .mfp-content {
+  opacity: 0;
+
+  -webkit-transition: all 0.15s ease-out;
+  -moz-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+}
+/* content animate it */
+.mfp-fade.mfp-wrap.mfp-ready .mfp-content {
+  opacity: 1;
+}
+/* content animate out */
+.mfp-fade.mfp-wrap.mfp-removing .mfp-content {
+  opacity: 0;
+}
+</style>
+{% endblock %}
 {% block content %}
-	{{missionary}}
+
+    <div class="row">
+        <div class="col-md-4">
+            <br>
+            <img src="{{missionary.profile_picture.url}}" class="img-responsive" width="100%">
+        </div>
+        <div class="col-md-8">
+            <h2><span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>{{missionary.first_name}} {{missionary.last_name}}
+                <small>Serving with {{missionary.organization}}</small>
+            </h2>
+            <p>
+                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> <a href="mailto:{{missionary.email}}">{{missionary.email}}</a><br>
+                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span> <a href="{{missionary.website}}">{{missionary.website}}</a>
+            </p>
+            <p>
+                {{missionary.bio}}
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        {% if missionary.image1 %}
+        <div class="col-md-4">
+            <a class="image-link thumbnail" href="{{missionary.image1.url}}" title="{{missionary.image1_caption}}">
+                <img src="{{missionary.image1.url}}" class="img-responsive"/>
+            </a>
+        </div>
+        {% endif %}
+        {% if missionary.image2 %}
+         <div class="col-md-4">
+            <a href="{{missionary.image2.url}}" class="image-link thumbnail" title="{{missionary.image2_caption}}">
+                <img src="{{missionary.image2.url}}" class="img-responsive"/>
+            </a>
+        </div>
+        {% endif %}
+        {% if missionary.image3 %}
+        <div class="col-md-4">
+            <a href="{{missionary.image3.url}}" class="image-link thumbnail" title="{{missionary.image3_caption}}">
+                <img src="{{missionary.image3.url}}" class="img-responsive"/>
+            </a>
+        </div>       
+        {% endif %}
+    </div>
+
+
 {% endblock %}
