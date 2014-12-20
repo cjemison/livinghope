@@ -55,6 +55,8 @@ def leaders(request):
     leaders = Leader.objects.filter(active=True).order_by('order','last_name')
     #get leaders into rows of two
     #depending on formatting, maybe don't need rows
+    #consider modal? just thumnails of htem and then ajax modal 
+    #for details??
     rows_of_leaders = queryset_to_rows(leaders, 2)
     context = {'rows_of_leaders': rows_of_leaders}
     return render(request, 'leaders.html', context)

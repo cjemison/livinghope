@@ -124,9 +124,7 @@ class SermonSeries(models.Model):
     series_image = models.ImageField(upload_to='./sermon_series/',
                                     blank=True,
                                     null=True)
-    series_image_thumbnail = models.ImageField(upload_to='./sermon_series_thumb/',
-                                    blank=True,
-                                    null=True)
+    series_image_thumbnail = models.ImageField(upload_to='./sermon_series_thumb/')
     passage_range = models.CharField(max_length=50)
     current_series = models.BooleanField(default=False)
 
