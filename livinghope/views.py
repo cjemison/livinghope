@@ -52,8 +52,9 @@ def missionary_profile(request, missionary_id):
 
 def leaders(request):
     #ORDER BY ORDER!!!!!
-    leaders = Leader.objects.filter(active=True).order_by('last_name')
+    leaders = Leader.objects.filter(active=True).order_by('order','last_name')
     #get leaders into rows of two
+    #depending on formatting, maybe don't need rows
     rows_of_leaders = queryset_to_rows(leaders, 2)
     context = {'rows_of_leaders': rows_of_leaders}
     return render(request, 'leaders.html', context)
