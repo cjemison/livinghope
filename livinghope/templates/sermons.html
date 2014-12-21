@@ -108,7 +108,7 @@
         <td colspan=5>
           <div class="row">
             {% if sermon.recording %}
-            <audio class="col-md-12" controls>
+            <audio preload="none" class="col-md-12" controls>
               <source type="audio/mpeg" src="{{sermon.recording.url}}">
               Your browser does not support audio.
             </audio>
