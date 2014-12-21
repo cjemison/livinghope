@@ -3,15 +3,27 @@
 {% block headloaders %}
   <script type="text/javascript">
     $(document).ready(function(){
+        $('.transcript-button').click(function(){
+            var sermon_id = $(this).data('sermon-id');
+            var sermon_title = $(this).data('sermon-title')
+            $('#transcript-modal-label').text('Transcript of "'+sermon_title+'"')
+            $.get('/display-sermon-transcript/', {'sermon-id': sermon_id}, function(response){
+                $('#transcript-modal-body').empty();
+                $('<p>' +response+'</p>').appendTo('#transcript-modal-body');
+            })
+        });
+
+
         $("#sermonlisting tr:not(.sermon)").hide();
         $("#sermonlisting tr:first-child").show();
         
         $("#sermonlisting tr.sermon").click(function(){
             if ($(this).next("tr").is(":visible")){
-                $(".details").hide();
+                // $(".details").hide();
+                $(this).next("tr").hide();
             }
             else{
-                $(".details").hide();
+                // $(".details").hide();
                 $(this).next("tr").show();
             }
             $(this).find(".arrow").toggleClass("up");
@@ -101,7 +113,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <a href="#">Sermon Transcript</a><br>
+              <button type="button" class="btn btn-primary btn-sm transcript-button" data-sermon-id="{{sermon.id}}" data-sermon-title="{{sermon.title}}" data-toggle="modal" data-target="#transcript-modal">Sermon Transcript</button>
               <a href="#">Download Audio File</a>
             </div>
           </div>
@@ -112,5 +124,24 @@
 {% else %}
   No Sermons
 {% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="transcript-modal" tabindex="-1" role="dialog" aria-labelledby="transcript-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="transcript-modal-label"></h4>
+      </div>
+      <div class="modal-body" id="transcript-modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}  

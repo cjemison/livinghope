@@ -20,6 +20,10 @@ urlpatterns = patterns('',
     url(r'^services/$', views.services, name='services'),
     url(r'^ministries/$', views.ministries, name='ministries'),
     url(r'^contact/$', views.Contact.as_view(), name='contact'),
+    url(r'^display-sermon-transcript/$', views.display_sermon_transcript),
+
+    ##onetime utilities
+    url(r'^load-sermons/$', views.load_sermons),
 
 )
 
