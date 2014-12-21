@@ -6,8 +6,9 @@
         $('.transcript-button').click(function(){
             var sermon_id = $(this).data('sermon-id');
             var sermon_title = $(this).data('sermon-title')
+            var url = "{% url 'transcript_modal' %}";
             $('#transcript-modal-label').text('Transcript of "'+sermon_title+'"')
-            $.get('/display-sermon-transcript/', {'sermon-id': sermon_id}, function(response){
+            $.get(url, {'sermon-id': sermon_id}, function(response){
                 $('#transcript-modal-body').empty();
                 $('<p>' +response+'</p>').appendTo('#transcript-modal-body');
             })
