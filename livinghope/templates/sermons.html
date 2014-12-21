@@ -117,15 +117,13 @@
             {% endif %}
           </div>
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-12">
               <button type="button" class="btn btn-primary btn-sm transcript-button" data-sermon-id="{{sermon.id}}" data-sermon-title="{{sermon.title}}" data-toggle="modal" data-target="#transcript-modal">Sermon Transcript</button>
 
-            </div>
             {% if sermon.recording %}
-            <div class="col-md-4">
               <a class="btn btn-primary btn-sm" href="{{sermon.recording.url}}" download>Download Audio File</a>
-            </div>
             {% endif %}
+            </div>
           </div>
         </td>
       </tr>
