@@ -107,10 +107,14 @@
         </td>
         <td colspan=5>
           <div class="row">
+            {% if sermon.recording %}
             <audio class="col-md-12" controls>
               <source type="audio/mpeg" src="{{sermon.recording.url}}">
               Your browser does not support audio.
             </audio>
+            {% else %}
+            <p>No Recording Available!</p>
+            {% endif %}
           </div>
           <div class="row">
             <div class="col-md-12">
