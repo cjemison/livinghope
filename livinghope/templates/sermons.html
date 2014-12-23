@@ -1,8 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block headloaders %}
+<script src="{% static 'livinghope/simple-pagination/jquery.simplePagination.js' %}"></script>
+<link href="{% static 'livinghope/simple-pagination/simplePagination.css'%}" rel="stylesheet" type="text/css">
   <script type="text/javascript">
     $(document).ready(function(){
+        $(function() {
+            $("#pagination").pagination({
+                pages: {{ sermons.paginator.num_pages }},
+                prevText: "&laquo;",
+                nextText: "&raquo;",
+                hrefTextPrefix: '?&page=',
+                currentPage: {{ sermons.number }},
+                selectOnClick: false,
+            });
+            
+            if ({{sermons.number}} == 1){
+                $('.prev').parent().attr('class','disabled');
+            }
+            if ({{sermons.number}} == {{sermons.paginator.num_pages}}){
+                $('.next').parent().attr('class','disabled');
+            }
+
+        });        
+
         $('.transcript-button').click(function(){
             var sermon_id = $(this).data('sermon-id');
             var sermon_title = $(this).data('sermon-title')
@@ -82,7 +103,22 @@
     </select>
   </div>
 </div>
+<hr>
 {% if sermons %}
+  <div class="row">
+    <div class="col-md-7">
+      <nav>
+        <ul class="pagination" id="pagination">
+        </ul>
+      </nav>
+    </div>
+    <div class="col-md-4 col-md-offset-1">
+        <p class="text-right">
+          Displaying sermons {{sermons.start_index}} - {{sermons.end_index}} of {{sermons.paginator.count}}
+        </p>
+    </div>
+  </div>
+
   <table class="table" id="sermonlisting">
     <thead>
       <tr>
@@ -116,10 +152,12 @@
             <p>No Recording Available!</p>
             {% endif %}
           </div>
+          <br>
           <div class="row">
             <div class="col-md-12">
+            {% if sermon.manuscript %}
               <button type="button" class="btn btn-primary btn-sm transcript-button" data-sermon-id="{{sermon.id}}" data-sermon-title="{{sermon.title}}" data-toggle="modal" data-target="#transcript-modal">Sermon Transcript</button>
-
+            {% endif %}
             {% if sermon.recording %}
               <a class="btn btn-primary btn-sm" href="{{sermon.recording.url}}" download>Download Audio File</a>
             {% endif %}

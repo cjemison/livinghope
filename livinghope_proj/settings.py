@@ -120,13 +120,16 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
+    'django_admin_bootstrapped',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'south',
+    #'south',
     'captcha',
     'livinghope',
 )
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 if DEBUG:
     INSTALLED_APPS += ('debug_toolbar',)
@@ -145,7 +148,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages"
     )
 
-TEMPLATE_CONTEXT_PROCESSORS += ('livinghope.context_processors.services_processor',)
+TEMPLATE_CONTEXT_PROCESSORS += ('livinghope.context_processors.services_processor',
+                                'livinghope.context_processors.baseurl',)
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 

@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse_lazy
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from livinghope.models import SermonSeries, Sermon, Author, BannerImage
@@ -70,6 +71,16 @@ def sermon_series(request, series_id=None):
         except ObjectDoesNotExist:
             raise Http404
         sermons = series.sermon_set.all().order_by('-sermon_date')
+        #paginate!
+        paginator = Paginator(sermons, 15)
+        page = request.GET.get('page')
+        try:
+            sermons = paginator.page(page)
+        except PageNotAnInteger:
+            sermons = paginator.page(1)
+        except EmptyPage:
+            sermons = paginator.page(paginator.num_pages)
+            
         context = {'sermons': sermons,
                     'all_series': all_series,
                     'series':series,}

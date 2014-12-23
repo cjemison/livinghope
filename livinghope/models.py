@@ -4,6 +4,8 @@ class Person(models.Model):
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=75, blank=True, null=True)
+    def full_name(self):
+        return "%s %s" % (self.first_name, self.last_name)
 
     def __unicode__(self):
         return "%s %s" % (self.first_name, self.last_name)
@@ -12,6 +14,9 @@ class Person(models.Model):
         abstract = True
 
 class Missionary(Person):
+    class Meta:
+        verbose_name_plural = "Missionaries"
+
     profile_picture = models.ImageField(upload_to='./missionary_images/',
                                 blank=True,
                                 null=True)
@@ -40,8 +45,6 @@ class Missionary(Person):
                                   self.organization)
 
 class Author(Person):
-    def full_name(self):
-        return "%s %s" % (self.first_name, self.last_name)
 
     def __unicode__(self):
         return self.full_name()
@@ -118,6 +121,8 @@ class PrayerMeeting(Event):
         return "Prayer Meeting @ %s" % self.location.name
 
 class SermonSeries(models.Model):
+    class Meta:
+        verbose_name_plural = "Sermon Series"
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     name = models.CharField(max_length=100)
@@ -143,6 +148,11 @@ class Sermon(models.Model):
                                 blank=True,
                                 null=True)
     manuscript = models.TextField(blank=True, null=True)
+
+    def clean(self):
+        #remove <p>&nbsp;</p> from manuscripts
+        self.manuscript = self.manuscript.replace('<p>&nbsp;</p>', '')
+        super(Sermon, self).clean()
 
     def __unicode__(self):
         return "%s - %s by %s" % (str(self.sermon_date), 

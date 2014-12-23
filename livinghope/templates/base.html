@@ -101,7 +101,45 @@
       {% block content %}
       {% endblock %}
     </div>
+    <br>
+    <hr>
+    <footer>
+      <div class="row">
+        <div class="col-md-3">
+          <p>
+            <small>
+              <span class="glyphicon glyphicon-copyright-mark"></span> Copyright 2015 Living Hope<br>
+              {% for service in services %}
+                  {{service.location.name}}<br>
+                  {{service.location.street_address}}<br>
+                  {{service.location.city}}, {{service.location.state}} {{service.location.zip_code}}<br>
+              {% endfor %}
+            </small>
+          </p>
+        </div>
+        <div class="col-md-2">
+          <p>
+            <small>
+              <strong><em>Navigation</em></strong><br>
+              <a href="{% url 'home'%}">Home</a><br>
+              <a href="{% url 'sermon_series'%}">Sermons</a></br>
+              <a href="{% url 'missionaries' %}">Missions</a><br>
+            </small>
+          </p>
+        </div>
+        <div class="col-md-2">
+          <p>
+            <small>
+              <strong><em>Navigation</em></strong><br>
+              <a href="{% url 'home'%}">Home</a><br>
+              <a href="{% url 'sermon_series'%}">Sermons</a></br>
+              <a href="{% url 'missionaries' %}">Missions</a><br>
+            </small>
+          </p>
+        </div>
+      </div>
+    </footer>
+    <hr>
   </div>
-
 </body>
 </html>
