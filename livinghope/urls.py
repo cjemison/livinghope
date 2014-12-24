@@ -21,7 +21,9 @@ urlpatterns = patterns('',
     url(r'^ministries/$', views.ministries, name='ministries'),
     url(r'^contact/$', views.Contact.as_view(), name='contact'),
     url(r'^display-sermon-transcript/$', views.display_sermon_transcript, name='transcript_modal'),
-
+    url(r'^blog/$', views.blog, name='blog'),
+    url(r'^blog/entry/(?P<blog_id>\d+)/$', views.blog_entry, name='blog_entry'),
+    (r'^ckeditor/', include('ckeditor.urls')),
     ##onetime utilities
     url(r'^load-sermons/$', views.load_sermons),
 

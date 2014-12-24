@@ -47,6 +47,7 @@ USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
+# USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -126,8 +127,25 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     #'south',
     'captcha',
+    'ckeditor',
     'livinghope',
+    # 'django_comments',
+    # 'mptt',
+    # 'tagging',
+    # 'zinnia',
 )
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 600,
+        'width': 900,
+    },
+}
+
+# CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
@@ -145,7 +163,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages"
+    "django.contrib.messages.context_processors.messages",
+    'django.core.context_processors.request',
     )
 
 TEMPLATE_CONTEXT_PROCESSORS += ('livinghope.context_processors.services_processor',

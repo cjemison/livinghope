@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 
 class Person(models.Model):
     first_name = models.CharField(max_length=25)
@@ -59,6 +60,25 @@ class Leader(Person):
     active = models.BooleanField(default=True)
     bio = models.TextField(blank=True, null=True)
     order = models.IntegerField(max_length=2, default=0)
+
+class BlogTag(models.Model):
+    name = models.CharField(max_length=40)
+
+    def __unicode__(self):
+        return self.name
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.ForeignKey(Author)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    tags = models.ManyToManyField(BlogTag, blank=True, null=True)
+    content = RichTextField()
+
+    def clean(self):
+        #remove <p>&nbsp;</p> from manuscripts
+        self.content = self.content.replace('<p>&nbsp;</p>', '')
+        super(BlogPost, self).clean()
 
 class BannerImage(models.Model):
     name = models.CharField(max_length=25, blank=True, null=True)
@@ -147,7 +167,9 @@ class Sermon(models.Model):
     passage = models.CharField(max_length=50, 
                                 blank=True,
                                 null=True)
-    manuscript = models.TextField(blank=True, null=True)
+    manuscript = RichTextField()
+
+    # manuscript = models.TextField(blank=True, null=True)
 
     def clean(self):
         #remove <p>&nbsp;</p> from manuscripts
@@ -158,3 +180,4 @@ class Sermon(models.Model):
         return "%s - %s by %s" % (str(self.sermon_date), 
                                     self.passage,
                                     self.author.full_name())
+

@@ -4,7 +4,8 @@ from django import forms
 from django.templatetags.static import static
 from livinghope.models import Author, SermonSeries, Sermon, \
 							  Location, Service, BannerImage, Missionary, \
-							  Leader, PrayerMeeting, SmallGroup
+							  Leader, PrayerMeeting, SmallGroup, BlogPost, \
+                              BlogTag
 
 
 class BannerImageAdmin(admin.ModelAdmin):
@@ -26,11 +27,24 @@ class SermonAdmin(admin.ModelAdmin):
     ordering = ('-sermon_date',)
     search_fields = ['title', 'passage']
 
-    formfield_overrides = {models.TextField: {'widget': forms.Textarea(attrs={'class':'ckeditor'})},}
+    # formfield_overrides = {models.TextField: {'widget': forms.Textarea(attrs={'class':'ckeditor'})},}
    
-    class Media:
-        js = (static('livinghope/ckeditor/ckeditor.js'),)
+    # class Media:
+    #     js = (static('livinghope/ckeditor/ckeditor.js'),)
 
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'created_on', 'updated_on',)
+    ordering = ('-updated_on', '-created_on')
+    search_fields = ['title', 'content']
+    filter_horizontal = ('tags', )
+
+    # formfield_overrides = {models.TextField: {'widget': forms.Textarea(attrs={'class':'ckeditor'})},}
+   
+    # class Media:
+    #     js = (static('livinghope/ckeditor/ckeditor.js'),)
+
+admin.site.register(BlogTag)
+admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(Missionary)
 admin.site.register(PrayerMeeting)
 admin.site.register(SmallGroup)

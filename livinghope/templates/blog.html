@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>From the desk of Living Hope</h2>
+<hr>
+<div class="row">
+    <div class="col-md-9">
+        {% for post in most_recent_posts %}
+            <h3>{{post.title}}</h3>
+            <p><small>Posted on {{post.created_on}} by {{post.author}}</small></p>
+            <div>
+                {{post.content|safe|truncatewords_html:100}}
+                <a href="{% url 'blog_entry' post.id %}">Read full post</a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="col-md-3 well">
+        <h4>Recent Posts</h4>
+        <ul>
+        {% for post in all_post_data %}
+            <li>{{post.title}}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

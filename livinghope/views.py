@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from livinghope.models import SermonSeries, Sermon, Author, BannerImage
 from livinghope.models import Missionary, Leader, SmallGroup, Service
-from livinghope.models import PrayerMeeting, Location
+from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
 from livinghope.forms import PrayerForm, ContactForm
 import math
 import pickle
@@ -137,6 +137,64 @@ def services(request):
 def ministries(request):
     #maybe put in sunday school classes and stuff here?
     return render(request, 'ministries.html')
+
+def blog(request):
+    all_posts = BlogPost.objects.all().order_by('-created_on')
+    most_recent_posts = all_posts[:5]
+    all_post_data = all_posts.values('title', 'created_on')
+    context = {'most_recent_posts': most_recent_posts,
+               'all_post_data': all_post_data}
+    return render(request, 'blog.html', context)
+
+def get_archive_post_list():
+    all_posts = BlogPost.objects.all().order_by('-created_on')
+    #need list to preserve order for template generation
+    #archive will be of the form [[year,month,num_posts], ....]
+    #want dictionary to do quick lookup if year-month combination exists
+    #archive_contents of the form {(year,month):index_in_archive...}
+    archive_contents = {}
+    archive = []
+    archived_post_dates = all_posts.values_list('created_on', flat=True)
+    for post_date in archived_post_dates:
+        year = post_date.year
+        month = post_date.strftime("%B") #format month as name instead of int
+        #if the year-month combo is already in the list
+        #increment num_posts
+        if (year, month) in archive_contents:
+            index = archive_contents.get((year,month))
+            archive[index][2] += 1
+        else:
+            #otherwise initialize in list and add year-month combo
+            #to dictionary with value as index in archive list
+            archive.append([year, month, 1])
+            index = len(archive) - 1
+            archive_contents[(year,month)] = index
+    return archive
+
+def blog_entry(request, blog_id):
+    try:
+        post = BlogPost.objects.get(id=blog_id)
+    except:
+        return Http404
+    try:
+        previous_post_id = post.get_previous_by_created_on().id
+    except:
+        previous_post_id = None
+    try:
+        next_post_id = post.get_next_by_created_on().id
+    except:
+        next_post_id = None 
+
+    all_posts = BlogPost.objects.all().order_by('-created_on')
+    most_recent_posts = all_posts[:5].values('id', 'title', 'created_on')
+
+    archive = get_archive_post_list()
+
+    context = {'post':post, 'next_post_id':next_post_id,
+                'previous_post_id': previous_post_id,
+                'most_recent_posts': most_recent_posts,
+                'archive': archive}
+    return render(request, 'blog_post.html', context)
 
 def load_sermons(request):
     #sermon_series_key links old id (key) to new id (value) 
