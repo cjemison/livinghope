@@ -7,18 +7,18 @@
     $(document).ready(function(){
         $(function() {
             $("#pagination").pagination({
-                pages: {{ all_posts.paginator.num_pages }},
+                pages: {{ posts_in_month.paginator.num_pages }},
                 prevText: "&laquo;",
                 nextText: "&raquo;",
                 hrefTextPrefix: '?&page=',
-                currentPage: {{ all_posts.number }},
+                currentPage: {{ posts_in_month.number }},
                 selectOnClick: false,
             });
             
-            if ({{all_posts.number}} == 1){
+            if ({{posts_in_month.number}} == 1){
                 $('.prev').parent().attr('class','disabled');
             }
-            if ({{all_posts.number}} == {{all_posts.paginator.num_pages}}){
+            if ({{posts_in_month.number}} == {{posts_in_month.paginator.num_pages}}){
                 $('.next').parent().attr('class','disabled');
             }
 
@@ -27,12 +27,12 @@
     });
   </script>
 {% endblock %}
+
 {% block content %}
-<h2>From the desk of Living Hope</h2>
-<hr>
+<h2>Posts in {{month_name}}, {{year}}</h2>
 <div class="row">
     <div class="col-md-9">
-        {% for post in all_posts %}
+        {% for post in posts_in_month %}
             <h3>{{post.title}}</h3>
             <p><small>Posted on {{post.created_on}} by {{post.author}}</small></p>
             <div>
@@ -41,7 +41,7 @@
             </div>
         {% endfor %}
         <p class="text-right">
-            Displaying posts {{all_posts.start_index}} - {{all_posts.end_index}} of {{all_posts.paginator.count}}
+            Displaying posts {{posts_in_month.start_index}} - {{posts_in_month.end_index}} of {{posts_in_month.paginator.count}}
         </p>
         <nav>
             <ul class="pagination pull-right" id="pagination">

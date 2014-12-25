@@ -5,10 +5,7 @@
 <h2>{{post.title}}</h2>
 <div class="row">
     <div class="col-md-9">
-        <p><small>Posted on {{post.created_on}} by {{post.author}}
-            {% if post.updated_on %}
-            <br>Updated on {{post.updated_on}}
-            {% endif %}
+        <p><small>Posted on {{post.created_on}} by {{post.author}}`
         </small>
         </p>
         <hr>
@@ -35,32 +32,11 @@
     </div>
     <div class="col-md-3">
         {% if most_recent_posts %}
-            <h4>Recent Posts</h4>
-            {% for recent_post in most_recent_posts %}
-                <ul class="list-group">
-                {% if recent_post.id != post.id %}
-                    <li class="list-group-item"><a href="{% url 'blog_entry' recent_post.id %}">
-                        {{recent_post.title}}
-                        </a><br>
-                    </li>
-                {% endif %}
-                </ul>
-
-            {% endfor %}
+            {% include 'recent_post_sidebar.html' %}
         {% endif %}
 
-        {% if archive %}
-            <h4>Post Archive</h4>
-                <ul class="list-group">
-                {% for year, month, num in archive %}
-                    <li class="list-group-item">
-                        <a href="#">
-                            {{month}} - {{year}}
-                        </a>
-                        <span class="badge">{{num}}</span>
-                    </li>
-                {% endfor %}
-                </ul>
+        {% if monthly_archive %}
+            {% include 'archive_post_sidebar.html' %}
         {% endif %}
     </div>
 

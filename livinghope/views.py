@@ -12,6 +12,20 @@ from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
 from livinghope.forms import PrayerForm, ContactForm
 import math
 import pickle
+import datetime
+
+MONTHS = {1: 'January',
+          2: 'February',
+          3: 'March',
+          4: 'April',
+          5: 'May',
+          6: 'June',
+          7: 'July',
+          8: 'August',
+          9: 'September',
+          10: 'October',
+          11: 'November',
+          12: 'December'}
 
 def queryset_to_rows(queryset, num_cols):
     """
@@ -138,12 +152,28 @@ def ministries(request):
     #maybe put in sunday school classes and stuff here?
     return render(request, 'ministries.html')
 
+#refactor blog portion into class based view?
 def blog(request):
+    # all_posts = BlogPost.objects.all().order_by('-created_on')
+    # most_recent_posts = all_posts[:5]
     all_posts = BlogPost.objects.all().order_by('-created_on')
-    most_recent_posts = all_posts[:5]
-    all_post_data = all_posts.values('title', 'created_on')
+    most_recent_posts = all_posts[:5].values(
+                            'title', 'id')
+    paginator = Paginator(all_posts, 5)
+    page = request.GET.get('page')
+    try:
+        all_posts = paginator.page(page)
+    except PageNotAnInteger:
+        all_posts = paginator.page(1)
+    except EmptyPage:
+        all_posts = paginator.page(paginator.num_pages)
+
+    monthly_archive, yearly_archive = get_archive_post_list()
+    # all_post_data = all_posts.values('title', 'created_on')
     context = {'most_recent_posts': most_recent_posts,
-               'all_post_data': all_post_data}
+               'monthly_archive': monthly_archive,
+               'yearly_archive': yearly_archive,
+               'all_posts': all_posts}
     return render(request, 'blog.html', context)
 
 def get_archive_post_list():
@@ -152,24 +182,79 @@ def get_archive_post_list():
     #archive will be of the form [[year,month,num_posts], ....]
     #want dictionary to do quick lookup if year-month combination exists
     #archive_contents of the form {(year,month):index_in_archive...}
+    #over_two_years_ago of the form [[year, num_posts]] to limit
+    #listing in archive posts sidebar
     archive_contents = {}
     archive = []
-    archived_post_dates = all_posts.values_list('created_on', flat=True)
-    for post_date in archived_post_dates:
+    current_year = datetime.datetime.now().year
+    posts_over_two_years = all_posts.filter(
+                                created_on__year__lt=current_year-1).values_list(
+                                    'created_on', flat=True)
+    #for posts over two years ago, only break down by year
+    over_two_years_ago = []
+    year_contents ={}
+    for post_date in posts_over_two_years:
+        year = post_date.year
+        if year in year_contents:
+            index = year_contents.get(year)
+            over_two_years_ago[index][1] +=1
+        else:
+            over_two_years_ago.append([year, 1])
+            index = len(over_two_years_ago) -1
+            year_contents[year] = index
+
+    #for posts in hte last two years, break it down by months
+    posts_last_two_years = all_posts.filter(
+                                created_on__year__gte=current_year-1).values_list(
+                                    'created_on', flat=True)
+    # archived_post_dates = all_posts.values_list('created_on', flat=True)
+
+    for post_date in posts_last_two_years:
         year = post_date.year
         month = post_date.strftime("%B") #format month as name instead of int
+        month_ordinal = post_date.month
         #if the year-month combo is already in the list
         #increment num_posts
         if (year, month) in archive_contents:
             index = archive_contents.get((year,month))
-            archive[index][2] += 1
+            archive[index][3] += 1
         else:
             #otherwise initialize in list and add year-month combo
             #to dictionary with value as index in archive list
-            archive.append([year, month, 1])
+            archive.append([year, month, month_ordinal, 1])
             index = len(archive) - 1
             archive_contents[(year,month)] = index
-    return archive
+    return archive, over_two_years_ago
+
+def blog_by_month(request, year, month):
+    month = int(month)
+    year = int(year)
+    month_name = MONTHS.get(month)
+    if not month_name:
+        return Http404
+    #paginate??
+    posts_in_month = BlogPost.objects.filter(created_on__year=year,
+                                             created_on__month=month).order_by(
+                                                'created_on')
+    paginator = Paginator(posts_in_month, 1)
+    page = request.GET.get('page')
+    try:
+        posts_in_month = paginator.page(page)
+    except PageNotAnInteger:
+        posts_in_month = paginator.page(1)
+    except EmptyPage:
+        posts_in_month = paginator.page(paginator.num_pages)
+
+    most_recent_posts = BlogPost.objects.all().order_by('-created_on')[:5].values(
+                                'id', 'title', 'created_on')
+    monthly_archive, yearly_archive = get_archive_post_list()
+    context = {'posts_in_month': posts_in_month,
+               'monthly_archive': monthly_archive,
+               'yearly_archive': yearly_archive,
+               'month_name': month_name,
+               'year': year,
+               'most_recent_posts': most_recent_posts}
+    return render(request, 'blog_by_month.html', context)
 
 def blog_entry(request, blog_id):
     try:
@@ -188,12 +273,13 @@ def blog_entry(request, blog_id):
     all_posts = BlogPost.objects.all().order_by('-created_on')
     most_recent_posts = all_posts[:5].values('id', 'title', 'created_on')
 
-    archive = get_archive_post_list()
+    monthly_archive, yearly_archive = get_archive_post_list()
 
     context = {'post':post, 'next_post_id':next_post_id,
                 'previous_post_id': previous_post_id,
                 'most_recent_posts': most_recent_posts,
-                'archive': archive}
+                'monthly_archive': monthly_archive,
+                'yearly_archive': yearly_archive}
     return render(request, 'blog_post.html', context)
 
 def load_sermons(request):
