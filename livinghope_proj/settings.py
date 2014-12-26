@@ -129,6 +129,7 @@ INSTALLED_APPS = (
     'captcha',
     'ckeditor',
     'livinghope',
+    # 'paypalrestsdk',
     # 'django_comments',
     # 'mptt',
     # 'tagging',

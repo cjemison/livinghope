@@ -49,7 +49,10 @@ def queryset_to_rows(queryset, num_cols):
 
 def home(request):
     banner_images = BannerImage.objects.all().order_by('order')
-    context = {'banner_images': banner_images}
+    news = BlogPost.objects.filter(tags__name="News and Announcements").order_by(
+                '-created_on')[:5]
+    context = {'banner_images': banner_images,
+               'news': news}
     return render(request, 'home.html', context)
 
 def missionaries(request):
