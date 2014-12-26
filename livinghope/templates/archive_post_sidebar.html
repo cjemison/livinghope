@@ -10,3 +10,14 @@
             </li>
         {% endfor %}
         </ul>
+
+        <ul class="list-group">
+        {% for year, num in yearly_archive %}
+            <li class="list-group-item">
+                <a href="{% url 'blog_by_year' year %}">
+                    {{year}} 
+                </a>
+                <span class="badge">{{num}}</span>
+            </li>
+        {% endfor %}
+        </ul>

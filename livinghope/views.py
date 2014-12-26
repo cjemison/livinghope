@@ -187,8 +187,9 @@ def get_archive_post_list():
     archive_contents = {}
     archive = []
     current_year = datetime.datetime.now().year
+    first_day_last_year = datetime.date(current_year-1, 1, 1)
     posts_over_two_years = all_posts.filter(
-                                created_on__year__lt=current_year-1).values_list(
+                                created_on__lt=first_day_last_year).values_list(
                                     'created_on', flat=True)
     #for posts over two years ago, only break down by year
     over_two_years_ago = []
@@ -205,7 +206,7 @@ def get_archive_post_list():
 
     #for posts in hte last two years, break it down by months
     posts_last_two_years = all_posts.filter(
-                                created_on__year__gte=current_year-1).values_list(
+                                created_on__gte=first_day_last_year).values_list(
                                     'created_on', flat=True)
     # archived_post_dates = all_posts.values_list('created_on', flat=True)
 
@@ -236,7 +237,7 @@ def blog_by_month(request, year, month):
     posts_in_month = BlogPost.objects.filter(created_on__year=year,
                                              created_on__month=month).order_by(
                                                 'created_on')
-    paginator = Paginator(posts_in_month, 1)
+    paginator = Paginator(posts_in_month, 5)
     page = request.GET.get('page')
     try:
         posts_in_month = paginator.page(page)
@@ -255,6 +256,30 @@ def blog_by_month(request, year, month):
                'year': year,
                'most_recent_posts': most_recent_posts}
     return render(request, 'blog_by_month.html', context)
+
+def blog_by_year(request, year):
+    year = int(year)
+    posts_in_year = BlogPost.objects.filter(created_on__year=year).order_by(
+                                                'created_on')
+    paginator = Paginator(posts_in_year, 5)
+    page = request.GET.get('page')
+    try:
+        posts_in_year = paginator.page(page)
+    except PageNotAnInteger:
+        posts_in_year = paginator.page(1)
+    except EmptyPage:
+        posts_in_year = paginator.page(paginator.num_pages)
+
+    most_recent_posts = BlogPost.objects.all().order_by('-created_on')[:5].values(
+                                'id', 'title', 'created_on')
+    monthly_archive, yearly_archive = get_archive_post_list()
+    context = {'posts_in_year': posts_in_year,
+               'monthly_archive': monthly_archive,
+               'yearly_archive': yearly_archive,
+               'year': year,
+               'most_recent_posts': most_recent_posts}
+    return render(request, 'blog_by_year.html', context)
+
 
 def blog_entry(request, blog_id):
     try:

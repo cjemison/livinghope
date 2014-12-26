@@ -7,18 +7,18 @@
     $(document).ready(function(){
         $(function() {
             $("#pagination").pagination({
-                pages: {{ posts_in_month.paginator.num_pages }},
+                pages: {{ posts_in_year.paginator.num_pages }},
                 prevText: "&laquo;",
                 nextText: "&raquo;",
                 hrefTextPrefix: '?&page=',
-                currentPage: {{ posts_in_month.number }},
+                currentPage: {{ posts_in_year.number }},
                 selectOnClick: false,
             });
             
-            if ({{posts_in_month.number}} == 1){
+            if ({{posts_in_year.number}} == 1){
                 $('.prev').parent().attr('class','disabled');
             }
-            if ({{posts_in_month.number}} == {{posts_in_month.paginator.num_pages}}){
+            if ({{posts_in_year.number}} == {{posts_in_year.paginator.num_pages}}){
                 $('.next').parent().attr('class','disabled');
             }
 
@@ -29,10 +29,10 @@
 {% endblock %}
 
 {% block content %}
-<h2>Posts in {{month_name}}, {{year}}</h2>
+<h2>Posts in {{year}}</h2>
 <div class="row">
     <div class="col-md-9">
-        {% for post in posts_in_month %}
+        {% for post in posts_in_year %}
             <h3>{{post.title}}</h3>
             <p><small>Posted on {{post.created_on}} by {{post.author}}</small></p>
             <div>
@@ -42,7 +42,7 @@
             <hr>
         {% endfor %}
         <p class="text-right">
-            Displaying posts {{posts_in_month.start_index}} - {{posts_in_month.end_index}} of {{posts_in_month.paginator.count}}
+            Displaying posts {{posts_in_year.start_index}} - {{posts_in_year.end_index}} of {{posts_in_year.paginator.count}}
         </p>
         <nav>
             <ul class="pagination pull-right" id="pagination">
