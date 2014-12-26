@@ -155,6 +155,12 @@ class SermonSeries(models.Model):
     passage_range = models.CharField(max_length=50)
     current_series = models.BooleanField(default=False)
 
+    def clean(self):
+        if self.current_series == True:
+            previous_current = SermonSeries.objects.filter(current_series=True)
+            previous_current.update(current_series=False)
+        super(SermonSeries, self).clean()
+
     def __unicode__(self):
         return self.name
 
