@@ -1,14 +1,41 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block headloaders %}
+<style>
+  #map-canvas {
+    height: 400px;
+    background-color: #CCC;
+    margin-bottom: 15px;
+    /*padding: 0px;*/
+  }
+</style>
     <script>
         $(document).ready(function(){
             $('#contact-submit-button').click(function(){
                 $(this).attr('disabled','disabled');
                 $('#contact-form').submit();
             })
+            // alert('{{locations.0.street_address}}, {{locations.0.city}}, {{locations.0.state}}')
 
         })
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script>
+      function initialize() {
+        var latlon =  new google.maps.LatLng(41.9336146, -88.0629445)
+        var mapCanvas = document.getElementById('map-canvas');
+        var mapOptions = {
+          center: latlon,
+          zoom: 14,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions);
+        var marker = new google.maps.Marker({
+                map: map,
+                position: latlon
+            });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 {% endblock %}
 {% block content %}
@@ -20,6 +47,11 @@
     {% endfor %}
 {% endif %}
     <h2>Contact Us</h2>
+
+    <div class="row">
+        <div class="col-md-12" id="map-canvas">
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-4">
             {% if locations %}

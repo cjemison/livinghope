@@ -17,7 +17,7 @@
   <link href="{% static 'livinghope/magnific-popup.css' %}" rel="stylesheet" type="text/css">
   <script>
     $(document).ready(function(){
-      $.backstretch("{% static 'livinghope/backgrounds/7.png' %}")
+      $.backstretch("{% static 'livinghope/backgrounds/6.png' %}")
     })
   </script>
   <style>
@@ -72,10 +72,10 @@
             <a href="#" class="Dropdown-toggle" data-toggle="dropdown">
             About Us <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Our Story</a></li>
+              <li class="disabled"><a href="#">Our Story</a></li>
               <li><a href="{% url 'statement_of_faith' %}">Statement of Faith</a></li>
               <li><a href="{% url 'livinghope.views.leaders' %}">Our Leaders</a></li>
-              <li><a href="#">Our Denomination</a></li>
+              <li class="disabled"><a href="#">Our Denomination</a></li>
             </ul>   
           </li>
           <li><a href="{% url 'services' %}">Sunday Service</a></li>
@@ -84,13 +84,13 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               Missions <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Missions Policy</a></li>
+                <li class="disabled"><a href="#">Missions Policy</a></li>
                 <li><a href="{% url 'livinghope.views.missionaries' %}">Our Missionaries</a></li>
               </ul>
           </li>
           <li><a href="{% url 'livinghope.views.sermon_series' %}">Sermons</a></li>
           <li><a href="{% url 'blog' %}">Blog</a></li>
-          <li><a href="#">Events</a></li>
+          <li class="disabled"><a href="#">Events</a></li>
 <!--           <li><a href="#">Calendar</a></li> -->
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -100,7 +100,7 @@
                 <li><a href="{% url 'contact' %}">Contact Us</a></li>
               </ul>
           </li>
-          <li><a href="{% url 'giving' %}">Giving</a></li>
+          <!-- <li class="disabled"><a href="{% url 'giving' %}">Giving</a></li> -->
         </ul>
       </div>
     </nav>
@@ -129,20 +129,55 @@
             <small>
               <strong><em>Navigation</em></strong><br>
               <a href="{% url 'home'%}">Home</a><br>
-              <a href="{% url 'sermon_series'%}">Sermons</a></br>
-              <a href="{% url 'missionaries' %}">Missions</a><br>
+              <a href="#">Our Story</a></br>
+              <a href="{% url 'statement_of_faith'%}">Statement of Faith</a><br>
+              <a href="{% url 'leaders' %}">Our Leaders</a><br>
+              <a href="#">Our Denomination</a><br>
             </small>
           </p>
         </div>
         <div class="col-md-2">
           <p>
             <small>
-              <strong><em>&nbsp;</em></strong><br>
-              <a href="{% url 'home'%}">Home</a><br>
-              <a href="{% url 'sermon_series'%}">Sermons</a></br>
-              <a href="{% url 'missionaries' %}">Missions</a><br>
+              <strong><em>...</em></strong><br>
+              <a href="{% url 'services'%}">Sunday Service</a><br>
+              <a href="{% url 'ministries'%}">Ministries</a><br>
+              <a href="#">Missions Policy</a><br>
+              <a href="{% url 'missionaries' %}">Missionaries</a><br>
+              <a href="#">Events</a><br>
+              <!-- <a href="{% url 'giving' %}">Giving</a><br> -->
             </small>
           </p>
+        </div>
+        <div class="col-md-2">
+          <p>
+            <small>
+              <strong><em>Resources</em></strong><br>
+              <a href="{% url 'sermon_series'%}">Sermons</a><br>
+              <a href="{% url 'blog'%}">Blog</a><br>
+            </small>
+          </p>
+        </div>
+        <div class="col-md-3">
+          <p>
+            <small>
+              <strong><em>Connect</em></strong><br>
+              <a href="{% url 'contact'%}">Contact Us</a><br>
+              <a href="{% url 'prayer'%}">Prayer</a><br>
+            </small>
+          </p>
+            <a href="#">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x"></i>
+              </span>
+            </a>
+            <a href="https://www.facebook.com/onelivinghope" target="_blank">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-square-o fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x"></i>
+              </span>
+            </a>
         </div>
       </div>
     </footer>
