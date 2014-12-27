@@ -2,7 +2,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.views.generic.edit import FormView
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -10,9 +10,11 @@ from livinghope.models import SermonSeries, Sermon, Author, BannerImage
 from livinghope.models import Missionary, Leader, SmallGroup, Service
 from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
 from livinghope.forms import PrayerForm, ContactForm
+# from livinghope_proj.settings import PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
 import math
 import pickle
 import datetime
+# import paypalrestsdk
 
 MONTHS = {1: 'January',
           2: 'February',
@@ -26,6 +28,72 @@ MONTHS = {1: 'January',
           10: 'October',
           11: 'November',
           12: 'December'}
+
+# def paypal_create(request):
+
+#     paypalrestsdk.configure({
+#         "mode": PAYPAL_MODE,
+#         "client_id": PAYPAL_CLIENT_ID,
+#         "client_secret": PAYPAL_CLIENT_SECRET })
+
+#     payment = paypalrestsdk.Payment({
+#         "intent": "sale",
+#         "payer": {
+#             "payment_method": "paypal" },
+#         "redirect_urls": {
+#             "return_url": request.build_absolute_uri(reverse('paypal_execute')),
+#             "cancel_url": request.build_absolute_uri(reverse('giving')) },
+#         "transactions": [{
+#             "item_list": {
+#                 "items": [{
+#                     "name": "Donation",
+#                     "price": "1",
+#                     "currency": "USD",
+#                     "quantity": 1 }]},
+#             "amount":  {
+#                 "total": "1",
+#                 "currency": "USD" },
+#             "description": "donation description" }]})
+
+#     redirect_url = ""
+
+#     if payment.create():
+#         # Store payment id in user session
+#         request.session['payment_id'] = payment.id
+
+#         # Redirect the user to given approval url
+#         for link in payment.links:
+#             if link.method == "REDIRECT":
+#                 redirect_url = link.href
+#         return HttpResponseRedirect(redirect_url)
+
+#     else:
+#         messages.error(request, 'We are sorry but something went wrong. We could not redirect you to Paypal.')
+#         return HttpResponseRedirect(reverse('home'))
+
+# def paypal_execute(request):
+#     """
+#     MyApp > Paypal > Execute a Payment
+#     """
+#     payment_id = request.session['payment_id']
+#     payer_id = request.GET['PayerID']
+
+#     paypalrestsdk.configure({
+#         "mode": PAYPAL_MODE,
+#         "client_id": PAYPAL_CLIENT_ID,
+#         "client_secret": PAYPAL_CLIENT_SECRET })
+
+#     payment = paypalrestsdk.Payment.find(payment_id)
+#     payment_name = payment.transactions[0].item_list.items[0].name
+
+#     if payment.execute({"payer_id": payer_id}):
+#         # the payment has been accepted
+#         messages.success(request, 'thanks for the money dawg!')
+#     else:
+#         # the payment is not valid
+#         messages.success(request, 'thanks for nothing!!!')
+#     import pdb; pdb.set_trace()
+#     return HttpResponseRedirect(reverse('home'))
 
 def queryset_to_rows(queryset, num_cols):
     """
@@ -125,6 +193,13 @@ class Prayer(FormView):
 
         messages.success(self.request, success_message)
         return super(Prayer, self).form_valid(form)
+
+def paypal_payment_info_receiver(request):
+    #this is where notify_url from a paypal button redirects to
+    # implement this if we want to save basic payment info
+    # only sent if user chooses to come back to the site after transaction though
+    # unreliable
+    print request
 
 class Contact(FormView):
     template_name = 'contact_form.html'
@@ -386,3 +461,6 @@ def display_sermon_transcript(request):
         return Http404
     sermon = Sermon.objects.get(id=sermon_id)
     return HttpResponse(sermon.manuscript)
+
+def giving(request):
+    return render(request, 'giving.html')

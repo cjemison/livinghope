@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block headloaders %}
+{% endblock %}
+
+{% block content %}
+<h2>Giving</h2>
+<div class="row">
+    <div class="col-md-9">
+        <h4>Why Give?</h4>
+        <p>
+            Here's where we'll put a bunch of stuff about why we give. Here's where we'll put a bunch of stuff about why we give. Here's where we'll put a bunch of stuff about why we give. Here's where we'll put a bunch of stuff about why we give. Here's where we'll put a bunch of stuff about why we give. Here's where we'll put a bunch of stuff about why we give. Here's where we'll put a bunch of stuff about why we give. Here's where we'll put a bunch of stuff about why we give. Here's where we'll put a bunch of stuff about why we give. Here's where we'll put a bunch of stuff about why we give. Here's where we'll put a bunch of stuff about why we give.
+        </p>
+        <br>
+        <h4>Questions?</h4>
+        <p>
+            Direct them where to go if they have questions. Direct them where to go if they have questions. Direct them where to go if they have questions. Direct them where to go if they have questions. Direct them where to go if they have questions. Direct them where to go if they have questions. Direct them where to go if they have questions. 
+        </p>
+    </div>
+    <div class="col-md-3">
+        <h4>How to give</h4>
+        <div class="well">
+            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_s-xclick">
+            <input type="hidden" name="hosted_button_id" value="7DPYUK4Y4HMPA">
+            <input type="submit" class="btn btn-primary" value="Paypal">
+            </form>
+
+        </div>
+        <div class="well">
+            <a href="#" class="btn btn-primary">Chase QuickPay</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
