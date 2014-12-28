@@ -1,6 +1,7 @@
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -9,6 +10,8 @@ from django.contrib import messages
 from livinghope.models import SermonSeries, Sermon, Author, BannerImage
 from livinghope.models import Missionary, Leader, SmallGroup, Service
 from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
+from livinghope.models import SpecialEvent
+
 from livinghope.forms import PrayerForm, ContactForm
 # from livinghope_proj.settings import PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
 import math
@@ -137,6 +140,12 @@ def missionary_profile(request, missionary_id):
     context = {'missionary': missionary}
     return render(request, 'missionary_profile.html', context)
 
+def events(request):
+    now = datetime.datetime.now()
+    events = SpecialEvent.objects.filter(date__gte=now).order_by('date')
+    context = {'events':events}
+    return render(request, 'events.html', context)
+
 def leaders(request):
     #ORDER BY ORDER!!!!!
     leaders = Leader.objects.filter(active=True).order_by('order','last_name')
@@ -208,7 +217,7 @@ class Contact(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(Contact, self).get_context_data(**kwargs)
-        context['locations'] = Location.objects.filter(church=True)
+        context['locations'] = Location.objects.filter(church=True, public=True)
         return context
 
     def form_valid(self, form):
@@ -461,6 +470,23 @@ def display_sermon_transcript(request):
         return Http404
     sermon = Sermon.objects.get(id=sermon_id)
     return HttpResponse(sermon.manuscript)
+
+def display_event_details(request):
+    # here is where the ajax call gets the html to fill the modal
+    # for event details
+    event_id = request.GET.get('event-id', None)
+    try:
+        event = SpecialEvent.objects.get(id=event_id)
+    except:
+        return Http404
+    location = event.location
+    organizers = event.organizer.all()
+    context = {'event': event, 'location': location,
+                'organizers': organizers}
+    html = render_to_string('event_details_modal.html', context)
+    return HttpResponse(html)
+
+
 
 def giving(request):
     return render(request, 'giving.html')

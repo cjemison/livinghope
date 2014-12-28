@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block headloaders %}
+<style>
+  #map-canvas {
+    height: 400px;
+    background-color: #CCC;
+    margin-bottom: 15px;
+    /*padding: 0px;*/
+  }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+
+        $('.event-details-button').click(function(){
+            var event_id = $(this).data('id')
+            var url = "{% url 'event_details_modal' %}";
+
+            $.get(url, {'event-id': event_id}, function(response){
+                $('#details-modal-body').empty();
+                $(response).appendTo('#details-modal-body');
+                var latitude = $('#map-canvas').data('lat')
+                var longitude = $('#map-canvas').data('lon')
+
+                function initialize() {
+                    var latlon =  new google.maps.LatLng(latitude, longitude)
+                    var mapCanvas = document.getElementById('map-canvas');
+                    var mapOptions = {
+                      center: latlon,
+                      zoom: 14,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+                    var map = new google.maps.Map(mapCanvas, mapOptions);
+                    var marker = new google.maps.Marker({
+                            map: map,
+                            position: latlon
+                        });
+                }
+                $('#details-modal').on('shown.bs.modal', function () {
+                    initialize();
+                })
+
+            })
+        });
+    })
+</script>
+
+{% endblock %}
+
+{% block content %}
+<h2>Events</h2>
+{% for event in events %}
+<div class="row">
+    <div class="col-md-9">
+        <h3>{{event.name}}<br>
+            <small>{{event.date}} at {{event.start_time}} {% if event.end_time%}to {{event.end_time}}{%endif%}</small>
+        </h3>
+        <p>{{event.description|truncatewords:50}}</p>
+        <button class="btn btn-primary event-details-button" data-id="{{event.id}}" data-toggle="modal" data-target="#details-modal">Details</button>
+    </div>
+</div>
+{% endfor %}
+
+
+<!-- Modal -->
+<div class="modal fade" id="details-modal" tabindex="-1" role="dialog" aria-labelledby="details-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+<!--       <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="details-modal-label">Event Details</h4>
+      </div> -->
+      <div class="modal-body" id="details-modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

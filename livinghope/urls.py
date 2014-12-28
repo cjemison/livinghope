@@ -27,12 +27,15 @@ urlpatterns = patterns('',
     url(r'^blog/year/(?P<year>\d{4})/month/(?P<month>\d{1,2})/$', views.blog_by_month, name='blog_by_month'),
     (r'^ckeditor/', include('ckeditor.urls')),
     url(r'^giving/$', views.giving, name='giving'),
+    url(r'^events/$', views.events, name='events'),
+    url(r'^display-event-details/$', views.display_event_details, name='event_details_modal'),
     # url(r'^paypal/create/$', views.paypal_create, name='paypal_create'),
     # url(r'^paypal/execute/$', views.paypal_execute, name='paypal_execute'),
     url(r'^PayPal_IPN/$', views.paypal_payment_info_receiver),
+
+
     ##onetime utilities
     url(r'^load-sermons/$', views.load_sermons),
-
 )
 
 if settings.DEBUG:

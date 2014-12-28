@@ -1,0 +1,31 @@
+<div class="row">
+    <div id="map-canvas" data-lat="{{location.latitude}}" data-lon="{{location.longitude}}" class="col-md-12">
+    </div>
+</div>
+<h3>{{event.name}}<br>
+    <small>{{event.date}} at {{event.start_time}} {% if event.end_time%}to {{event.end_time}}{%endif%}</small>
+</h3>
+<div class="row">
+    <div class="col-md-12">
+        {% if location.public %}
+        <address>
+            {{location.street_address}}<br>
+            {{location.city}}, {{location.state}} {{location.zip_code}}
+        </address>
+        {% endif %}
+        <p>
+            {{event.description}}
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            Contact these people for more information:<br>
+            {% for organizer in organizers %}
+                {{organizer}} - {{organizer.email}}<br>
+            {% endfor %}
+        </p>
+    </div>
+</div>

@@ -5,8 +5,14 @@ from django.templatetags.static import static
 from livinghope.models import Author, SermonSeries, Sermon, \
 							  Location, Service, BannerImage, Missionary, \
 							  Leader, PrayerMeeting, SmallGroup, BlogPost, \
-                              BlogTag
+                              BlogTag, SpecialEvent
 
+
+class SpecialEventAdmin(admin.ModelAdmin):
+    list_display = ('name', 'date', 'start_time', 'location')
+    ordering = ('-date', '-start_time')
+    filter_horizontal = ('organizer', )
+    search_fields = ['name', 'location']
 
 class BannerImageAdmin(admin.ModelAdmin):
     list_display = ( 'name','order', 'image')
@@ -43,6 +49,7 @@ class BlogPostAdmin(admin.ModelAdmin):
     # class Media:
     #     js = (static('livinghope/ckeditor/ckeditor.js'),)
 
+admin.site.register(SpecialEvent, SpecialEventAdmin)
 admin.site.register(BlogTag)
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(Missionary)
