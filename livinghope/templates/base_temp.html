@@ -1,25 +1,167 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block headloaders %}
-<style>
-.carousel-inner > .item > img {
-    margin: 0 auto;
-}
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>
+    Living Hope {% block title %}{% endblock %}
+  </title>
+  {% load staticfiles %}
 
-{% endblock %}
+    <!-- Mobile Metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Google Fonts -->
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
+      <!-- Library CSS -->
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/bootstrap.css' %}">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/bootstrap-theme.css' %}">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/fonts/font-awesome/css/font-awesome.css' %}">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/animations.css'%}" media="screen">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/superfish.css'%}" media="screen">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/revolution-slider/css/settings.css'%}" media="screen">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/prettyPhoto.css'%}" media="screen">
+      <!-- Theme CSS -->
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/style.css'%}">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/global.css'%}">
+      <!-- Skin -->
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/colors/blue.css'%}" class="colors">
+      <!-- Responsive CSS -->
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/theme-responsive.css'%}">
+      
+      <!-- Favicons -->
+      <link rel="shortcut icon" href="{% static 'livinghope/pixma/img/ico/favicon.ico' %}">
+      <link rel="apple-touch-icon" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon.png' %}">
+      <link rel="apple-touch-icon" sizes="72x72" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon-72.png' %}">
+      <link rel="apple-touch-icon" sizes="114x114" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon-114.png' %}">
+      <link rel="apple-touch-icon" sizes="144x144" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon-144.png' %}">
+  {% block headloaders %}{% endblock %}
+</head>
+   <body class="home">
+      <div class="page-mask">
+            <div class="page-loader"> 
 
-{% block content %}
+                <div class="spinner"></div>
+                Loading...
+            </div>
 
+      </div>
+      <div class="wrap">
+         <!-- Header Start -->
+         <header id="header">
+            <!-- Main Header Start -->
+            <div class="main-header">
+               <div class="container">
+                  <!-- TopNav Start -->
+                  <div class="topnav navbar-header">
+                     <a class="navbar-toggle down-button" data-toggle="collapse" data-target=".slidedown">
+                     <i class="fa fa-angle-down icon-current"></i>
+                     </a> 
+                  </div>
+                  <!-- TopNav End -->
+                  <!-- Logo Start -->
+                  <div class="logo pull-left">
+                     <h1>
+                        <a href="index.html">
+                        <img src="{% static 'livinghope/living-hope-bad.png' %}" alt="pixma" height="60">
+                        </a>
+                     </h1>
+                  </div>
+                  <!-- Logo End -->
+                  <!-- Mobile Menu Start -->
+                  <div class="mobile navbar-header">
+                     <a class="navbar-toggle" data-toggle="collapse" href=".navbar-collapse">
+                     <i class="fa fa-bars fa-2x"></i>
+                     </a> 
+                  </div>
+                  <!-- Mobile Menu End -->
+                  <!-- Menu Start -->
+                  <nav class="collapse navbar-collapse menu">
+                     <ul class="nav navbar-nav sf-menu">
+                        <li>
+                           <a id="current" href="index.html">
+                           Home
+                           </a>
+                        </li>
+                        <li>
+                           <a href="#" class="sf-with-ul">
+                           About Us 
+                           <span class="sf-sub-indicator">
+                           <i class="fa fa-angle-down "></i>
+                           </span>
+                           </a>
+                           <ul>
+                              <li><a href="shortcodes.html" class="sf-with-ul">Our Story</a></li>
+                              <li><a href="icons.html" class="sf-with-ul">Statement of Faith</a></li>
+                              <li><a href="pricing-table.html" class="sf-with-ul">Our Leaders</a></li>
+                              <li><a href="pricing-table.html" class="sf-with-ul">Our Denomination</a></li>
+
+                           </ul>
+                        </li>
+                        <li>
+                           <a href="#" class="sf-with-ul">
+                           Ministries
+                           <span class="sf-sub-indicator">
+                           <i class="fa fa-angle-down "></i>
+                           </span>
+                           </a>
+                           <ul>
+                              <li><a href="blog-left-sidebar.html" class="sf-with-ul">Sunday Service</a></li>
+                              <li><a href="blog-right-sidebar.html" class="sf-with-ul">Small Groups</a></li>
+                           </ul>
+                        </li>
+                        <li>
+                           <a href="#" class="sf-with-ul">
+                           Missions
+                           <span class="sf-sub-indicator">
+                           <i class="fa fa-angle-down "></i>
+                           </span>
+                           </a>
+                           <ul>
+                              <li><a href="blog-left-sidebar.html" class="sf-with-ul">Missions Policy</a></li>
+                              <li><a href="blog-right-sidebar.html" class="sf-with-ul">Missionaries</a></li>
+                           </ul>
+                        </li>
+                        <li>
+                           <a href="#" class="sf-with-ul">
+                           Media
+                           <span class="sf-sub-indicator">
+                           <i class="fa fa-angle-down "></i>
+                           </span>
+                           </a>
+                           <ul>
+                              <li><a href="blog-left-sidebar.html" class="sf-with-ul">Sermons</a></li>
+                              <li><a href="blog-right-sidebar.html" class="sf-with-ul">Blog</a></li>
+                           </ul>
+                        </li>
+                        <li><a href="#">
+                            Connect
+                            <span class="sf-sub-indicator">
+                              <i class="fa fa-angle-down"></i>
+                            </span>
+                            </a>
+                            <ul>
+                              <li><a href="contact.html" class="sf-with-ul">Contact</a></li>
+                              <li><a href="contact-2.html" class="sf-with-ul">Prayer</a></li>
+                            </ul>
+                         </li>
+                     </ul>
+                  </nav>
+                  <!-- Menu End --> 
+               </div>
+            </div>
+            <!-- Main Header End -->
+         </header>
+         <!-- Header End --> 
+         <!-- Content Start -->
+         <div id="main">
          <!-- Slider Start-->
          <div class="fullwidthbanner-container">
              <div class="fullwidthbanner rslider">
                  <ul>
                      <!-- THE FIRST SLIDE -->
                      <li data-transition="fade" data-slotamount="7" data-masterspeed="500"  data-saveperformance="on">
-                         <img class="img-responsive" src="{% static 'livinghope/soil-with-plant-sprout.jpg'%}"  alt="Pixma" data-lazyload="{% static 'livinghope/soil-with-plant-sprout.jpg'%}" >
+                         <img src="{% static 'livinghope/pixma/img/slider/slider-bg-1.jpg'%}"  alt="Pixma" data-lazyload="{% static 'livinghope/pixma/img/slider/slider-bg-1.jpg'%}"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
 
-                         <div class="caption h1 lft tp-caption start"
+                         <div class="caption modern_big_bluebg h1 lft tp-caption start"
                               data-x="40"
                               data-y="85"
                               data-speed="700"
@@ -27,7 +169,7 @@
                               data-start="1000"
                               data-easing="easeOutQuint"
                               data-endeasing="easeOutQuint">
-                             <h2>Who We Are</h2>
+                             <h3>PREMIUM BUSINESS TEMPLATE</h3>
                          </div>
                          <div class="caption list_slide lfb tp-caption start"
                               data-easing="easeOutExpo"
@@ -36,52 +178,74 @@
                               data-y="180"
                               data-x="40">
                              <div class="list-slide">
-                                 <i class="fa fa-leaf slide-icon"></i>
-                                 <h5> About Living Hope</h5>
+                                 <i class="fa fa-camera slide-icon"></i>
+                                 <h5 class="dblue"> 10 predefined color skins </h5>
+                             </div>
+                         </div>
+                         <div class="caption list_slide lfb tp-caption start"
+                              data-easing="easeOutExpo"
+                              data-start="1800"
+                              data-speed="1200"
+                              data-y="220"
+                              data-x="40">
+                             <div class="list-slide">
+                                 <i class="fa fa-search slide-icon"></i>
+                                 <h5 class="dblue"> SEO optimized template files </h5>
+                             </div>
+                         </div>
+                         <div class="caption list_slide lfb tp-caption start"
+                              data-easing="easeOutExpo"
+                              data-start="2200"
+                              data-speed="1350"
+                              data-y="260"
+                              data-x="40">
+                             <div class="list-slide">
+                                 <i class="fa fa-code slide-icon"></i>
+                                 <h5 class="dblue"> Working Ajax Contact Form </h5>
                              </div>
                          </div>
                          <div class="caption lfb caption_button_1 fadeout tp-caption start"
                               data-x="40"
-                              data-y="250"
+                              data-y="330"
                               data-speed="900"
                               data-endspeed="300"
-                              data-start="2000"
+                              data-start="2700"
                               data-hoffset="-70"
                               data-easing="easeOutExpo">
-                             <a class="btn-special hidden-xs btn-grey" href="#">Our Story</a>
+                             <a class="btn-special hidden-xs btn-grey" href="#">Learn More</a>
                          </div>
                          <div class="caption lfb caption_button_2 fadeout tp-caption start"
-                              data-x="40"
-                              data-y="310"
-                              data-speed="900"
+                              data-x="210"
+                              data-y="330"
+                              data-speed="800"
                               data-endspeed="300"
-                              data-start="2200"
-                              data-hoffset="-70"
+                              data-start="2900"
+                              data-hoffset="70"
                               data-easing="easeOutExpo">
-                             <a class="btn-special hidden-xs btn-grey" href="{% url 'statement_of_faith' %}">Statement of Faith</a>
+                             <a class="btn-special hidden-xs btn-color" href="#">Buy Now</a>
                          </div>
                      </li>
                      <!-- THE FIRST SLIDE -->
                      <li data-transition="fade" data-slotamount="7" data-masterspeed="500"  data-saveperformance="on">
-                         <img src="{% static 'livinghope/cardboardpeople.jpg'%}"  alt="Pixma" data-lazyload="{% static 'livinghope/cardboardpeople.jpg'%}" data-bgposition="center top" >
+                         <img src="{% static 'livinghope/pixma/img/slider/slider-bg-2.jpg'%}"  alt="Pixma" data-lazyload="{% static 'livinghope/pixma/img/slider/slider-bg-2.jpg'%}" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
                          <div class="caption large_text sft"
                               data-x="660"
                               data-y="54"
                               data-speed="300"
                               data-start="800"
-                              data-easing="easeOutExpo"  >Ministries at Living Hope</div>
+                              data-easing="easeOutExpo"  >TOUCH ENABLED</div>
                          <div class="caption medium_text sfl"
                               data-x="689"
                               data-y="92"
                               data-speed="300"
                               data-start="1100"
-                              data-easing="easeOutExpo"  >Get</div>
+                              data-easing="easeOutExpo"  >AND</div>
                          <div class="caption large_text sfr"
                               data-x="738"
                               data-y="88"
                               data-speed="300"
                               data-start="1100"
-                              data-easing="easeOutExpo"  >Involved</div>
+                              data-easing="easeOutExpo"  ><span class="dblue">RESPONSIVE</span></div>
                          <div class="caption list_slide lfb tp-caption start"
                               data-easing="easeOutExpo"
                               data-start="1400"
@@ -90,7 +254,7 @@
                               data-x="660">
                              <div class="list-slide">
                                  <i class="fa fa-eye slide-icon"></i>
-                                 <h5> Small Groups </h5>
+                                 <h5> Retina Ready </h5>
                              </div>
                          </div>
                          <div class="caption list_slide lfb tp-caption start"
@@ -101,7 +265,7 @@
                               data-x="660">
                              <div class="list-slide">
                                  <i class="fa fa-table slide-icon"></i>
-                                 <h5> Women's Ministry </h5>
+                                 <h5> Responsive pricing tables </h5>
                              </div>
                          </div>
                          <div class="caption list_slide lfb tp-caption start"
@@ -112,7 +276,7 @@
                               data-x="660">
                              <div class="list-slide">
                                  <i class="fa fa-check slide-icon"></i>
-                                 <h5> Children's Ministry </h5>
+                                 <h5> Crossbrowser Compatible </h5>
                              </div>
                          </div>
                          <div class="caption list_slide lfb tp-caption start"
@@ -123,7 +287,7 @@
                               data-x="660">
                              <div class="list-slide">
                                  <i class="fa fa-twitter slide-icon"></i>
-                                 <h5> Sunday Service </h5>
+                                 <h5> Twitter 1.1 API Support </h5>
                              </div>
                          </div>
                          <div class="caption list_slide lfb tp-caption start"
@@ -134,18 +298,32 @@
                               data-x="660">
                              <div class="list-slide">
                                  <i class="fa fa-th slide-icon"></i>
-                                 <h5> Music Ministry </h5>
+                                 <h5> Bootstrap Framework </h5>
                              </div>
                          </div>
-                        <div class="caption lfb caption_button_1 fadeout tp-caption start"
-                              data-x="660"
-                              data-y="400"
-                              data-speed="900"
-                              data-endspeed="300"
-                              data-start="3200"
-                              data-hoffset="-70"
+                         <div class="caption lfl"
+                              data-x="53"
+                              data-y="30"
+                              data-speed="300"
+                              data-start="1400"
                               data-easing="easeOutExpo">
-                             <a class="btn-special hidden-xs btn-grey" href="#">Learn More</a>
+                             <img src="{% static 'livinghope/pixma/img/slider/responsive-imac.png'%}" alt="iMac Responsive">
+                         </div>
+                         <div class="caption lfl"
+                              data-x="323"
+                              data-y="145"
+                              data-speed="300"
+                              data-start="1500"
+                              data-easing="easeOutExpo">
+                             <img src="{% static 'livinghope/pixma/img/slider/responsive-ipad.png'%}" alt="iPad Responsive">
+                         </div>
+                         <div class="caption lfl"
+                              data-x="472"
+                              data-y="253"
+                              data-speed="300"
+                              data-start="1600"
+                              data-easing="easeOutExpo">
+                             <img src="{% static 'livinghope/pixma/img/slider/responsive-iphone.png'%}" alt="iPhone Responsive">
                          </div>
                      </li>
                  </ul>
@@ -159,11 +337,11 @@
                   <div class="row">
                      <div class="slogan-content">
                         <div class="col-lg-9 col-md-9">
-                           <h2 class="slogan-title">Are you curious about the Bible?</h2>
+                           <h2 class="slogan-title">We design and develop the best website’s for customers!</h2>
                         </div>
                         <div class="col-lg-3 col-md-3">
                            <div class="get-started">
-                              <button class="btn btn-special btn-color pull-right">Read More</button>
+                              <button class="btn btn-special btn-color pull-right">Get Started Now</button>
                            </div>
                         </div>
                         <div class="clearfix"></div>
@@ -180,19 +358,18 @@
                         <div class="content-box big ch-item bottom-pad-small">
                            <div class="ch-info-wrap">
                               <div class="ch-info">
-                                 <div class="ch-info-front ch-img-1"><i class="fa fa-clock-o"></i></div>
+                                 <div class="ch-info-front ch-img-1"><i class="fa fa-arrows-alt"></i></div>
                                  <div class="ch-info-back">
-                                    <i class="fa fa-clock-o"></i>
+                                    <i class="fa fa-arrows-alt"></i>
                                  </div>
                               </div>
                            </div>
                            <div class="content-box-info">
-                              <h3>Service Times / Directions</h3>
+                              <h3>Responsive Layout</h3>
                               <p>
-                                 It would be seriously super sweet if you joined us at one of our services. Like, no joke dude. You won't regret coming. Well maybe you will but we try our best not to let that happen. We'll even tell you where we're meeting with a map and everything. How sweet is that?
+                                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
                               </p>
-                              <a href="#">Service times <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a><br>
-                              <a href="#"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Directions </a>
+                              <a href="#">Read More <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a>
                            </div>
                         </div>
                      </div>
@@ -200,18 +377,18 @@
                         <div class="content-box big ch-item bottom-pad-small">
                            <div class="ch-info-wrap">
                               <div class="ch-info">
-                                 <div class="ch-info-front ch-img-1"><i class="fa fa-leaf"></i></div>
+                                 <div class="ch-info-front ch-img-1"><i class="fa fa-eye"></i></div>
                                  <div class="ch-info-back">
-                                    <i class="fa fa-leaf"></i>
+                                    <i class="fa fa-eye"></i>
                                  </div>
                               </div>
                            </div>
                            <div class="content-box-info">
-                              <h3>Listen Online</h3>
+                              <h3>Retina Ready</h3>
                               <p>
-                                 Sermons aren't streamed but you wouldn't want that anyways since then you'll have to hear the worship leader talk. Ugh. We've cut him out so you can listen to what you really want to hear. If you're deaf, we've got you covered! Sermon transcripts are here too! Helen Keller? Sorry, you're out of luck...but you couldn't see my apology anyways.
+                                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
                               </p>
-                              <a href="#">Sermons <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a>
+                              <a href="#">Read More <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a>
                            </div>
                         </div>
                      </div>
@@ -219,18 +396,18 @@
                         <div class="content-box big ch-item">
                            <div class="ch-info-wrap">
                               <div class="ch-info">
-                                 <div class="ch-info-front ch-img-1"><i class="fa fa-comment-o"></i></div>
+                                 <div class="ch-info-front ch-img-1"><i class="fa fa-edit"></i></div>
                                  <div class="ch-info-back">
-                                    <i class="fa fa-comment-o"></i>
+                                    <i class="fa fa-edit"></i>
                                  </div>
                               </div>
                            </div>
                            <div class="content-box-info">
-                              <h3>Blog</h3>
+                              <h3>Rich Elements</h3>
                               <p>
-                                 Blog is a funny word. It's truly a magnificent age where new words can be born from smashing together two other words. It is an age where the english language is butchered to a certain extent. Read our blog to see us do it some more!
+                                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
                               </p>
-                              <a href="#">Read Blog <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a>
+                              <a href="#">Read More <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a>
                            </div>
                         </div>
                      </div>
@@ -238,21 +415,22 @@
                </div>
             </div>
             <!-- Main Content end-->
-            <!-- Newest News Start-->
+
+            <!-- Product Content Start-->
             <div class="product-lead bottom-pad">
                <div class="container">
                   <div class="row">
                      <div class="col-md-4 col-sm-12 col-xs-12 text-center animate_afl d1">
-                        <i class="fa fa-leaf fa-5x"></i>
+                        <img src="{% static 'livinghope/pixma/img/iphone5c.png' %}" alt="iPhone5c">
                      </div>
                      <div class="col-md-8 col-sm-12 col-xs-12 animate_afr d3">
                         <div class="app-service">
-                           <h3>What's New with Living Hope</h3>
-                           <h4>I'm glad you asked!</h4>
-                           <p>The toilet paper in the bathrooms just got restocked so go nuts! Gone are the days of worrying about whether there was enough. The toilet paper drought is officially over.  
+                           <h3>Pixma App Services</h3>
+                           <h4>We provide all kinds of iPhone application design and development services.</h4>
+                           <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.Vivamus diam diam, fermentum sed dapibus eget, egestas sed eros. Lorem fermentum ipsum dolor sit amet.Lorem fermentum diam diam.  
                            </p>
                            <p>
-                              Additionally, people tried their best with Christmas decorations but yikes. Have you been searching to see people try using icicle lights on a Christmas tree? Well look no further than the Living Hope sanctuary!
+                              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
                            </p>
                            <div class="divider"></div>
                            <div class="learnmore">
@@ -263,64 +441,8 @@
                   </div>
                </div>
             </div> 
-            <!-- Newest News end--> 
-           <!-- Latest Posts start --> 
-            <div class="latest-posts">
-               <div class="container">
-                  <div class="row">
-                     <div class="col-lg-12 col-md-12 com-sm-12 col-xs-12">
-                        <h3 class="title">Latest News and Announcments</h3>
-                     </div>
-                     <div class="clearfix"></div>
-                     <div class="blog-showcase col-lg-12 col-md-12 col-sm-12 col-xs-12 animate_afb d1">
-                        <ul>
-                           <li class="">
-                              <div class="blog-showcase-thumb col-lg-4">
-                                 <div class="post-body">
-                                    <a class="post-item-link" href="{% static 'livinghope/pixma/img/portfolio/portfolio-5.jpg' %}" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="{% static 'livinghope/pixma/img/portfolio/portfolio-5.jpg' %}"></a>
-                                 </div>
-                              </div>
-                              <div class="blog-showcase-extra-info col-lg-4">
-                                 <span><a href="#">Sep 11th, 2013</a></span>
-                                 <h4><a href="#" class="title">Blog post title</a></h4>
-                                 <p>Mauris sed mauris bibendum est imperdiet porttitor tincidunt at lorem. Proin augue massa</p>
-                                 <a href="#">Read more <i class="fa fa-angle-double-right"></i></a>
-                              </div>
-                           </li>
-                           <li>
-                              <div class="blog-showcase-thumb col-lg-4">
-                                 <div class="post-body">
-                                    <a class="post-item-link" href="{% static 'livinghope/pixma/img/portfolio/portfolio-6.jpg' %}" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="{% static 'livinghope/pixma/img/portfolio/portfolio-6.jpg' %}"></a>
-                                 </div>
-                              </div>
-                              <div class="blog-showcase-extra-info col-lg-4">
-                                 <span><a href="#">Sep 11th, 2013</a></span>
-                                 <h4><a href="#" class="title">Blog post title</a></h4>
-                                 <p>Mauris sed mauris bibendum est imperdiet porttitor tincidunt at lorem. Proin augue massa</p>
-                                 <a href="#">Read more <i class="fa fa-angle-double-right"></i></a>
-                              </div>
-                           </li>
-                           <li class="blog-first-el">
-                              <div class="blog-showcase-thumb col-lg-4">
-                                 <div class="post-body">
-                                    <a class="post-item-link" href="{% static 'livinghope/pixma/img/portfolio/portfolio-7.jpg'%}" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="{% static 'livinghope/pixma/img/portfolio/portfolio-7.jpg' %}"></a>
-                                 </div>
-                              </div>
-                              <div class="blog-showcase-extra-info col-lg-4">
-                                 <span><a href="#">Sep 11th, 2013</a></span>
-                                 <h4><a href="#" class="title">Blog post title</a></h4>
-                                 <p>Mauris sed mauris bibendum est imperdiet porttitor tincidunt at lorem. Proin augue massa</p>
-                                 <a href="#">Read more <i class="fa fa-angle-double-right"></i></a>
-                              </div>
-                           </li>
-                        </ul>
-                        <div class="clearfix"></div>
-                     </div>
-                  </div>
-                  <div class="divider"></div>
-               </div>
-            </div>
-            <!-- Latest Posts End -->
+            <!-- Product Content end--> 
+
             <!-- Recent works start-->
             <div class="bottom-pad">
                <div class="container">
@@ -554,7 +676,63 @@
                </div>
             </div>
             <!-- Features End --> 
- 
+            <!-- Latest Posts start --> 
+            <div class="latest-posts">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-lg-12 col-md-12 com-sm-12 col-xs-12">
+                        <h3 class="title">Latest Posts</h3>
+                     </div>
+                     <div class="clearfix"></div>
+                     <div class="blog-showcase col-lg-12 col-md-12 col-sm-12 col-xs-12 animate_afb d1">
+                        <ul>
+                           <li class="">
+                              <div class="blog-showcase-thumb col-lg-4">
+                                 <div class="post-body">
+                                    <a class="post-item-link" href="img/portfolio/portfolio-5.jpg" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="img/portfolio/portfolio-5.jpg"></a>
+                                 </div>
+                              </div>
+                              <div class="blog-showcase-extra-info col-lg-4">
+                                 <span><a href="#">Sep 11th, 2013</a></span>
+                                 <h4><a href="#" class="title">Blog post title</a></h4>
+                                 <p>Mauris sed mauris bibendum est imperdiet porttitor tincidunt at lorem. Proin augue massa</p>
+                                 <a href="#">Read more <i class="fa fa-angle-double-right"></i></a>
+                              </div>
+                           </li>
+                           <li>
+                              <div class="blog-showcase-thumb col-lg-4">
+                                 <div class="post-body">
+                                    <a class="post-item-link" href="img/portfolio/portfolio-6.jpg" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="img/portfolio/portfolio-6.jpg"></a>
+                                 </div>
+                              </div>
+                              <div class="blog-showcase-extra-info col-lg-4">
+                                 <span><a href="#">Sep 11th, 2013</a></span>
+                                 <h4><a href="#" class="title">Blog post title</a></h4>
+                                 <p>Mauris sed mauris bibendum est imperdiet porttitor tincidunt at lorem. Proin augue massa</p>
+                                 <a href="#">Read more <i class="fa fa-angle-double-right"></i></a>
+                              </div>
+                           </li>
+                           <li class="blog-first-el">
+                              <div class="blog-showcase-thumb col-lg-4">
+                                 <div class="post-body">
+                                    <a class="post-item-link" href="{% static 'livinghope/pixma/img/portfolio/portfolio-7.jpg'%}" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="{% static 'livinghope/pixma/img/portfolio/portfolio-7.jpg' %}"></a>
+                                 </div>
+                              </div>
+                              <div class="blog-showcase-extra-info col-lg-4">
+                                 <span><a href="#">Sep 11th, 2013</a></span>
+                                 <h4><a href="#" class="title">Blog post title</a></h4>
+                                 <p>Mauris sed mauris bibendum est imperdiet porttitor tincidunt at lorem. Proin augue massa</p>
+                                 <a href="#">Read more <i class="fa fa-angle-double-right"></i></a>
+                              </div>
+                           </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                     </div>
+                  </div>
+                  <div class="divider"></div>
+               </div>
+            </div>
+            <!-- Latest Posts End -->
             <!-- Our Clients Start-->
             <div class="our-clients">
                <div class="container">
@@ -679,133 +857,101 @@
                   </div>
                </div>
             </div>
-            <!-- Our Clients End --> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="container">
-
-  {% if banner_images %}
-  <div class="row">
-  <div class="col-md-12">
-    <div class="carousel slide" data-ride="carousel" id="home-carousel">
-      <div class="carousel-inner" role="listbox">
-        {% for image in banner_images %}
-          {% if forloop.counter0 == 0 %}
-            <div class="item active">
-          {% else %}
-            <div class="item">
-          {% endif %}
-                <a href="{{image.link_to}}">
-                <img src="{{image.image.url}}" width="100%">
-                </a>
+            <!-- Our Clients End -->  
+         </div>
+         <!-- Content End -->
+         <!-- Footer Start -->
+         <footer id="footer">
+            <!-- Footer Top Start -->
+            <div class="footer-top">
+               <div class="container">
+                  <div class="row">
+                     <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-one">
+                        <h3>About</h3>
+                        <p> 
+                           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. 
+                        </p>
+                     </section>
+                     <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-two">
+                        <h3>Twitter Stream</h3>
+                        <ul id="tweets">
+                        </ul>
+                     </section>
+                     <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-three">
+                        <h3>Contact Us</h3>
+                        <ul class="contact-us">
+                           <li>
+                              <i class="fa fa-map-marker"></i>
+                              <p> 
+                                 <strong class="contact-pad">Address:</strong> House: 325, Road: 2,<br> Mirpur DOHS <br>
+                                 Dhaka, Bangladesh 
+                              </p>
+                           </li>
+                           <li>
+                              <i class="fa fa-phone"></i>
+                              <p><strong>Phone:</strong> +880 111-111-111</p>
+                           </li>
+                           <li>
+                              <i class="fa fa-envelope"></i>
+                              <p><strong>Email:</strong><a href="mailto:support@fifothemes.com">support@fifothemes.com</a></p>
+                           </li>
+                        </ul>
+                     </section>
+                     <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-four">
+                        <h3>Flickr Photostream</h3>
+                        <ul id="flickrfeed" class="thumbs"></ul>
+                     </section>
+                  </div>
+               </div>
             </div>
-        {% endfor %}
+            <!-- Footer Top End --> 
+            <!-- Footer Bottom Start -->
+            <div class="footer-bottom">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 "> &copy; Copyright 2014 by <a href="#">Pixma</a>. All Rights Reserved. </div>
+                     <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 ">
+                        <ul class="social social-icons-footer-bottom">
+                           <li class="facebook"><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                           <li class="twitter"><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                           <li class="dribbble"><a href="#" data-toggle="tooltip" title="Dribble"><i class="fa fa-dribbble"></i></a></li>
+                           <li class="linkedin"><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+                           <li class="rss"><a href="#" data-toggle="tooltip" title="Rss"><i class="fa fa-rss"></i></a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Footer Bottom End --> 
+         </footer>
+         <!-- Scroll To Top --> 
+         <a href="#" class="scrollup"><i class="fa fa-angle-up"></i></a>
       </div>
-      <!-- Controls -->
-      <a class="left carousel-control" href="#home-carousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#home-carousel"  role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
-  </div>
-  </div>
-  {% endif %}
-<hr>
+      <!-- Wrap End -->
+      
+      <!-- The Scripts -->
+      <script src="{% static 'livinghope/pixma/js/jquery.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery-migrate-1.2.1.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery-ui.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/bootstrap.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.parallax.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.wait.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/modernizr-2.6.2.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/modernizr.custom.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/revolution-slider/js/jquery.themepunch.tools.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/revolution-slider/js/jquery.themepunch.revolution.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.nivo.slider.pack.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.prettyPhoto.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/superfish.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/tweetMachine.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/tytabs.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.gmap.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/circularnav.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.sticky.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jflickrfeed.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/imagesloaded.pkgd.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/waypoints.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/custom.js'%}"></script>
+   </body>
 
-<div class="row">
-  <div class="col-md-3">
-    <div class="thumbnail">
-      <img class="img-responsive" src="{% static 'livinghope/schedule.jpg'%}" width="100%">
-      <div class="caption">
-        <h4>Join us!</h4>
-        <p>
-          View service times <a href="{% url 'services' %}">here</a>!
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="thumbnail">
-      <img class="img-responsive" src="{% static 'livinghope/compass.jpg'%}" width="100%">
-      <div class="caption">
-        <h4>Need Directions?</h4>
-        <p>
-          Click <a href="{% url 'contact' %}">here</a>!
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="thumbnail">
-      <img class="img-responsive" src="{% static 'livinghope/blog.jpg'%}" width="100%">
-      <div class="caption">
-        <h4 class="active">Read our Blog</h4>
-        <p>
-          Read what's new with Living Hope <a href="{% url 'blog' %}">here</a>!
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="thumbnail">
-      <img class="img-responsive" src="{% static 'livinghope/microphone.jpg'%}" width="100%">
-      <div class="caption">
-        <h4>Listen Online</h4>
-        <p>
-          Browse the sermon archives <a href="{% url 'sermon_series' %}">here</a>!
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<h3>What's new with Living Hope</h3>
-{% for post in news %}
-<div class="row">
-  <div class="col-md-12">
-      <h4>{{post.title}}</h4>
-      <p><small>Posted on {{post.created_on}} by {{post.author}}</small></p>
-      <div>
-          {{post.content|safe|truncatewords_html:100}}
-          <a href="{% url 'blog_entry' post.id %}">Read full post</a>
-      </div>
-  </div>
-</div>
-<hr>
-{% endfor %}
-
-</div>
-<!-- <div class="row">
-  <div class="col-md-3">
-    <img class="img-responsive" src="{% static 'livinghope/schedule.jpg'%}" width="100%">
-    <div class="well">
-    blah blah blah
-    </div>
-  </div>
-  <div class="col-md-3">
-    <img class="img-responsive" src="{% static 'livinghope/compass.jpg'%}" width="100%">
-  </div>
-  <div class="col-md-3">
-    <img class="img-responsive" src="{% static 'livinghope/blog.jpg'%}" width="100%">
-  </div>
-  <div class="col-md-3">
-    <img class="img-responsive" src="{% static 'livinghope/microphone.jpg'%}" width="100%">
-  </div>
-</div> -->
-{% endblock %}
+</html>
