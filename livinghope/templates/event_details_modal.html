@@ -3,12 +3,22 @@
     </div>
 </div>
 <h3>{{event.name}}<br>
-    <small>{{event.date}} at {{event.start_time}} {% if event.end_time%}to {{event.end_time}}{%endif%}</small>
+    <small>{{event.date}} at {{event.start_time}} 
+        {% if event.end_date or event.end_time %}
+            to 
+            {% if event.end_date%}
+                {{event.end_date}} {% if event.end_time %}at {{event.end_time}}{%endif%}
+            {% else %}
+                {{event.end_time}}
+            {% endif %}
+
+        {%endif%}</small>
 </h3>
 <div class="row">
     <div class="col-md-12">
         {% if location.public %}
         <address>
+            {{location.name}}<br>
             {{location.street_address}}<br>
             {{location.city}}, {{location.state}} {{location.zip_code}}
         </address>
@@ -22,7 +32,7 @@
 <div class="row">
     <div class="col-md-12">
         <p>
-            Contact these people for more information:<br>
+            For more information, contact:<br>
             {% for organizer in organizers %}
                 {{organizer}} - {{organizer.email}}<br>
             {% endfor %}

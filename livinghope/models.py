@@ -168,6 +168,7 @@ class Event(models.Model):
 class SpecialEvent(Event):
     name = models.CharField(max_length=100)
     date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
     organizer = models.ManyToManyField(Leader)
     description = models.TextField(null=True, blank=True)
     

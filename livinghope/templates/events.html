@@ -50,12 +50,22 @@
 {% endblock %}
 
 {% block content %}
-<h2>Events</h2>
+<h2>Upcoming Events</h2>
 {% for event in events %}
 <div class="row">
     <div class="col-md-9">
         <h3>{{event.name}}<br>
-            <small>{{event.date}} at {{event.start_time}} {% if event.end_time%}to {{event.end_time}}{%endif%}</small>
+          <small>{{event.date}} at {{event.start_time}} 
+              {% if event.end_date or event.end_time %}
+                  to 
+                  {% if event.end_date%}
+                      {{event.end_date}} {% if event.end_time %}at {{event.end_time}}{%endif%}
+                  {% else %}
+                      {{event.end_time}}
+                  {% endif %}
+
+              {%endif%}
+          </small>
         </h3>
         <p>{{event.description|truncatewords:50}}</p>
         <button class="btn btn-primary event-details-button" data-id="{{event.id}}" data-toggle="modal" data-target="#details-modal">Details</button>
