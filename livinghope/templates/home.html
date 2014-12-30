@@ -692,105 +692,7 @@
 
 
 
-
-
-<div class="container">
-
-  {% if banner_images %}
-  <div class="row">
-  <div class="col-md-12">
-    <div class="carousel slide" data-ride="carousel" id="home-carousel">
-      <div class="carousel-inner" role="listbox">
-        {% for image in banner_images %}
-          {% if forloop.counter0 == 0 %}
-            <div class="item active">
-          {% else %}
-            <div class="item">
-          {% endif %}
-                <a href="{{image.link_to}}">
-                <img src="{{image.image.url}}" width="100%">
-                </a>
-            </div>
-        {% endfor %}
-      </div>
-      <!-- Controls -->
-      <a class="left carousel-control" href="#home-carousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#home-carousel"  role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
-  </div>
-  </div>
-  {% endif %}
-<hr>
-
-<div class="row">
-  <div class="col-md-3">
-    <div class="thumbnail">
-      <img class="img-responsive" src="{% static 'livinghope/schedule.jpg'%}" width="100%">
-      <div class="caption">
-        <h4>Join us!</h4>
-        <p>
-          View service times <a href="{% url 'services' %}">here</a>!
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="thumbnail">
-      <img class="img-responsive" src="{% static 'livinghope/compass.jpg'%}" width="100%">
-      <div class="caption">
-        <h4>Need Directions?</h4>
-        <p>
-          Click <a href="{% url 'contact' %}">here</a>!
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="thumbnail">
-      <img class="img-responsive" src="{% static 'livinghope/blog.jpg'%}" width="100%">
-      <div class="caption">
-        <h4 class="active">Read our Blog</h4>
-        <p>
-          Read what's new with Living Hope <a href="{% url 'blog' %}">here</a>!
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="thumbnail">
-      <img class="img-responsive" src="{% static 'livinghope/microphone.jpg'%}" width="100%">
-      <div class="caption">
-        <h4>Listen Online</h4>
-        <p>
-          Browse the sermon archives <a href="{% url 'sermon_series' %}">here</a>!
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<h3>What's new with Living Hope</h3>
-{% for post in news %}
-<div class="row">
-  <div class="col-md-12">
-      <h4>{{post.title}}</h4>
-      <p><small>Posted on {{post.created_on}} by {{post.author}}</small></p>
-      <div>
-          {{post.content|safe|truncatewords_html:100}}
-          <a href="{% url 'blog_entry' post.id %}">Read full post</a>
-      </div>
-  </div>
-</div>
-<hr>
-{% endfor %}
-
-</div>
+  
 <!-- <div class="row">
   <div class="col-md-3">
     <img class="img-responsive" src="{% static 'livinghope/schedule.jpg'%}" width="100%">
@@ -808,4 +710,5 @@
     <img class="img-responsive" src="{% static 'livinghope/microphone.jpg'%}" width="100%">
   </div>
 </div> -->
+
 {% endblock %}
