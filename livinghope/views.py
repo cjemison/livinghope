@@ -245,7 +245,7 @@ def blog(request):
     # most_recent_posts = all_posts[:5]
     all_posts = BlogPost.objects.all().order_by('-created_on')
     most_recent_posts = all_posts[:5].values(
-                            'title', 'id')
+                            'title', 'id', 'created_on')
     paginator = Paginator(all_posts, 5)
     page = request.GET.get('page')
     try:

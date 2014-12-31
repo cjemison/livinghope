@@ -1,8 +1,115 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block headloaders %}
-<script src="{% static 'livinghope/simple-pagination/jquery.simplePagination.js' %}"></script>
 <link href="{% static 'livinghope/simple-pagination/simplePagination.css'%}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <br><br>
+<h2>From the desk of Living Hope</h2>
+<hr>
+
+
+<div class="row">
+     <div class="posts-block col-lg-9 col-md-9 col-sm-8 col-xs-12">
+        {% for post in all_posts %}
+        <article class="post hentry">
+           {% if post.image %}
+           <div class="post-image">
+              <a href="img/blog/blog-post1.jpg" data-rel="prettyPhoto">
+              <span class="img-hover"></span>
+              <span class="fullscreen"><i class="fa fa-search"></i></span>
+              <img src="img/blog/blog-post1.jpg" alt="">
+              </a>
+           </div>
+           {% endif %}
+           <header class="post-header">
+              <h3 class="content-title">{{post.title}}</h3>
+              <div class="blog-entry-meta">
+                 <div class="blog-entry-meta-date">
+                    <i class="fa fa-calendar"></i>
+                    <span class="blog-entry-meta-date">{{post.created_on}}</span>
+                 </div>
+                 <div class="blog-entry-meta-author">
+                    <i class="fa fa-user"></i>
+                    <a href="#" class="blog-entry-meta-author">{{post.author}}</a>
+                 </div>
+                 <div class="blog-entry-meta-tags">
+                    <i class="fa fa-tags"></i>
+                    {% for tag in post.tags.all %}
+                    <a href="#">{{tag}}</a>
+                    {% endfor %}
+                 </div>
+              </div>
+           </header>
+           <div class="post-content">
+              <p>
+                 {{post.content|safe|truncatewords_html:50}}
+              </p>
+           </div>
+           <footer class="post-footer">
+              <a class="btn-small btn-color" href="{% url 'blog_entry' post.id %}">Read full post</a>
+           </footer>
+        </article>
+        <div class="blog-divider"></div>
+        {% endfor %}
+         <p class="text-right">
+        Displaying posts {{all_posts.start_index}} - {{all_posts.end_index}} of {{all_posts.paginator.count}}
+        </p>
+        <nav>
+            <ul class="pagination pull-right" id="pagination">
+            </ul>
+        </nav>
+     </div>
+     <div class="sidebar col-lg-3 col-md-3 col-sm-4 col-xs-12">
+        <!-- Search Widget Start -->
+        <div class="widget search-form">
+           <div class="input-group">
+              <input type="text" value="Search..." onfocus="if(this.value=='Search...')this.value='';" onblur="if(this.value=='')this.value='Search...';" class="search-input form-control">
+              <span class="input-group-btn">
+              <button type="submit" class="subscribe-btn btn"><i class="fa fa-search"></i></button>
+              </span>
+           </div>
+           <!-- /input-group -->
+        </div>
+        <!-- Search Widget End -->
+        <!-- Tab Start -->
+        <div class="widget tabs">
+           <div id="horizontal-tabs">
+              <ul class="tabs">
+                 <li id="tab1" class="current">Recent</li>
+                 <li id="tab2">Archive</li>
+              </ul>
+              <div class="contents">
+                {% include 'recent_post_sidebar.html' %}
+                {% include 'archive_post_sidebar.html' %}
+              </div>
+           </div>
+        </div>
+        <!-- Tab End -->
+        <!-- Category Widget Start -->
+        <div class="widget category">
+           <h3 class="title">Categories</h3>
+           <ul class="category-list slide">
+              <li><a href="#">Web Design</a></li>
+              <li><a href="#">Graphic Design</a></li>
+              <li><a href="#">Illustration</a></li>
+              <li><a href="#">Logo Design</a></li>
+              <li><a href="#">Wordpress Themes</a></li>
+           </ul>
+        </div>
+        <!-- Category Widget End -->
+
+
+     </div>
+</div>
+
+</div>
+{% endblock %}
+
+
+{% block endloaders %}
+<script src="{% static 'livinghope/simple-pagination/jquery.simplePagination.js' %}"></script>
   <script type="text/javascript">
     $(document).ready(function(){
         $(function() {
@@ -26,39 +133,4 @@
 
     });
   </script>
-{% endblock %}
-{% block content %}
-<div class="container">
-    <br><br>
-<h2>From the desk of Living Hope</h2>
-<hr>
-<div class="row">
-    <div class="col-md-9">
-        {% for post in all_posts %}
-            <h3>{{post.title}}</h3>
-            <p><small>Posted on {{post.created_on}} by {{post.author}}</small></p>
-            <div>
-                {{post.content|safe|truncatewords_html:100}}
-                <a href="{% url 'blog_entry' post.id %}">Read full post</a>
-            </div>
-        {% endfor %}
-        <p class="text-right">
-            Displaying posts {{all_posts.start_index}} - {{all_posts.end_index}} of {{all_posts.paginator.count}}
-        </p>
-        <nav>
-            <ul class="pagination pull-right" id="pagination">
-            </ul>
-        </nav>
-    </div>
-    <div class="col-md-3">
-        {% if most_recent_posts %}
-            {% include 'recent_post_sidebar.html' %}
-        {% endif %}
-
-        {% if monthly_archive %}
-            {% include 'archive_post_sidebar.html' %}
-        {% endif %}
-    </div>
-</div>
-</div>
-{% endblock %}
+  {% endblock %}
