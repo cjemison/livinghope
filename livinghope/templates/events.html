@@ -9,47 +9,11 @@
     /*padding: 0px;*/
   }
 </style>
-<script src="https://maps.googleapis.com/maps/api/js"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-
-
-        $('.event-details-button').click(function(){
-            var event_id = $(this).data('id')
-            var url = "{% url 'event_details_modal' %}";
-
-            $.get(url, {'event-id': event_id}, function(response){
-                $('#details-modal-body').empty();
-                $(response).appendTo('#details-modal-body');
-                var latitude = $('#map-canvas').data('lat')
-                var longitude = $('#map-canvas').data('lon')
-
-                function initialize() {
-                    var latlon =  new google.maps.LatLng(latitude, longitude)
-                    var mapCanvas = document.getElementById('map-canvas');
-                    var mapOptions = {
-                      center: latlon,
-                      zoom: 14,
-                      mapTypeId: google.maps.MapTypeId.ROADMAP
-                    }
-                    var map = new google.maps.Map(mapCanvas, mapOptions);
-                    var marker = new google.maps.Marker({
-                            map: map,
-                            position: latlon
-                        });
-                }
-                $('#details-modal').on('shown.bs.modal', function () {
-                    initialize();
-                })
-
-            })
-        });
-    })
-</script>
 
 {% endblock %}
 
 {% block content %}
+<div class="container">
 <h2>Upcoming Events</h2>
 {% for event in events %}
 <div class="row">
@@ -90,4 +54,46 @@
     </div>
   </div>
 </div>
+
+</div>
+{% endblock %}
+
+{% block endloaders %}
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+
+        $('.event-details-button').click(function(){
+            var event_id = $(this).data('id')
+            var url = "{% url 'event_details_modal' %}";
+
+            $.get(url, {'event-id': event_id}, function(response){
+                $('#details-modal-body').empty();
+                $(response).appendTo('#details-modal-body');
+                var latitude = $('#map-canvas').data('lat')
+                var longitude = $('#map-canvas').data('lon')
+
+                function initialize() {
+                    var latlon =  new google.maps.LatLng(latitude, longitude)
+                    var mapCanvas = document.getElementById('map-canvas');
+                    var mapOptions = {
+                      center: latlon,
+                      zoom: 14,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+                    var map = new google.maps.Map(mapCanvas, mapOptions);
+                    var marker = new google.maps.Marker({
+                            map: map,
+                            position: latlon
+                        });
+                }
+                $('#details-modal').on('shown.bs.modal', function () {
+                    initialize();
+                })
+
+            })
+        });
+    })
+</script>
 {% endblock %}

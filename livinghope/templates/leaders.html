@@ -2,6 +2,42 @@
 {% load static %}
 
 {% block content %}
+<div class="container">
+        <div class="team-v1 bg-grey content-lg">
+            <div class="container">
+                <div class="title-v1">
+                    <h2>Meet Our Servant Leaders</h2>
+                    <p>We really hope to see your picture up here one day. How about tomorrow?</p>
+                </div>
+
+                <ul class="list-unstyled row">
+                  {% for leader in all_leaders %}
+                    <li class="col-sm-3 col-xs-6 md-margin-bottom-30">
+                        <div class="team-img">
+                            <img class="img-responsive" width="100%" src="{{leader.profile_picture.url}}" alt="">
+                            <ul>
+                                <li><a href="#"><i class="icon-custom icon-sm rounded-x fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="icon-custom icon-sm rounded-x fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="icon-custom icon-sm rounded-x fa fa-google-plus"></i></a></li>
+                            </ul>
+                        </div>
+                        <h3>{{leader.first_name}} {{leader.last_name}}<h3>
+                        <h4>{{leader.ministry}}</h4>
+                    </li>
+                  {% endfor %}
+                </ul>                
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
 <h2>Our Servant Leaders</h2>
 {% for row in rows_of_leaders %}
   {% for leader in row %}
@@ -27,4 +63,6 @@
     <hr>
   {% endfor %}
 {% endfor %}
+
+</div>
 {% endblock %}

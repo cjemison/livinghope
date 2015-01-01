@@ -1,62 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block headloaders %}
-<script src="{% static 'livinghope/simple-pagination/jquery.simplePagination.js' %}"></script>
-<link href="{% static 'livinghope/simple-pagination/simplePagination.css'%}" rel="stylesheet" type="text/css">
-  <script type="text/javascript">
-    $(document).ready(function(){
-        $(function() {
-            $("#pagination").pagination({
-                pages: {{ sermons.paginator.num_pages }},
-                prevText: "&laquo;",
-                nextText: "&raquo;",
-                hrefTextPrefix: '?&page=',
-                currentPage: {{ sermons.number }},
-                selectOnClick: false,
-            });
-            
-            if ({{sermons.number}} == 1){
-                $('.prev').parent().attr('class','disabled');
-            }
-            if ({{sermons.number}} == {{sermons.paginator.num_pages}}){
-                $('.next').parent().attr('class','disabled');
-            }
-
-        });        
-
-        $('.transcript-button').click(function(){
-            var sermon_id = $(this).data('sermon-id');
-            var sermon_title = $(this).data('sermon-title')
-            var url = "{% url 'transcript_modal' %}";
-            $('#transcript-modal-label').text('Transcript of "'+sermon_title+'"')
-            $.get(url, {'sermon-id': sermon_id}, function(response){
-                $('#transcript-modal-body').empty();
-                $('<p>' +response+'</p>').appendTo('#transcript-modal-body');
-            })
-        });
-
-
-        $("#sermonlisting tr:not(.sermon)").hide();
-        $("#sermonlisting tr:first-child").show();
-        
-        $("#sermonlisting tr.sermon").click(function(){
-            if ($(this).next("tr").is(":visible")){
-                // $(".details").hide();
-                $(this).next("tr").hide();
-            }
-            else{
-                // $(".details").hide();
-                $(this).next("tr").show();
-            }
-            $(this).find(".arrow").toggleClass("up");
-        });
-
-        $('#sermon-series-selector').on('change', function(){
-            var series_id = $(this).val();
-            window.location.href = "{% url 'livinghope.views.sermon_series' %}" + series_id;
-        })
-    });
-  </script>
   <style type="text/css">
       .details {    
         -webkit-transition: all .15s ease; 
@@ -88,6 +33,18 @@
 {% endblock %}
 
 {% block content %}
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
 <h2>{{series.name}}</h2>
 
 <div class="row">
@@ -170,7 +127,7 @@
 {% else %}
   No Sermons
 {% endif %}
-
+</div>
 <!-- Modal -->
 <div class="modal fade" id="transcript-modal" tabindex="-1" role="dialog" aria-labelledby="transcript-modal-label" aria-hidden="true">
   <div class="modal-dialog">
@@ -190,3 +147,64 @@
 </div>
 
 {% endblock %}  
+
+
+{% block endloaders %}
+<script src="{% static 'livinghope/simple-pagination/jquery.simplePagination.js' %}"></script>
+<link href="{% static 'livinghope/simple-pagination/simplePagination.css'%}" rel="stylesheet" type="text/css">
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $(function() {
+            $("#pagination").pagination({
+                pages: {{ sermons.paginator.num_pages }},
+                prevText: "&laquo;",
+                nextText: "&raquo;",
+                hrefTextPrefix: '?&page=',
+                currentPage: {{ sermons.number }},
+                selectOnClick: false,
+            });
+            
+            if ({{sermons.number}} == 1){
+                $('.prev').parent().attr('class','disabled');
+            }
+            if ({{sermons.number}} == {{sermons.paginator.num_pages}}){
+                $('.next').parent().attr('class','disabled');
+            }
+
+        });        
+
+        $('.transcript-button').click(function(){
+            var sermon_id = $(this).data('sermon-id');
+            var sermon_title = $(this).data('sermon-title')
+            var url = "{% url 'transcript_modal' %}";
+            $('#transcript-modal-label').text('Transcript of "'+sermon_title+'"')
+            $.get(url, {'sermon-id': sermon_id}, function(response){
+                $('#transcript-modal-body').empty();
+                $('<p>' +response+'</p>').appendTo('#transcript-modal-body');
+            })
+        });
+
+
+        $("#sermonlisting tr:not(.sermon)").hide();
+        $("#sermonlisting tr:first-child").show();
+        
+        $("#sermonlisting tr.sermon").click(function(){
+            if ($(this).next("tr").is(":visible")){
+                // $(".details").hide();
+                $(this).next("tr").hide();
+            }
+            else{
+                // $(".details").hide();
+                $(this).next("tr").show();
+            }
+            $(this).find(".arrow").toggleClass("up");
+        });
+
+        $('#sermon-series-selector').on('change', function(){
+            var series_id = $(this).val();
+            window.location.href = "{% url 'livinghope.views.sermon_series' %}" + series_id;
+        })
+    });
+  </script>
+
+  {% endblock %}

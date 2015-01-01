@@ -1,12 +1,15 @@
-<h4>Most Recent Posts</h4>
-<ul class="list-group">
-{% for recent_post in most_recent_posts %}
-    {% if recent_post.id != post.id %}
-    <li class="list-group-item">
-        <a href="{% url 'blog_entry' recent_post.id %}">
-        {{recent_post.title}}
-        </a>
-    </li>
-    {% endif %}
-{% endfor %}
-</ul>
+                <!-- Posts -->
+                <div class="posts margin-bottom-40">
+                    <div class="headline headline-md"><h2>Recent Posts</h2></div>
+                    {% for recent_post in most_recent_posts %}
+                    <dl class="dl-horizontal">
+                        <dt><a href="#"><img src="" alt="" /></a></dt>
+                        <dd>
+                            <p><a href="{% url 'blog_entry' recent_post.id %}">{{recent_post.title}}</a><br>
+                                <h5>{{recent_post.created_on.date}}</h5>
+                            </p> 
+                        </dd>
+                    </dl>
+                    {% endfor %}
+                </div><!--/posts-->
+                <!-- End Posts -->

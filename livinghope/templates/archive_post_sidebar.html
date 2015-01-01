@@ -1,23 +1,18 @@
-
-    <h4>Post Archive</h4>
-        <ul class="list-group">
-        {% for year, month, month_ordinal, num in monthly_archive %}
-            <li class="list-group-item">
-                <a href="{% url 'blog_by_month' year month_ordinal %}">
-                    {{month}} - {{year}}
-                </a>
-                <span class="badge">{{num}}</span>
-            </li>
-        {% endfor %}
-        </ul>
-
-        <ul class="list-group">
-        {% for year, num in yearly_archive %}
-            <li class="list-group-item">
-                <a href="{% url 'blog_by_year' year %}">
-                    {{year}} 
-                </a>
-                <span class="badge">{{num}}</span>
-            </li>
-        {% endfor %}
-        </ul>
+                <div class="posts margin-bottom-40">
+                    <div class="headline headline-md"><h2>Archive</h2></div>
+                    {% for year, month, month_ordinal, num in monthly_archive %}
+                    <dl class="dl-horizontal">
+                        <dt><span class="badge">{{num}}</span></dt>
+                        <dd>
+                            <p><a href="{% url 'blog_by_month' year month_ordinal %}">{{month}} - {{year}}</a>
+                            </p> 
+                        </dd>
+                    </dl>
+                    {% endfor %}
+                    <hr>
+                    {% for year, num in yearly_archive %}
+                        <dd>
+                            <p><a href="{% url 'blog_by_year' year %}">{{year}}  </a><span class="badge">  {{num}}</span>
+                        </dd>
+                    {% endfor %}
+                </div><!--/posts-->

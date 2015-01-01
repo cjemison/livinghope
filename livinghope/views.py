@@ -154,7 +154,7 @@ def leaders(request):
     #consider modal? just thumnails of htem and then ajax modal 
     #for details??
     rows_of_leaders = queryset_to_rows(leaders, 2)
-    context = {'rows_of_leaders': rows_of_leaders}
+    context = {'rows_of_leaders': rows_of_leaders, 'all_leaders': leaders}
     return render(request, 'leaders.html', context)
 
 def sermon_series(request, series_id=None):
@@ -182,7 +182,7 @@ def sermon_series(request, series_id=None):
     else: #this is to display all sermon series
         all_series_in_rows = queryset_to_rows(all_series, 3)
 
-        context = {'all_series_in_rows': all_series_in_rows}
+        context = {'all_series_in_rows': all_series_in_rows, 'all_series': all_series}
         return render(request, 'sermon_series.html', context)
 
 class Prayer(FormView):
@@ -245,7 +245,7 @@ def blog(request):
     # most_recent_posts = all_posts[:5]
     all_posts = BlogPost.objects.all().order_by('-created_on')
     most_recent_posts = all_posts[:5].values(
-                            'title', 'id')
+                            'title', 'id', 'created_on')
     paginator = Paginator(all_posts, 5)
     page = request.GET.get('page')
     try:
