@@ -7,15 +7,18 @@
   {% for leader in row %}
     <div class="row">
 
-      <div class="col-md-3">
+      <div class="col-md-3 {% for ministry in leader.ministries.all %} {{ministry.name|slugify}}{% endfor %}">
         <br>
         <img src="{{leader.profile_picture.url}}" class="img-responsive" width="100%">
       </div>
       <div class="col-md-9">
         <h3>{{leader.first_name}} {{leader.last_name}} <br>
+          {% for role in leader.leadershiprole_set.all %}
           <small>
-            {{leader.ministry}}
+            {{role.special_name}}
+            {{role.ministry.name}}
           </small>
+          {% endfor %}
         </h3>
         <p><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> <a href="mailto:{{leader.email}}">{{leader.email}}</a></p>
         <p>

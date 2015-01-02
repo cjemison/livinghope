@@ -73,27 +73,13 @@
     </div>
     <hr>
     <div class="row">
-        {% if missionary.image1 %}
+        {% for image in missionary.missionaryimage_set.all %}
         <div class="col-md-4">
-            <a class="image-link thumbnail" href="{{missionary.image1.url}}" title="{{missionary.image1_caption}}">
-                <img src="{{missionary.image1.url}}" class="img-responsive"/>
+            <a class="image-link thumbnail" href="{{image.image.url}}" title="{{image.caption}}">
+                <img src="{{image.image.url}}" class="img-responsive"/>
             </a>
         </div>
-        {% endif %}
-        {% if missionary.image2 %}
-         <div class="col-md-4">
-            <a href="{{missionary.image2.url}}" class="image-link thumbnail" title="{{missionary.image2_caption}}">
-                <img src="{{missionary.image2.url}}" class="img-responsive"/>
-            </a>
-        </div>
-        {% endif %}
-        {% if missionary.image3 %}
-        <div class="col-md-4">
-            <a href="{{missionary.image3.url}}" class="image-link thumbnail" title="{{missionary.image3_caption}}">
-                <img src="{{missionary.image3.url}}" class="img-responsive"/>
-            </a>
-        </div>       
-        {% endif %}
+        {% endfor %}
     </div>
 
 

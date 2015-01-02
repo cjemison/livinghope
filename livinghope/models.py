@@ -2,6 +2,7 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from geopy.geocoders import GoogleV3
 
+
 class Person(models.Model):
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=50)
@@ -25,39 +26,44 @@ class Missionary(Person):
     website = models.URLField(max_length=200, blank=True, null=True)
     organization = models.CharField(max_length=100, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
-    #idea is that you can upload up to three images to a given missionary
-    #to display on their 'profile' page
-    image1 = models.ImageField(upload_to='./missionary_images/',
-                                blank=True,
-                                null=True)
-    image1_caption = models.CharField(max_length=50, blank=True, null=True)
-    image2 = models.ImageField(upload_to='./missionary_images/',
-                                blank=True,
-                                null=True)
-    image2_caption = models.CharField(max_length=50, blank=True, null=True)
-
-    image3 = models.ImageField(upload_to='./missionary_images/',
-                                blank=True,
-                                null=True)
-    image3_caption = models.CharField(max_length=50, blank=True, null=True)
 
     def __unicode__(self):
         return "%s %s with %s" % (self.first_name, 
                                   self.last_name,
                                   self.organization)
 
+class MissionaryImage(models.Model):
+    image = models.ImageField(upload_to='./missionary_images/')
+    created_on = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=50)
+    caption = models.CharField(max_length=100, blank=True, null=True)
+    missionary = models.ForeignKey(Missionary)
+    order = models.IntegerField(max_length=2, default=0)
+
+    #add clean to deal with order
+
+    def __unicode__(self):
+        return '%s for %s' % (self.title, self.missionary)
+
 class Author(Person):
 
     def __unicode__(self):
         return self.full_name()
 
+class Ministry(models.Model):
+    class Meta:
+        verbose_name_plural = "Ministries"
+    name = models.CharField(max_length=50)
+    description = models.TextField(blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name
+
 class Leader(Person):
     profile_picture = models.ImageField(upload_to='./leader_images/',
                                 blank=True,
                                 null=True)
-    ministry = models.CharField(max_length=100)
-    leadership_team = models.BooleanField(default=False)
-    small_group_leader = models.BooleanField(default=False)
+    ministries = models.ManyToManyField(Ministry, through="LeadershipRole",)
     active = models.BooleanField(default=True)
     bio = models.TextField(blank=True, null=True)
     order = models.IntegerField(max_length=2, default=0)
@@ -72,6 +78,12 @@ class Leader(Person):
             past_leader_obj.order = self.order+1
             past_leader_obj.save()
         super(Leader, self).save()
+
+class LeadershipRole(models.Model): #rename this roles?
+    leader = models.ForeignKey(Leader)
+    ministry = models.ForeignKey(Ministry)
+    special_name = models.CharField(max_length=100, blank=True, null=True)
+    primary_leader = models.BooleanField(default=False)
 
 class BlogTag(models.Model):
     name = models.CharField(max_length=40)

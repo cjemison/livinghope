@@ -5,7 +5,14 @@ from django.templatetags.static import static
 from livinghope.models import Author, SermonSeries, Sermon, \
 							  Location, Service, BannerImage, Missionary, \
 							  Leader, PrayerMeeting, SmallGroup, BlogPost, \
-                              BlogTag, SpecialEvent
+                              BlogTag, SpecialEvent, MissionaryImage, Ministry, \
+                              LeadershipRole
+
+class MissionaryImageInline(admin.StackedInline):
+    model = MissionaryImage
+
+class MissionaryAdmin(admin.ModelAdmin):
+    inlines = [MissionaryImageInline, ]
 
 
 class SpecialEventAdmin(admin.ModelAdmin):
@@ -18,9 +25,14 @@ class BannerImageAdmin(admin.ModelAdmin):
     list_display = ( 'name','order', 'image')
     ordering = ('order',)
 
+class LeadershipRoleInline(admin.StackedInline):
+    model = LeadershipRole
+
+
 class LeaderAdmin(admin.ModelAdmin):
-    list_display = ( 'first_name', 'last_name', 'ministry', 'order','active')
+    list_display = ( 'first_name', 'last_name', 'order','active')
     ordering = ('order',)
+    inlines = [LeadershipRoleInline, ]
 
 class SermonSeriesAdmin(admin.ModelAdmin):
     list_display = ('name', 'passage_range', 'start_date', 'end_date',
@@ -49,10 +61,11 @@ class BlogPostAdmin(admin.ModelAdmin):
     # class Media:
     #     js = (static('livinghope/ckeditor/ckeditor.js'),)
 
+admin.site.register(Ministry)
 admin.site.register(SpecialEvent, SpecialEventAdmin)
 admin.site.register(BlogTag)
 admin.site.register(BlogPost, BlogPostAdmin)
-admin.site.register(Missionary)
+admin.site.register(Missionary, MissionaryAdmin)
 admin.site.register(PrayerMeeting)
 admin.site.register(SmallGroup)
 admin.site.register(Leader, LeaderAdmin)
