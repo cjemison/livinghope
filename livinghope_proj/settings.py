@@ -150,8 +150,8 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-if DEBUG:
-    INSTALLED_APPS += ('debug_toolbar',)
+# if DEBUG:
+#     INSTALLED_APPS += ('debug_toolbar',)
 
 SOUTH_MIGRATION_MODULES = {
     'captcha': 'captcha.south_migrations',

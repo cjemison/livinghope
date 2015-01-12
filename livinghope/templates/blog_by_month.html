@@ -29,6 +29,8 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <br><br>
 <h2>Posts in {{month_name}}, {{year}}</h2>
 <div class="row">
     <div class="col-md-9">
@@ -58,5 +60,6 @@
             {% include 'archive_post_sidebar.html' %}
         {% endif %}
     </div>
+</div>
 </div>
 {% endblock %}

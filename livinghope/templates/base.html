@@ -5,183 +5,270 @@
     Living Hope {% block title %}{% endblock %}
   </title>
   {% load staticfiles %}
-  <link href="{% static 'livinghope/bootstrap/css/bootstrap.css'%}" rel="stylesheet" type="text/css">
-  <!--     <link href="{% static 'livinghope/bootstrap/css/bootstrap-mods.css'%}" rel="stylesheet" type="text/css"> -->
-  <link rel="icon" type="image/png" href="{% static 'livinghope/leaf1.png' %}">  
-  <link href="{% static 'livinghope/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="{% static 'livinghope/bootstrap/js/bootstrap.js' %}"></script>
-  <script src="{% static 'livinghope/backstretch.js' %}"></script>
-
-  <script src="{% static 'livinghope/jquery.magnific-popup.min.js' %}"></script>
-  <link href="{% static 'livinghope/magnific-popup.css' %}" rel="stylesheet" type="text/css">
-  <script>
-    $(document).ready(function(){
-      $.backstretch("{% static 'livinghope/backgrounds/6.png' %}")
-    })
-  </script>
-  <style>
-    .container{
-      background-color:white;
-      /*opacity:0.95;*/
-        box-shadow: 0px 0px 10px 0px #666,
-        0px 5px 10px 0px #000;
-
-    }
-    /*this is to make hte container a max size*/
-    .container-fluid {
-      margin-right: auto;
-      margin-left: auto;
-      padding-left:30px;
-      padding-right:30px;
-      max-width: 1000px; /* or 950px */
-    }
-  </style>
+    <!-- Mobile Metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Google Fonts -->
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
+      <!-- Library CSS -->
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/bootstrap.css' %}">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/bootstrap-theme.css' %}">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/fonts/font-awesome/css/font-awesome.css' %}">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/animations.css'%}" media="screen">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/superfish.css'%}" media="screen">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/revolution-slider/css/settings.css'%}" media="screen">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/prettyPhoto.css'%}" media="screen">
+      <!-- Theme CSS -->
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/style.css'%}">
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/global.css'%}">
+      <!-- Skin -->
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/colors/blue.css'%}" class="colors">
+      <!-- Responsive CSS -->
+      <link rel="stylesheet" href="{% static 'livinghope/pixma/css/theme-responsive.css'%}">
+      
+      <!-- Favicons -->
+      <link rel="shortcut icon" href="{% static 'livinghope/leaf1.png' %}">
+      <link rel="apple-touch-icon" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon.png' %}">
+      <link rel="apple-touch-icon" sizes="72x72" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon-72.png' %}">
+      <link rel="apple-touch-icon" sizes="114x114" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon-114.png' %}">
+      <link rel="apple-touch-icon" sizes="144x144" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon-144.png' %}">
   {% block headloaders %}{% endblock %}
 </head>
-<body>
-  <div class="container container-fluid">
-      <div class="page-header">
-        <div class="row">
-        <div class="col-md-7">
-          <a href="{% url 'livinghope.views.home' %}">
-            <img class="img-responsive" src="{% static 'livinghope/logo4.jpg' %}">
-          </a>
-        </div>
-        {% if services %}
-        <div class="col-md-4 pull-right">
-          {% for service in services %}
-            <address class="text-right text-bottom">
-              <br>
-              {{service.get_day_display}} Service @ {{service.start_time}} {{service.location.name}}<br>
-              {{service.location.street_address}}<br>
-              {{service.location.city}}, {{service.location.state}} {{service.location.zip_code}}
-            </address>
-          {% endfor %}
-        </div>
-        {% endif %}
-      </div>
-    </div>
+   <body class="home">
+      <div class="page-mask">
+            <div class="page-loader"> 
 
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="collapse navbar-collapse">
-        <!-- <a class="navbar-brand" href="#">LivingHope</a> -->
-        <ul class="nav navbar-nav">
-          <li><a href="{% url 'livinghope.views.home' %}">Home</a></li>
-          <li class="dropdown">
-            <a href="#" class="Dropdown-toggle" data-toggle="dropdown">
-            About Us <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li class="disabled"><a href="#">Our Story</a></li>
-              <li><a href="{% url 'statement_of_faith' %}">Statement of Faith</a></li>
-              <li><a href="{% url 'livinghope.views.leaders' %}">Our Leaders</a></li>
-              <li class="disabled"><a href="#">Our Denomination</a></li>
-            </ul>   
-          </li>
-          <li><a href="{% url 'services' %}">Sunday Service</a></li>
-          <li><a href="{% url 'ministries' %}">Ministries</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              Missions <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="disabled"><a href="#">Missions Policy</a></li>
-                <li><a href="{% url 'livinghope.views.missionaries' %}">Our Missionaries</a></li>
-              </ul>
-          </li>
-          <li><a href="{% url 'livinghope.views.sermon_series' %}">Sermons</a></li>
-          <li><a href="{% url 'blog' %}">Blog</a></li>
-          <li><a href="{% url 'events' %}">Events</a></li>
-<!--           <li><a href="#">Calendar</a></li> -->
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              Connect <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="{% url 'contact' %}">Contact Us</a></li>
-                <li><a href="{% url 'prayer' %}">Prayer</a></li>
-              </ul>
-          </li>
-          <!-- <li class="disabled"><a href="{% url 'giving' %}">Giving</a></li> -->
-        </ul>
+                <div class="spinner"></div>
+                Loading...
+            </div>
+
       </div>
-    </nav>
-    <div class="wellllll">
-      {% block content %}
+      <div class="wrap">
+         <!-- Header Start -->
+         <header id="header">
+            <!-- Main Header Start -->
+            <div class="main-header">
+               <div class="container">
+                  <!-- TopNav Start -->
+                  <div class="topnav navbar-header">
+                     <a class="navbar-toggle down-button" data-toggle="collapse" data-target=".slidedown">
+                     <i class="fa fa-angle-down icon-current"></i>
+                     </a> 
+                  </div>
+                  <!-- TopNav End -->
+                  <!-- Logo Start -->
+                  <div class="logo pull-left">
+                     <h1>
+                        <a href="{% url 'home' %}">
+                        <img src="{% static 'livinghope/living-hope-bad.png' %}" alt="pixma" height="60">
+                        </a>
+                     </h1>
+                  </div>
+                  <!-- Logo End -->
+                  <!-- Mobile Menu Start -->
+                  <div class="mobile navbar-header">
+                     <a class="navbar-toggle" data-toggle="collapse" href=".navbar-collapse">
+                     <i class="fa fa-bars fa-2x"></i>
+                     </a> 
+                  </div>
+                  <!-- Mobile Menu End -->
+                  <!-- Menu Start -->
+                  <nav class="collapse navbar-collapse menu">
+                     <ul class="nav navbar-nav sf-menu">
+                        <li><a id="current" href="{% url 'home' %}">Home</a></li>
+                        <li>
+                           <a href="#" class="sf-with-ul">
+                           About Us 
+                           <span class="sf-sub-indicator">
+                           <i class="fa fa-angle-down "></i>
+                           </span>
+                           </a>
+                           <ul>
+                              <li><a href="#" class="sf-with-ul">Our Story</a></li>
+                              <li><a href="{% url 'statement_of_faith' %}" class="sf-with-ul">Statement of Faith</a></li>
+                              <li><a href="{% url 'leaders' %}" class="sf-with-ul">Our Leaders</a></li>
+                              <li><a href="#" class="sf-with-ul">Our Denomination</a></li>
+
+                           </ul>
+                        </li>
+                        <li>
+                           <a href="#" class="sf-with-ul">
+                           Ministries
+                           <span class="sf-sub-indicator">
+                           <i class="fa fa-angle-down "></i>
+                           </span>
+                           </a>
+                           <ul>
+                              <li><a href="{% url 'services' %}" class="sf-with-ul">Sunday Service</a></li>
+                              <li><a href="#" class="sf-with-ul">Small Groups</a></li>
+                              <li><a href="#" class="sf-with-ul">Children's Ministry</a></li>
+                              <li><a href="#" class="sf-with-ul">Women's Ministry</a></li>
+                              <li><a href="{% url 'events' %}" class="sf-with-ul">Events</a></li>
+                           </ul>
+                        </li>
+                        <li>
+                           <a href="#" class="sf-with-ul">
+                           Missions
+                           <span class="sf-sub-indicator">
+                           <i class="fa fa-angle-down "></i>
+                           </span>
+                           </a>
+                           <ul>
+                              <li><a href="#" class="sf-with-ul">Missions Policy</a></li>
+                              <li><a href="{% url 'missionaries' %}" class="sf-with-ul">Missionaries</a></li>
+                           </ul>
+                        </li>
+                        <li>
+                           <a href="#" class="sf-with-ul">
+                           Media
+                           <span class="sf-sub-indicator">
+                           <i class="fa fa-angle-down "></i>
+                           </span>
+                           </a>
+                           <ul>
+                              <li><a href="{% url 'sermon_series' %}" class="sf-with-ul">Sermons</a></li>
+                              <li><a href="{% url 'blog' %}" class="sf-with-ul">Blog</a></li>
+                           </ul>
+                        </li>
+                        <li><a href="#">
+                            Connect
+                            <span class="sf-sub-indicator">
+                              <i class="fa fa-angle-down"></i>
+                            </span>
+                            </a>
+                            <ul>
+                              <li><a href="{% url 'contact' %}" class="sf-with-ul">Contact</a></li>
+                              <li><a href="{% url 'prayer' %}" class="sf-with-ul">Prayer</a></li>
+                            </ul>
+                         </li>
+                     </ul>
+                  </nav>
+                  <!-- Menu End --> 
+               </div>
+            </div>
+            <!-- Main Header End -->
+         </header>
+         <!-- Header End --> 
+         <!-- Content Start -->
+         <div id="main">
+         {% block content %}
+
+         {% endblock %} 
+         </div>
+         <!-- Content End -->
+         <!-- Footer Start -->
+         <footer id="footer">
+            <!-- Footer Top Start -->
+            <div class="footer-top">
+               <div class="container">
+                  <div class="row">
+                     <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-one">
+                        <h3>About</h3>
+                        <p> 
+                           Here's some basic information about Living Hope. Here's some basic information about Living Hope. Here's some basic information about Living Hope. Here's some basic information about Living Hope. Here's some basic information about Living Hope. 
+                        </p>
+                     </section>
+                     <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-two">
+                        <h3>Navigation</h3>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <p>
+                                <a href="{% url 'home' %}">Home</a><br>
+                                <a href="{% url 'sermon_series' %}">Sermons</a><br>
+                            </p>
+                          </div>
+                          <div class="col-md-6">
+                            <p>
+                                <a href="{% url 'home' %}">Home</a><br>
+                                <a href="{% url 'sermon_series' %}">Sermons</a><br>
+                            </p>                            
+                          </div>
+                        </div>
+                     </section>
+<!--                      <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-two">
+                        <h3>Twitter Stream</h3>
+                        <ul id="tweets">
+                        </ul>
+                     </section> -->
+                     <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-three">
+                        <h3>Contact Us</h3>
+                        <ul class="contact-us">
+                           <li>
+                              <i class="fa fa-map-marker"></i>
+                              <p> 
+                                 <strong class="contact-pad">Address:
+                                 </strong> {{services.0.location.street_address}}<br> 
+                                 {{services.0.location.city}}, {{services.0.location.state}} {{services.0.location.zip_code}}
+                              </p>
+                           </li>
+                           <li>
+                              <i class="fa fa-envelope"></i>
+                              <p><strong>Email:</strong><a href="mailto:info@onelivinghope.com">info@onelivinghope.com</a></p>
+                           </li>
+                           <li>
+                              <a href="{% url 'contact' %}">Contact</a>
+                           </li>
+                           <li>
+                              <a href="{% url 'prayer' %}">Prayer</a>
+                           </li>
+                        </ul>
+                     </section>
+                     <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-four">
+                        <h3>Flickr Photostream</h3>
+                        <ul id="flickrfeed" class="thumbs"></ul>
+                     </section>
+                  </div>
+               </div>
+            </div>
+            <!-- Footer Top End --> 
+            <!-- Footer Bottom Start -->
+            <div class="footer-bottom">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 "> &copy; Copyright 2014 by <a href="#">Pixma</a>. All Rights Reserved. </div>
+                     <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 ">
+                        <ul class="social social-icons-footer-bottom">
+                           <li class="facebook"><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                           <li class="twitter"><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                           <li class="dribbble"><a href="#" data-toggle="tooltip" title="Dribble"><i class="fa fa-dribbble"></i></a></li>
+                           <li class="linkedin"><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+                           <li class="rss"><a href="#" data-toggle="tooltip" title="Rss"><i class="fa fa-rss"></i></a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Footer Bottom End --> 
+         </footer>
+         <!-- Scroll To Top --> 
+         <a href="#" class="scrollup"><i class="fa fa-angle-up"></i></a>
+      </div>
+      <!-- Wrap End -->
+      <!-- The Scripts -->
+      <script src="{% static 'livinghope/pixma/js/jquery.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery-migrate-1.2.1.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery-ui.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/bootstrap.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.parallax.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.wait.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/modernizr-2.6.2.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/modernizr.custom.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/revolution-slider/js/jquery.themepunch.tools.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/revolution-slider/js/jquery.themepunch.revolution.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.nivo.slider.pack.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.prettyPhoto.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/superfish.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/tweetMachine.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/tytabs.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.gmap.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/circularnav.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jquery.sticky.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/jflickrfeed.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/imagesloaded.pkgd.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/waypoints.min.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/custom.js'%}"></script>
+      {% block endloaders %}
       {% endblock %}
-    </div>
-    <br>
-    <hr>
-    <footer>
-      <div class="row">
-        <div class="col-md-3">
-          <p>
-            <small>
-              <span class="glyphicon glyphicon-copyright-mark"></span> Copyright 2015 Living Hope<br>
-              {% for service in services %}
-                  {{service.location.name}}<br>
-                  {{service.location.street_address}}<br>
-                  {{service.location.city}}, {{service.location.state}} {{service.location.zip_code}}<br>
-              {% endfor %}
-            </small>
-          </p>
-        </div>
-        <div class="col-md-2">
-          <p>
-            <small>
-              <strong><em>Navigation</em></strong><br>
-              <a href="{% url 'home'%}">Home</a><br>
-              <a href="#">Our Story</a></br>
-              <a href="{% url 'statement_of_faith'%}">Statement of Faith</a><br>
-              <a href="{% url 'leaders' %}">Our Leaders</a><br>
-              <a href="#">Our Denomination</a><br>
-            </small>
-          </p>
-        </div>
-        <div class="col-md-2">
-          <p>
-            <small>
-              <strong><em>...</em></strong><br>
-              <a href="{% url 'services'%}">Sunday Service</a><br>
-              <a href="{% url 'ministries'%}">Ministries</a><br>
-              <a href="#">Missions Policy</a><br>
-              <a href="{% url 'missionaries' %}">Missionaries</a><br>
-              <a href="#">Events</a><br>
-              <!-- <a href="{% url 'giving' %}">Giving</a><br> -->
-            </small>
-          </p>
-        </div>
-        <div class="col-md-2">
-          <p>
-            <small>
-              <strong><em>Resources</em></strong><br>
-              <a href="{% url 'sermon_series'%}">Sermons</a><br>
-              <a href="{% url 'blog'%}">Blog</a><br>
-            </small>
-          </p>
-        </div>
-        <div class="col-md-3">
-          <p>
-            <small>
-              <strong><em>Connect</em></strong><br>
-              <a href="{% url 'contact'%}">Contact Us</a><br>
-              <a href="{% url 'prayer'%}">Prayer</a><br>
-            </small>
-          </p>
-            <a href="#">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa fa-twitter fa-stack-1x"></i>
-              </span>
-            </a>
-            <a href="https://www.facebook.com/onelivinghope" target="_blank">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-square-o fa-stack-2x"></i>
-                <i class="fa fa-facebook fa-stack-1x"></i>
-              </span>
-            </a>
-        </div>
-      </div>
-    </footer>
-    <hr>
-  </div>
-</body>
+   </body>
+
 </html>

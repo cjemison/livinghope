@@ -37,6 +37,8 @@
     </script>
 {% endblock %}
 {% block content %}
+<div class="container">
+    <br><br>
 {% if messages %}
     {% for message in messages %}
         <div class="alert alert-success">
@@ -45,9 +47,11 @@
     {% endfor %}
 {% endif %}
     <h2>Contact Us</h2>
-
     <div class="row">
-        <div class="col-md-12" id="map-canvas">
+        <div class="col-md-12">
+            <h3 class="title">Our Location</h3>
+            <div id="map-canvas">
+            </div>
         </div>
     </div>
     <div class="row">
@@ -89,5 +93,5 @@
             </form>
         </div>
     </div>
-
+</div>
 {% endblock %}

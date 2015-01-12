@@ -1,23 +1,11 @@
-
-    <h4>Post Archive</h4>
-        <ul class="list-group">
-        {% for year, month, month_ordinal, num in monthly_archive %}
-            <li class="list-group-item">
-                <a href="{% url 'blog_by_month' year month_ordinal %}">
-                    {{month}} - {{year}}
-                </a>
-                <span class="badge">{{num}}</span>
-            </li>
-        {% endfor %}
-        </ul>
-
-        <ul class="list-group">
-        {% for year, num in yearly_archive %}
-            <li class="list-group-item">
-                <a href="{% url 'blog_by_year' year %}">
-                    {{year}} 
-                </a>
-                <span class="badge">{{num}}</span>
-            </li>
-        {% endfor %}
-        </ul>
+ <div class="tabscontent" id="content2">
+    <ul class="posts">
+       {% for year, month, month_ordinal, num in monthly_archive %}
+       <li>
+          <p><a href="{% url 'blog_by_month' year month_ordinal %}">
+                {{month}} - {{year}}
+            </a> <span class="pull-right badge">{{num}}</span></p>
+       </li>
+       {% endfor %}
+    </ul>
+ </div>
