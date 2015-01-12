@@ -10,7 +10,7 @@ from django.contrib import messages
 from livinghope.models import SermonSeries, Sermon, Author, BannerImage
 from livinghope.models import Missionary, Leader, SmallGroup, Service
 from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
-from livinghope.models import SpecialEvent
+from livinghope.models import SpecialEvent, Ministry
 
 from livinghope.forms import PrayerForm, ContactForm
 # from livinghope_proj.settings import PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
@@ -120,10 +120,15 @@ def queryset_to_rows(queryset, num_cols):
 
 def home(request):
     banner_images = BannerImage.objects.all().order_by('order')
-    news = BlogPost.objects.filter(tags__name="News and Announcements").order_by(
-                '-created_on')[:5]
+    headline = BlogPost.objects.filter(tags__name="News and Announcements").order_by(
+                '-created_on')[0]
+    
+    news = BlogPost.objects.filter(tags__name="News and Announcements").exclude(
+                id=headline.id).order_by(
+                    '-created_on')[:5]
+
     context = {'banner_images': banner_images,
-               'news': news}
+               'news': news, 'headline': headline}
     return render(request, 'home.html', context)
 
 def missionaries(request):
@@ -154,7 +159,9 @@ def leaders(request):
     #consider modal? just thumnails of htem and then ajax modal 
     #for details??
     rows_of_leaders = queryset_to_rows(leaders, 2)
-    context = {'rows_of_leaders': rows_of_leaders, 'all_leaders': leaders}
+    ministries = Ministry.objects.all().order_by('name')
+    context = {'rows_of_leaders': rows_of_leaders, 'all_leaders': leaders, 
+               'ministries':ministries}
     return render(request, 'leaders.html', context)
 
 def sermon_series(request, series_id=None):

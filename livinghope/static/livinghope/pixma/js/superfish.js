@@ -232,7 +232,7 @@
 		hoverClass: 'sfHover',
 		pathClass: 'overrideThisToUse',
 		pathLevels: 1,
-		delay: 800,
+		delay: 300,
 		animation: {opacity: 'show'},
 		animationOut: {opacity: 'hide'},
 		speed: 'normal',
