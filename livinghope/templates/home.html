@@ -27,7 +27,7 @@
                               data-start="1000"
                               data-easing="easeOutQuint"
                               data-endeasing="easeOutQuint">
-                             <h2>Who We Are</h2>
+                             <h2>We are Living Hope</h2>
                          </div>
                          <div class="caption list_slide lfb tp-caption start"
                               data-easing="easeOutExpo"
@@ -37,7 +37,7 @@
                               data-x="40">
                              <div class="list-slide">
                                  <i class="fa fa-leaf slide-icon"></i>
-                                 <h5> About Living Hope</h5>
+                                 <h5> A Gospel-centered church in the Chicago-land area</h5>
                              </div>
                          </div>
                          <div class="caption lfb caption_button_1 fadeout tp-caption start"
@@ -48,7 +48,7 @@
                               data-start="2000"
                               data-hoffset="-70"
                               data-easing="easeOutExpo">
-                             <a class="btn-special hidden-xs btn-grey" href="#">Our Story</a>
+                             <a class="btn-special hidden-xs btn-grey" href="{% url 'contact' %}">Where we are</a>
                          </div>
                          <div class="caption lfb caption_button_2 fadeout tp-caption start"
                               data-x="40"
@@ -58,7 +58,7 @@
                               data-start="2200"
                               data-hoffset="-70"
                               data-easing="easeOutExpo">
-                             <a class="btn-special hidden-xs btn-grey" href="{% url 'statement_of_faith' %}">Statement of Faith</a>
+                             <a class="btn-special hidden-xs btn-grey" href="{% url 'statement_of_faith' %}">What we believe</a>
                          </div>
                      </li>
                      <!-- THE FIRST SLIDE -->
@@ -191,8 +191,8 @@
                               <p>
                                  It would be seriously super sweet if you joined us at one of our services. Like, no joke dude. You won't regret coming. Well maybe you will but we try our best not to let that happen. We'll even tell you where we're meeting with a map and everything. How sweet is that?
                               </p>
-                              <a href="#">Service times <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a><br>
-                              <a href="#"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Directions </a>
+                              <a href="{% url 'services' %}">Service times <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a><br>
+                              <a href="{% url 'contact' %}"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Directions </a>
                            </div>
                         </div>
                      </div>
@@ -211,7 +211,7 @@
                               <p>
                                  Sermons aren't streamed but you wouldn't want that anyways since then you'll have to hear the worship leader talk. Ugh. We've cut him out so you can listen to what you really want to hear. If you're deaf, we've got you covered! Sermon transcripts are here too! Helen Keller? Sorry, you're out of luck...but you couldn't see my apology anyways.
                               </p>
-                              <a href="#">Sermons <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a>
+                              <a href="{% url 'sermon_series' %}">Sermons <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a>
                            </div>
                         </div>
                      </div>
@@ -230,7 +230,7 @@
                               <p>
                                  Blog is a funny word. It's truly a magnificent age where new words can be born from smashing together two other words. It is an age where the english language is butchered to a certain extent. Read our blog to see us do it some more!
                               </p>
-                              <a href="#">Read Blog <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a>
+                              <a href="{% url 'blog' %}">Read Blog <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></a>
                            </div>
                         </div>
                      </div>
@@ -243,11 +243,17 @@
                <div class="container">
                   <div class="row">
                      <div class="col-md-4 col-sm-12 col-xs-12 text-center animate_afl d1">
-                        <i class="fa fa-leaf fa-5x"></i>
+                        {% if headline.main_image %}
+                        <img src="{{headline.main_image.url}}">
+                        {% else %}
+                        <img src="{% static 'livinghope/whatsnew.png' %}">
+                        {% endif %}
+                        <!-- <i class="fa fa-leaf fa-5x"></i> -->
                      </div>
                      <div class="col-md-8 col-sm-12 col-xs-12 animate_afr d3">
                         <div class="app-service">
                            <h3>{{headline.title}}</h3>
+                           <h4><i class="fa fa-calendar"></i> {{headline.created_on|date}}</h4>
                            {{headline.content|safe|truncatewords_html:75}}
                            <div class="divider"></div>
                            <div class="learnmore">
@@ -269,45 +275,27 @@
                      <div class="clearfix"></div>
                      <div class="blog-showcase col-lg-12 col-md-12 col-sm-12 col-xs-12 animate_afb d1">
                         <ul>
+                          {% for post in latest_posts %}
                            <li class="">
                               <div class="blog-showcase-thumb col-lg-4">
                                  <div class="post-body">
-                                    <a class="post-item-link" href="{% static 'livinghope/pixma/img/portfolio/portfolio-5.jpg' %}" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="{% static 'livinghope/pixma/img/portfolio/portfolio-5.jpg' %}"></a>
+                                    {% if post.main_image %}
+                                    <a class="post-item-link" href="{{post.main_image.url}}" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="{{post.main_image.url}}" class="img-responsive"></a>
+                                    {% endif %}
                                  </div>
                               </div>
                               <div class="blog-showcase-extra-info col-lg-4">
-                                 <span><a href="#">Sep 11th, 2013</a></span>
-                                 <h4><a href="#" class="title">Blog post title</a></h4>
-                                 <p>Mauris sed mauris bibendum est imperdiet porttitor tincidunt at lorem. Proin augue massa</p>
+                                 <span><a href="#">{{post.created_on}}</a></span>
+                                 <h4><a href="#" class="title">{{post.title}}</a></h4>
+                                 <p>
+                                 <i class="fa fa-user"></i>
+                                 <a href="#" class="blog-entry-meta-author">{{post.author}}</a>
+                                 <br>
                                  <a href="#">Read more <i class="fa fa-angle-double-right"></i></a>
+                               </p>
                               </div>
                            </li>
-                           <li>
-                              <div class="blog-showcase-thumb col-lg-4">
-                                 <div class="post-body">
-                                    <a class="post-item-link" href="{% static 'livinghope/pixma/img/portfolio/portfolio-6.jpg' %}" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="{% static 'livinghope/pixma/img/portfolio/portfolio-6.jpg' %}"></a>
-                                 </div>
-                              </div>
-                              <div class="blog-showcase-extra-info col-lg-4">
-                                 <span><a href="#">Sep 11th, 2013</a></span>
-                                 <h4><a href="#" class="title">Blog post title</a></h4>
-                                 <p>Mauris sed mauris bibendum est imperdiet porttitor tincidunt at lorem. Proin augue massa</p>
-                                 <a href="#">Read more <i class="fa fa-angle-double-right"></i></a>
-                              </div>
-                           </li>
-                           <li class="blog-first-el">
-                              <div class="blog-showcase-thumb col-lg-4">
-                                 <div class="post-body">
-                                    <a class="post-item-link" href="{% static 'livinghope/pixma/img/portfolio/portfolio-7.jpg'%}" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="{% static 'livinghope/pixma/img/portfolio/portfolio-7.jpg' %}"></a>
-                                 </div>
-                              </div>
-                              <div class="blog-showcase-extra-info col-lg-4">
-                                 <span><a href="#">Sep 11th, 2013</a></span>
-                                 <h4><a href="#" class="title">Blog post title</a></h4>
-                                 <p>Mauris sed mauris bibendum est imperdiet porttitor tincidunt at lorem. Proin augue massa</p>
-                                 <a href="#">Read more <i class="fa fa-angle-double-right"></i></a>
-                              </div>
-                           </li>
+                         {% endfor %}
                         </ul>
                         <div class="clearfix"></div>
                      </div>

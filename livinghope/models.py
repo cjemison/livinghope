@@ -92,6 +92,12 @@ class BlogTag(models.Model):
         return self.name
 
 class BlogPost(models.Model):
+    main_image = models.ImageField(upload_to='./blog_main_images/',
+                                    blank=True,
+                                    null=True,
+                                    help_text="For best results, the width of the image \
+                                                should be larger than the height. Ideally \
+                                                5:3 aspect ratio")
     title = models.CharField(max_length=100)
     author = models.ForeignKey(Author)
     created_on = models.DateTimeField(auto_now_add=True)

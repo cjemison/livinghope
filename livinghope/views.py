@@ -10,7 +10,7 @@ from django.contrib import messages
 from livinghope.models import SermonSeries, Sermon, Author, BannerImage
 from livinghope.models import Missionary, Leader, SmallGroup, Service
 from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
-from livinghope.models import SpecialEvent, Ministry
+from livinghope.models import SpecialEvent, Ministry, LeadershipRole
 
 from livinghope.forms import PrayerForm, ContactForm
 # from livinghope_proj.settings import PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
@@ -127,15 +127,31 @@ def home(request):
                 id=headline.id).order_by(
                     '-created_on')[:5]
 
+    latest_posts = BlogPost.objects.all().order_by('-created_on')[:3]
+
     context = {'banner_images': banner_images,
-               'news': news, 'headline': headline}
+               'news': news, 'headline': headline,
+               'latest_posts': latest_posts}
     return render(request, 'home.html', context)
 
-def missionaries(request):
+def missions(request):
+    missions_ministry = Ministry.objects.get(name='Missions')
+    ministry_leaders = LeadershipRole.objects.filter(
+                            ministry=missions_ministry,
+                            primary_leader=True,
+                            leader__active=True
+                        ).values(
+                            'special_name',
+                            'leader__first_name',
+                            'leader__last_name',
+                            'leader__profile_picture'
+                        )
     missionaries = Missionary.objects.all().order_by('last_name')
     rows_of_missionaries = queryset_to_rows(missionaries, 3)
-    context = {'rows_of_missionaries': rows_of_missionaries}
-    return render(request, 'missionaries.html', context)
+    context = {'rows_of_missionaries': rows_of_missionaries,
+               'missionaries': missionaries,
+               'ministry_leaders': ministry_leaders}
+    return render(request, 'missions.html', context)
 
 def missionary_profile(request, missionary_id):
     try:
@@ -255,6 +271,7 @@ def blog(request):
                             'title', 'id', 'created_on')
     paginator = Paginator(all_posts, 5)
     page = request.GET.get('page')
+    tags = BlogTag.objects.all().order_by('name')
     try:
         all_posts = paginator.page(page)
     except PageNotAnInteger:
@@ -267,7 +284,8 @@ def blog(request):
     context = {'most_recent_posts': most_recent_posts,
                'monthly_archive': monthly_archive,
                'yearly_archive': yearly_archive,
-               'all_posts': all_posts}
+               'all_posts': all_posts,
+               'tags':tags}
     return render(request, 'blog.html', context)
 
 def get_archive_post_list():
@@ -328,6 +346,7 @@ def blog_by_month(request, year, month):
     if not month_name:
         return Http404
     #paginate??
+    tags = BlogTag.objects.all().order_by('name')
     posts_in_month = BlogPost.objects.filter(created_on__year=year,
                                              created_on__month=month).order_by(
                                                 'created_on')
@@ -348,7 +367,8 @@ def blog_by_month(request, year, month):
                'yearly_archive': yearly_archive,
                'month_name': month_name,
                'year': year,
-               'most_recent_posts': most_recent_posts}
+               'most_recent_posts': most_recent_posts,
+               'tags':tags}
     return render(request, 'blog_by_month.html', context)
 
 def blog_by_year(request, year):
@@ -357,6 +377,7 @@ def blog_by_year(request, year):
                                                 'created_on')
     paginator = Paginator(posts_in_year, 5)
     page = request.GET.get('page')
+    tags = BlogTag.objects.all().order_by('name')
     try:
         posts_in_year = paginator.page(page)
     except PageNotAnInteger:
@@ -371,7 +392,8 @@ def blog_by_year(request, year):
                'monthly_archive': monthly_archive,
                'yearly_archive': yearly_archive,
                'year': year,
-               'most_recent_posts': most_recent_posts}
+               'most_recent_posts': most_recent_posts,
+               'tags': tags}
     return render(request, 'blog_by_year.html', context)
 
 
@@ -388,7 +410,7 @@ def blog_entry(request, blog_id):
         next_post_id = post.get_next_by_created_on().id
     except:
         next_post_id = None 
-
+    tags = BlogTag.objects.all().order_by('name')
     all_posts = BlogPost.objects.all().order_by('-created_on')
     most_recent_posts = all_posts[:5].values('id', 'title', 'created_on')
 
@@ -398,7 +420,8 @@ def blog_entry(request, blog_id):
                 'previous_post_id': previous_post_id,
                 'most_recent_posts': most_recent_posts,
                 'monthly_archive': monthly_archive,
-                'yearly_archive': yearly_archive}
+                'yearly_archive': yearly_archive,
+                'tags':tags}
     return render(request, 'blog_post.html', context)
 
 def load_sermons(request):

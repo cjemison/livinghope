@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="breadcrumb-wrapper">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <h2 class="title">Missions</h2>
+         </div>
+<!--          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <div class="breadcrumbs pull-right">
+               <ul>
+                  <li>You are here:</li>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="#">Pages</a></li>
+                  <li>About Us</li>
+               </ul>
+            </div>
+         </div> -->
+      </div>
+   </div>
+</div>
+
+<div class="content">
+  <div class="container">
+    <div class="row">
+      <div class="posts-block col-lg-8 col-md-8 col-sm-6 col-xs-12">
+        <article>
+           <h3 class="title">Missions at Living Hope</h3>
+           <div class="post-content">
+    <!--           <div class="img-content">
+                 <img src="img/team/team.jpg" alt="">
+              </div> -->
+              <p>
+                 Global Missions is the partnering with and sending out (John 20:21) of disciplemaking disciples (Matt. 28:20) by a local church (Acts 13:1-3) or parachurch organization (2 John 5-8) through the power of the Holy Spirit (Acts 1:8) to make disciplemaking disciples across all nations (Matt. 28:19) by the proclaiming of the Good News of Jesus’ life, death and resurrection (Acts 16:31; 1 Cor. 2:2; Rom. 10:9) and calling people to respond with repentance and good deeds thereof (Acts 26:20) until His coming again (Phil. 3:20) for the glory of God (Rom. 11:36). 
+              </p>
+              <br>
+              <p>
+                 Through the ministry of missions, we want to be growing in seeing and participating in God’s purposes around the world through prayer, giving, and serving!
+              </p>
+              <br>
+              <p>
+                  Missions Sunday happens on the first Sunday of each month where we get an opportunity to take part in supporting missions through our prayers and resources. We hope this can challenge us to grow in our understanding of God’s mission and teach us to steward our resources well so that the name of Jesus would be proclaimed in the city of Glendale Heights, to the northwest suburbs of Chicago, and to the ends of the earth.
+              </p>
+           </div>
+        </article>
+      </div>
+      <div class="skills col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="widget category">
+            <h3 class="title">Get Involved</h3>
+            <ul class="category-list slide">
+                <li><a href="#">Join us in praying for each country of the month</a></li>
+                <li><a href="#">Give to the missions fund</a></li>
+            </ul>
+        </div>
+        <div>
+          <h4 class="title">For more ways to serve, contact</h4>
+            <div class="portfolio">
+              {% for leader_role in ministry_leaders %}
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 item">
+                   <div class="portfolio-item">
+                    <a href="#" class="portfolio-item-link" >
+                      <span class="portfolio-item-hover"></span>
+                      <span class="fullscreen"><i class="fa fa-envelope"></i></span>
+                        {% if leader_role.leader__profile_picture %}
+                          <img src='/media/{{leader_role.leader__profile_picture}}' >
+                        {% else %}
+                          <img class="img-responsive" src="{% static 'livinghope/placeholderprofile.jpg' %}" />
+                        {% endif %}
+                    </a>
+                      <div class="portfolio-item-title">
+                         <a href="single-project.html">{{leader_role.leader__first_name}} {{leader_role.leader__last_name}}</a>
+                      </div>
+                      <div class="clearfix"></div>
+                   </div>
+                </div>
+              {% endfor %}
+            </div>
+        </div>
+      </div>
+    </div><!-- end row -->
+  <h3 class="title">Who we partner with</h3>
+  <p>
+  We are grateful to be able to partner with ministries that God is using to build up His kingdom. You can learn more about the ministries we partner with below:
+  </p>
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+           <div class="portfolio">
+            {% for missionary in missionaries %}
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 item">
+                 <div class="portfolio-item">
+                  <a href="{% url 'missionary_profile' missionary.id %}" class="portfolio-item-link" >
+                    <span class="portfolio-item-hover"></span>
+                    <span class="fullscreen"><i class="fa fa-search"></i></span>
+                    {% if missionary.profile_picture %}
+                    <img class="img-responsive" src="{{missionary.profile_picture.url}}" alt=" "/>
+                    {% else %}
+                    <img class="img-responsive" src="{% static 'livinghope/placeholderprofile.jpg' %}" />
+                    {% endif %}
+                  </a>
+                    <div class="portfolio-item-title">
+                       <a href="single-project.html">{{missionary.first_name}} {{missionary.last_name}}</a>
+                       <p>
+                          Serving with {{missionary.organization}}
+                       </p>
+                    </div>
+                    <div class="clearfix"></div>
+                 </div>
+              </div>
+              {% endfor %}
+           </div>
+        </div>
+     </div>
+
+  </div>
+</div>
+{% endblock %}

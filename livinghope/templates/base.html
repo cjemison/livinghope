@@ -32,6 +32,7 @@
       <link rel="apple-touch-icon" sizes="72x72" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon-72.png' %}">
       <link rel="apple-touch-icon" sizes="114x114" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon-114.png' %}">
       <link rel="apple-touch-icon" sizes="144x144" href="{% static 'livinghope/pixma/img/ico/apple-touch-icon-144.png' %}">
+      <link rel="stylesheet" href="{% static 'livinghope/livinghope.css'%}">
   {% block headloaders %}{% endblock %}
 </head>
    <body class="home">
@@ -84,10 +85,10 @@
                            </span>
                            </a>
                            <ul>
-                              <li><a href="#" class="sf-with-ul">Our Story</a></li>
+                              <!-- <li><a href="#" class="sf-with-ul">Our Story</a></li> -->
                               <li><a href="{% url 'statement_of_faith' %}" class="sf-with-ul">Statement of Faith</a></li>
                               <li><a href="{% url 'leaders' %}" class="sf-with-ul">Our Leaders</a></li>
-                              <li><a href="#" class="sf-with-ul">Our Denomination</a></li>
+                              <!-- <li><a href="#" class="sf-with-ul">Our Denomination</a></li> -->
 
                            </ul>
                         </li>
@@ -100,23 +101,16 @@
                            </a>
                            <ul>
                               <li><a href="{% url 'services' %}" class="sf-with-ul">Sunday Service</a></li>
-                              <li><a href="#" class="sf-with-ul">Small Groups</a></li>
-                              <li><a href="#" class="sf-with-ul">Children's Ministry</a></li>
-                              <li><a href="#" class="sf-with-ul">Women's Ministry</a></li>
+                              <!-- <li><a href="#" class="sf-with-ul">Small Groups</a></li> -->
+                              <!-- <li><a href="#" class="sf-with-ul">Children's Ministry</a></li> -->
+                              <!-- <li><a href="#" class="sf-with-ul">Women's Ministry</a></li> -->
                               <li><a href="{% url 'events' %}" class="sf-with-ul">Events</a></li>
                            </ul>
                         </li>
                         <li>
-                           <a href="#" class="sf-with-ul">
+                           <a href="{% url 'missions' %}" class="sf-with-ul">
                            Missions
-                           <span class="sf-sub-indicator">
-                           <i class="fa fa-angle-down "></i>
-                           </span>
-                           </a>
-                           <ul>
-                              <li><a href="#" class="sf-with-ul">Missions Policy</a></li>
-                              <li><a href="{% url 'missionaries' %}" class="sf-with-ul">Missionaries</a></li>
-                           </ul>
+                            </a>
                         </li>
                         <li>
                            <a href="#" class="sf-with-ul">
@@ -165,7 +159,7 @@
                      <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-one">
                         <h3>About</h3>
                         <p> 
-                           Here's some basic information about Living Hope. Here's some basic information about Living Hope. Here's some basic information about Living Hope. Here's some basic information about Living Hope. Here's some basic information about Living Hope. 
+                           Living Hope is a Bible-believing, Jesus-loving, Gospel-preaching church in the west suburbs of Chicago. Our desire is to be continually journeying together towards living out the Gospel more and more in our lives, community, and mission. If this sounds interesting to you, join us! We'd love to have you!
                         </p>
                      </section>
                      <section class="col-lg-3 col-md-3 col-xs-12 col-sm-3 footer-two">
@@ -173,15 +167,26 @@
                         <div class="row">
                           <div class="col-md-6">
                             <p>
+                              <small>
                                 <a href="{% url 'home' %}">Home</a><br>
-                                <a href="{% url 'sermon_series' %}">Sermons</a><br>
+                                <a href="{% url 'statement_of_faith' %}">Statement of Faith</a><br>
+                                <a href="{% url 'leaders' %}">Our Leaders</a></br>
+                                <a href="{% url 'services' %}">Sunday Service</a></br>
+                                <a href="{% url 'events' %}">Events</a></br>
+                              </small>
                             </p>
                           </div>
                           <div class="col-md-6">
                             <p>
-                                <a href="{% url 'home' %}">Home</a><br>
+                              <small>
+                                <a href="{% url 'missions' %}">Missions</a></br>
                                 <a href="{% url 'sermon_series' %}">Sermons</a><br>
+                                <a href="{% url 'blog' %}">Blog</a><br>
+                                <a href="{% url 'contact' %}">Contact</a><br>
+                                <a href="{% url 'prayer' %}">Prayer</a></br>
+                              </small>
                             </p>                            
+
                           </div>
                         </div>
                      </section>
@@ -205,12 +210,6 @@
                               <i class="fa fa-envelope"></i>
                               <p><strong>Email:</strong><a href="mailto:info@onelivinghope.com">info@onelivinghope.com</a></p>
                            </li>
-                           <li>
-                              <a href="{% url 'contact' %}">Contact</a>
-                           </li>
-                           <li>
-                              <a href="{% url 'prayer' %}">Prayer</a>
-                           </li>
                         </ul>
                      </section>
 
@@ -222,13 +221,11 @@
             <div class="footer-bottom">
                <div class="container">
                   <div class="row">
-                     <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 "> &copy; Copyright 2014 by <a href="#">Pixma</a>. All Rights Reserved. </div>
+                     <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 "> &copy; Copyright 2015 by <a href="#">Living Hope</a>. All Rights Reserved. </div>
                      <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 ">
                         <ul class="social social-icons-footer-bottom">
                            <li class="facebook"><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
                            <li class="twitter"><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                           <li class="dribbble"><a href="#" data-toggle="tooltip" title="Dribble"><i class="fa fa-dribbble"></i></a></li>
-                           <li class="linkedin"><a href="#" data-toggle="tooltip" title="LinkedIn"><i class="fa fa-linkedin"></i></a></li>
                            <li class="rss"><a href="#" data-toggle="tooltip" title="Rss"><i class="fa fa-rss"></i></a></li>
                         </ul>
                      </div>
@@ -254,7 +251,7 @@
       <script src="{% static 'livinghope/pixma/js/revolution-slider/js/jquery.themepunch.revolution.min.js'%}"></script>
       <script src="{% static 'livinghope/pixma/js/jquery.nivo.slider.pack.js'%}"></script>
       <script src="{% static 'livinghope/pixma/js/jquery.prettyPhoto.js'%}"></script>
-      <script src="{% static 'livinghope/pixma/js/superfish.js'%}"></script>
+      <script src="{% static 'livinghope/pixma/js/superfish.js'%}"></script> <!-- menu -->
       <script src="{% static 'livinghope/pixma/js/tweetMachine.js'%}"></script>
       <script src="{% static 'livinghope/pixma/js/tytabs.js'%}"></script>
       <script src="{% static 'livinghope/pixma/js/jquery.gmap.min.js'%}"></script>

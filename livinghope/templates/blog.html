@@ -14,13 +14,15 @@
      <div class="posts-block col-lg-9 col-md-9 col-sm-8 col-xs-12">
         {% for post in all_posts %}
         <article class="post hentry">
+           {% if post.main_image %}
            <div class="post-image">
-              <a href="{% static 'livinghope/cardboardpeople1.jpg' %}" data-rel="prettyPhoto">
+              <a href="{{post.main_image.url}}" data-rel="prettyPhoto">
               <span class="img-hover"></span>
               <span class="fullscreen"><i class="fa fa-search"></i></span>
-              <img src="{% static 'livinghope/cardboardpeople1.jpg' %}" alt="">
+              <img width="100%" src="{{post.main_image.url}}" alt="">
               </a>
            </div>
+           {% endif %}
            <header class="post-header">
               <h3 class="content-title">{{post.title}}</h3>
               <div class="blog-entry-meta">
@@ -34,9 +36,13 @@
                  </div>
                  <div class="blog-entry-meta-tags">
                     <i class="fa fa-tags"></i>
-                    {% for tag in post.tags.all %}
-                    <a href="#">{{tag}}</a>
-                    {% endfor %}
+                      {% for tag in post.tags.all %}
+                        {% if forloop.last %}
+                          <a href="#">{{tag.name}}</a>
+                        {% else %}
+                          <a href="#">{{tag.name}}</a> |
+                        {% endif %}
+                      {% endfor %}
                  </div>
               </div>
            </header>
@@ -86,16 +92,7 @@
         </div>
         <!-- Tab End -->
         <!-- Category Widget Start -->
-        <div class="widget category">
-           <h3 class="title">Categories</h3>
-           <ul class="category-list slide">
-              <li><a href="#">Web Design</a></li>
-              <li><a href="#">Graphic Design</a></li>
-              <li><a href="#">Illustration</a></li>
-              <li><a href="#">Logo Design</a></li>
-              <li><a href="#">Wordpress Themes</a></li>
-           </ul>
-        </div>
+        {% include 'categories_sidebar.html' %}
         <!-- Category Widget End -->
 
 
