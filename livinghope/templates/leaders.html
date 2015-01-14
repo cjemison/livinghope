@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block headloaders %}
+  <link rel="stylesheet" href="{% static 'livinghope/fix_modal.css' %}">
+{% endblock %}
 {% block content %}
 <div class="breadcrumb-wrapper">
    <div class="container">
@@ -45,14 +48,23 @@
             {% for leader in all_leaders %}
               <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 {% for ministry in leader.ministries.all %} {{ministry.name|slugify}}{% endfor %} item">
                  <div class="portfolio-item">
-                  <a href="img/portfolio/portfolio-1.jpg" class="portfolio-item-link" data-rel="prettyPhoto" >
+                  <a href="img/portfolio/portfolio-1.jpg" class="portfolio-item-link" data-target="#leader_{{leader.id}}" data-toggle="modal" >
                     <span class="portfolio-item-hover"></span>
                     <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{leader.profile_picture.url}}" alt=" "/>
                   </a>
                     <div class="portfolio-item-title">
                        <a href="single-project.html">{{leader.first_name}} {{leader.last_name}}</a>
                        <p>
-                          {{leader.ministry}}
+                            {% for role in leader.leadershiprole_set.all %}
+                                {% if role.special_name %}
+                                    {{role.special_name}}
+                                    <br>
+                                {% elif role.primary_leader %}
+                                   {{role.ministry.name}} Leader
+                                   <br>
+                                {% endif %}
+
+                            {% endfor %}
                        </p>
                     </div>
                     <div class="clearfix"></div>
@@ -64,6 +76,53 @@
      </div>
   </div>
 </div>
+
+{% for leader in all_leaders %}
+<div class="modal fade" id="leader_{{leader.id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Leader Information</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    {% if leader.profile_picture %}
+                    <img src="{{leader.profile_picture.url}}" class="img-thumbnail img-responsive" width="100%">
+                    {% else %}
+                    <img src="{% static 'livinghope/placeholderprofile.jpg' %}" class="img-responsive">
+                    {% endif %}
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                    <h2>{{leader.first_name}} {{leader.last_name}}<br>
+                      <small>
+                            {% for role in leader.leadershiprole_set.all %}
+                                {% if role.special_name %}
+                                    {{role.special_name}}{% if not forloop.last %} / {%endif%}
+                                {% elif role.primary_leader %}
+                                    {{role.ministry.name}} Leader{% if not forloop.last %} / {%endif%}
+                                {% else %}
+                                    {{role.ministry.name}}{% if not forloop.last %} / {%endif%}
+                                {% endif %}
+                            {% endfor %}
+                      </small>
+                    </h2>
+                    <p>
+                        <i class="fa fa-envelope"></i> {{leader.email}}
+                    </p>
+                    <p>
+                      {{leader.bio}}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
 {% endblock %}
 
 {% block endloaders %}

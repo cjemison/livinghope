@@ -1,0 +1,15 @@
+/*this is for keeping hte modal from shifting content left*/
+/*this ruins front page*/
+html {
+  overflow: hidden;
+  height: 100%;
+}
+body {
+  overflow: auto;
+  height: 100%;
+}
+
+/* unset bs3 setting */
+.modal-open {
+ overflow: auto; 
+}

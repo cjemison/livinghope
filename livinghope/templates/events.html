@@ -1,45 +1,78 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block headloaders %}
-<style>
-  #map-canvas {
-    height: 400px;
-    background-color: #CCC;
-    margin-bottom: 15px;
-    /*padding: 0px;*/
-  }
-</style>
+  <style>
+
+    #map-canvas {
+      height: 400px;
+      background-color: #CCC;
+      margin-bottom: 15px;
+      /*padding: 0px;*/
+    }
+  </style>
+  <link rel="stylesheet" href="{% static 'livinghope/fix_modal.css' %}">
 
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  <br><br>
-<h2>Upcoming Events</h2>
-{% for event in events %}
-<div class="row">
-    <div class="col-md-9">
-        <h3>{{event.name}}<br>
-          <small>{{event.date}} at {{event.start_time}} 
-              {% if event.end_date or event.end_time %}
-                  to 
-                  {% if event.end_date%}
-                      {{event.end_date}} {% if event.end_time %}at {{event.end_time}}{%endif%}
-                  {% else %}
-                      {{event.end_time}}
-                  {% endif %}
+<div class="breadcrumb-wrapper">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <h2 class="title">Upcoming Events</h2>
+         </div>
+<!--          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <div class="breadcrumbs pull-right">
+               <ul>
+                  <li>You are here:</li>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="#">Pages</a></li>
+                  <li>About Us</li>
+               </ul>
+            </div>
+         </div> -->
+      </div>
+   </div>
+</div>
 
-              {%endif%}
-          </small>
-        </h3>
-        <p>{{event.description|truncatewords:50}}</p>
-        <button class="btn btn-primary event-details-button" data-id="{{event.id}}" data-toggle="modal" data-target="#details-modal">Details</button>
+<div class="content">
+    <div class="container">
+      {% for event in events %}
+      <div class="row">
+          <div class="posts-block col-lg-8 col-md-8 col-sm-6 col-xs-12">
+              <h3 class="title">{{event.name}}
+              </h3>
+              <h4>{{event.date}} at {{event.start_time}} 
+                    {% if event.end_date or event.end_time %}
+                        to 
+                        {% if event.end_date%}
+                            {{event.end_date}} {% if event.end_time %}at {{event.end_time}}{%endif%}
+                        {% else %}
+                            {{event.end_time}}
+                        {% endif %}
+
+                    {%endif%}
+                </h4>
+              <p>{{event.description|truncatewords:50}}</p>
+              <button class="btn btn-primary event-details-button" data-id="{{event.id}}" data-toggle="modal" data-target="#details-modal">Details</button>
+          </div>
+          <div class="skills col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <h3 class="title">Want to help?</h3>
+              <h4>Contact</h4>
+              <ul class="list-group">
+                  {% for leader in event.organizer.all %}
+                      <li class="list-group-item">
+                          <a href="mailto:{{leader.email}}">{{leader}}</a>
+                      </li>
+                  {% endfor %}
+              </ul>
+          </div>
+      </div>
+      <br><br>
+      {% endfor %}
     </div>
+    <hr>
 </div>
-{% endfor %}
-
-</div>
-
 <!-- Modal -->
 <div class="modal fade" id="details-modal" tabindex="-1" role="dialog" aria-labelledby="details-modal-label" aria-hidden="true">
   <div class="modal-dialog modal-lg">

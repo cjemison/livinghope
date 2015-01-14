@@ -2,19 +2,6 @@
 {% load static %}
 
 {% block headloaders %}
-<script>
-    $(document).ready(function(){
-        $('.image-link').magnificPopup({
-            type:'image',
-            removalDelay: 300,
-
-            // Class that is added to popup wrapper and background
-            // make it unique to apply your CSS animations just to this exact popup
-            mainClass: 'mfp-fade',
-            closeOnContentClick: true
-        });
-    })
-</script>
 <style>
 /* overlay at start */
 .mfp-fade.mfp-bg {
@@ -52,35 +39,70 @@
 </style>
 {% endblock %}
 {% block content %}
+<div class="breadcrumb-wrapper">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <h2 class="title">Missionary Profile</h2>
+         </div>
+<!--          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <div class="breadcrumbs pull-right">
+               <ul>
+                  <li>You are here:</li>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="#">Pages</a></li>
+                  <li>About Us</li>
+               </ul>
+            </div>
+         </div> -->
+      </div>
+   </div>
+</div>
 
+<div class="container">
     <div class="row">
+      <br>
         <div class="col-md-4">
-            <br>
-            <img src="{{missionary.profile_picture.url}}" class="img-responsive" width="100%">
+            <img src="{{missionary.profile_picture.url}}" class="img-responsive img-thumbnail" width="100%">
         </div>
         <div class="col-md-8">
-            <h2><span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>{{missionary.first_name}} {{missionary.last_name}}
+            <h2>{{missionary.first_name}} {{missionary.last_name}}
                 <small>Serving with {{missionary.organization}}</small>
             </h2>
             <p>
-                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> <a href="mailto:{{missionary.email}}">{{missionary.email}}</a><br>
-                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span> <a href="{{missionary.website}}">{{missionary.website}}</a>
+                <i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:{{missionary.email}}">{{missionary.email}}</a><br>
+                <i class="fa fa-globe" aria-hidden="true"></i> <a href="{{missionary.website}}">{{missionary.website}}</a>
             </p>
             <p>
                 {{missionary.bio}}
             </p>
         </div>
     </div>
-    <hr>
+    <br><br>
+    <h3 class="title">Gallery</h3>
     <div class="row">
+      <div class="portfolio">
         {% for image in missionary.missionaryimage_set.all %}
-        <div class="col-md-4">
-            <a class="image-link thumbnail" href="{{image.image.url}}" title="{{image.caption}}">
-                <img src="{{image.image.url}}" class="img-responsive"/>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 item">
+          <div class="portfolio-item">
+            <a href="{{image.image.url}}" class="portfolio-item-link" data-rel="prettyPhoto">
+              <span class="portfolio-item-hover"></span>
+              <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{image.image.url}}" alt=" "/>
             </a>
+            <div class="portfolio-item-title">
+               <p>
+                  {{image.title}}
+               </p>
+            </div>
+          </div>
         </div>
         {% endfor %}
+      </div>
     </div>
+</div>
 
+{% endblock %}
+
+{% block endloaders %}
 
 {% endblock %}
