@@ -38,6 +38,7 @@
                 {% for service in services %}
                     <li class="list-group-item">
                         <p>
+                            <i class="fa fa-clock-o"></i> {{service.start_time|time:"g:iA"}}<br>
                             {{service.location.name}} {{service.get_day_display}} Service<br>
                             {{service.location.street_address}}<br>
                             {{service.location.city}}, {{service.location.state}} {{service.location.zip_code}}
