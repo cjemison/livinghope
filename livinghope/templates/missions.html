@@ -60,7 +60,7 @@
               {% for leader_role in ministry_leaders %}
                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 item">
                    <div class="portfolio-item">
-                    <a href="#" class="portfolio-item-link" >
+                    <a href="{% url 'leaders' %}" class="portfolio-item-link" >
                       <span class="portfolio-item-hover"></span>
                       <span class="fullscreen"><i class="fa fa-envelope"></i></span>
                         {% if leader_role.leader.profile_picture %}
@@ -70,7 +70,7 @@
                         {% endif %}
                     </a>
                       <div class="portfolio-item-title">
-                         <a href="single-project.html">{{leader_role.leader.first_name}} {{leader_role.leader.last_name}}</a>
+                         {{leader_role.leader.first_name}} {{leader_role.leader.last_name}}
                       </div>
                       <div class="clearfix"></div>
                    </div>
