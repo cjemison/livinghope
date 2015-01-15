@@ -264,7 +264,7 @@
                      <div class="slogan-content">
                         <div class="col-lg-9 col-md-9">
                            <h2 class="slogan-title">Curious about Jesus and the Bible?</h2>
-                           <p>At Living Hope, we encourage questions about Jeus and the Bible. In fact, we have them as well. If you've never heard the gospel get a brief overview of why the gospel is good news for you.</p>
+                           <p>At Living Hope, we encourage questions about Jesus and the Bible. In fact, we have them as well. If you've never heard the gospel get a brief overview of why the gospel is good news for you.</p>
                         </div>
                         <div class="col-lg-3 col-md-3">
                            <div class="get-started">
@@ -391,13 +391,13 @@
                                  </div>
                               </div>
                               <div class="blog-showcase-extra-info col-lg-4">
-                                 <span><a href="#">{{post.created_on}}</a></span>
-                                 <h4><a href="#" class="title">{{post.title}}</a></h4>
+                                 <span><a href="{% url 'blog_entry' post.id %}">{{post.created_on}}</a></span>
+                                 <h4><a href="{% url 'blog_entry' post.id %}" class="title">{{post.title}}</a></h4>
                                  <p>
                                  <i class="fa fa-user"></i>
                                  <a href="#" class="blog-entry-meta-author">{{post.author}}</a>
                                  <br>
-                                 <a href="#">Read more <i class="fa fa-angle-double-right"></i></a>
+                                 <a href="{% url 'blog_entry' post.id %}">Read more <i class="fa fa-angle-double-right"></i></a>
                                </p>
                               </div>
                            </li>
