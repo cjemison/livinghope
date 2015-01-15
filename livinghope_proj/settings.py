@@ -136,6 +136,9 @@ INSTALLED_APPS = (
     # 'zinnia',
 )
 
+if DEBUG==True:
+    INSTALLED_APPS += ('debug_toolbar',)
+
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',

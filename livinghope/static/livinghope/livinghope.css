@@ -7,3 +7,9 @@ blockquote {
   padding-top: 5%;
 }
 
+/*fix pagination next and previous*/
+a.prev, a.next{
+    width:33px;
+    height:33px;
+}
+

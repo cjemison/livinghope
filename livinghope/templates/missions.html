@@ -63,14 +63,14 @@
                     <a href="#" class="portfolio-item-link" >
                       <span class="portfolio-item-hover"></span>
                       <span class="fullscreen"><i class="fa fa-envelope"></i></span>
-                        {% if leader_role.leader__profile_picture %}
-                          <img src='/media/{{leader_role.leader__profile_picture}}' >
+                        {% if leader_role.leader.profile_picture %}
+                          <img src='{{leader_role.leader.profile_picture.url}}' >
                         {% else %}
                           <img class="img-responsive" src="{% static 'livinghope/placeholderprofile.jpg' %}" />
                         {% endif %}
                     </a>
                       <div class="portfolio-item-title">
-                         <a href="single-project.html">{{leader_role.leader__first_name}} {{leader_role.leader__last_name}}</a>
+                         <a href="single-project.html">{{leader_role.leader.first_name}} {{leader_role.leader.last_name}}</a>
                       </div>
                       <div class="clearfix"></div>
                    </div>
@@ -102,7 +102,9 @@
                     <div class="portfolio-item-title">
                        <a href="single-project.html">{{missionary.first_name}} {{missionary.last_name}}</a>
                        <p>
+                          {% if missionary.organization %}
                           Serving with {{missionary.organization}}
+                          {% endif %}
                        </p>
                     </div>
                     <div class="clearfix"></div>

@@ -25,12 +25,15 @@ class Missionary(Person):
                                 null=True)
     website = models.URLField(max_length=200, blank=True, null=True)
     organization = models.CharField(max_length=100, blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
+    bio = RichTextField(blank=True, null=True)
 
     def __unicode__(self):
-        return "%s %s with %s" % (self.first_name, 
+        if self.organization:
+            return "%s %s with %s" % (self.first_name, 
                                   self.last_name,
                                   self.organization)
+        return "%s %s" % (self.first_name, 
+                                  self.last_name)
 
 class MissionaryImage(models.Model):
     image = models.ImageField(upload_to='./missionary_images/')

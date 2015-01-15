@@ -48,10 +48,17 @@
             {% for leader in all_leaders %}
               <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 {% for ministry in leader.ministries.all %} {{ministry.name|slugify}}{% endfor %} item">
                  <div class="portfolio-item">
-                  <a href="img/portfolio/portfolio-1.jpg" class="portfolio-item-link" data-target="#leader_{{leader.id}}" data-toggle="modal" >
+                  {% if leader.profile_picture %}
+                  <a href="#" class="portfolio-item-link" data-target="#leader_{{leader.id}}" data-toggle="modal" >
                     <span class="portfolio-item-hover"></span>
                     <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{leader.profile_picture.url}}" alt=" "/>
                   </a>
+                  {% else %}
+                  <a href="#" class="portfolio-item-link" data-target="#leader_{{leader.id}}" data-toggle="modal" >
+                    <span class="portfolio-item-hover"></span>
+                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{% static 'livinghope/placeholderprofile.jpg' %}" alt=" "/>
+                  </a>
+                  {% endif %}
                     <div class="portfolio-item-title">
                        <a href="single-project.html">{{leader.first_name}} {{leader.last_name}}</a>
                        <p>

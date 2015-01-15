@@ -63,32 +63,51 @@
     <div class="row">
       <br>
         <div class="col-md-4">
+            {% if missionary.profile_picture %}
             <img src="{{missionary.profile_picture.url}}" class="img-responsive img-thumbnail" width="100%">
+            {% else %}
+            <img src="{% static 'livinghope/placeholderprofile.jpg' %}" class="img-responsive img-thumbnail" width="100%">
+            {% endif %}
         </div>
         <div class="col-md-8">
             <h2>{{missionary.first_name}} {{missionary.last_name}}
+                {% if missionary.organization %}
                 <small>Serving with {{missionary.organization}}</small>
+                {% endif %}
             </h2>
             <p>
+                {% if missionary.email %}
                 <i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:{{missionary.email}}">{{missionary.email}}</a><br>
+                {% endif %}
+                {% if missionary.website %}
                 <i class="fa fa-globe" aria-hidden="true"></i> <a href="{{missionary.website}}">{{missionary.website}}</a>
+                {% endif %}
             </p>
             <p>
-                {{missionary.bio}}
+                {{missionary.bio|safe}}
             </p>
         </div>
     </div>
     <br><br>
+
+    {% if missionary.missionaryimage_set.all %}
     <h3 class="title">Gallery</h3>
     <div class="row">
       <div class="portfolio">
         {% for image in missionary.missionaryimage_set.all %}
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 item">
           <div class="portfolio-item">
-            <a href="{{image.image.url}}" class="portfolio-item-link" data-rel="prettyPhoto">
+            {% if image.image %}
+            <a href="{{image.image.url}}" class="portfolio-item-link" data-rel="prettyPhoto" title="{{image.caption}}" >
               <span class="portfolio-item-hover"></span>
               <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{image.image.url}}" alt=" "/>
             </a>
+            {% else %}
+            <a href="{% static 'livinghope/placeholderprofile.jpg' %}" class="portfolio-item-link" data-rel="prettyPhoto">
+              <span class="portfolio-item-hover"></span>
+              <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{% static 'livinghope/placeholderprofile.jpg' %}" alt=" "/>
+            </a>
+            {% endif %}
             <div class="portfolio-item-title">
                <p>
                   {{image.title}}
@@ -99,6 +118,7 @@
         {% endfor %}
       </div>
     </div>
+    {% endif %}
 </div>
 
 {% endblock %}

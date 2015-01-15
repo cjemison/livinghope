@@ -140,12 +140,7 @@ def missions(request):
                             ministry=missions_ministry,
                             primary_leader=True,
                             leader__active=True
-                        ).values(
-                            'special_name',
-                            'leader__first_name',
-                            'leader__last_name',
-                            'leader__profile_picture'
-                        )
+                        ).select_related('leader')
     missionaries = Missionary.objects.all().order_by('last_name')
     rows_of_missionaries = queryset_to_rows(missionaries, 3)
     context = {'rows_of_missionaries': rows_of_missionaries,

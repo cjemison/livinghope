@@ -8,6 +8,14 @@ from livinghope.models import Author, SermonSeries, Sermon, \
                               BlogTag, SpecialEvent, MissionaryImage, Ministry, \
                               LeadershipRole
 
+def set_leader_inactive(modeladmin, request, queryset):
+    queryset.update(active=False)
+set_leader_inactive.short_description = "Mark selected leaders as inactive"
+
+def set_leader_active(modeladmin, request, queryset):
+    queryset.update(active=True)
+set_leader_active.short_description = "Mark selected leaders as active"
+
 class MissionaryImageInline(admin.StackedInline):
     model = MissionaryImage
 
@@ -33,6 +41,7 @@ class LeaderAdmin(admin.ModelAdmin):
     list_display = ( 'first_name', 'last_name', 'order','active')
     ordering = ('order',)
     inlines = [LeadershipRoleInline, ]
+    actions = [set_leader_inactive, set_leader_active]
 
 class SermonSeriesAdmin(admin.ModelAdmin):
     list_display = ('name', 'passage_range', 'start_date', 'end_date',
