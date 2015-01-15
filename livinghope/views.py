@@ -257,6 +257,9 @@ def ministries(request):
     #maybe put in sunday school classes and stuff here?
     return render(request, 'ministries.html')
 
+def denomination(request):
+    return render(request, 'denomination.html')
+
 #refactor blog portion into class based view?
 def blog(request):
     # all_posts = BlogPost.objects.all().order_by('-created_on')
