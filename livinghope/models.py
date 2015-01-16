@@ -76,7 +76,8 @@ class Leader(Person):
         #if encountering another leader with same order, then push them 
         #down in order
         past_leader_in_order = Leader.objects.filter(order=self.order)
-        if past_leader_in_order:
+        #prevent issue where the past_leader_in_order was itself
+        if past_leader_in_order and past_leader_in_order[0].id != self.id:
             past_leader_obj = past_leader_in_order[0]
             past_leader_obj.order = self.order+1
             past_leader_obj.save()
