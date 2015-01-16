@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 {% block headloaders %}
 <style>
 .carousel-inner > .item > img {
@@ -442,7 +443,9 @@
                               <div class="blog-showcase-thumb col-lg-4">
                                  <div class="post-body">
                                     {% if post.main_image %}
-                                    <a class="post-item-link" href="{{post.main_image.url}}" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="{{post.main_image.url}}" class="img-responsive"></a>
+
+
+                                    <a class="post-item-link" href="{{post.main_image.url}}" data-rel="prettyPhoto"><span class="post-item-hover"></span><span class="fullscreen"><i class="fa fa-search"></i></span><img alt="" src="{{post.main_image|thumbnail_url:'small'}}" class="img-responsive"></a>
                                     {% endif %}
                                  </div>
                               </div>
@@ -453,6 +456,9 @@
                                  <i class="fa fa-user"></i>
                                  <a href="#" class="blog-entry-meta-author">{{post.author}}</a>
                                  <br>
+                                 <p>
+                                    {{post.content|safe|truncatewords_html:15}}
+                                 </p>
                                  <a href="{% url 'blog_entry' post.id %}">Read more <i class="fa fa-angle-double-right"></i></a>
                                </p>
                               </div>

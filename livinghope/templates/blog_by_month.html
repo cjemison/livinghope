@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 {% block headloaders %}
 <link href="{% static 'livinghope/simple-pagination/simplePagination.css'%}" rel="stylesheet" type="text/css">
 
@@ -38,7 +39,7 @@
               <a href="{{post.main_image.url}}" data-rel="prettyPhoto">
               <span class="img-hover"></span>
               <span class="fullscreen"><i class="fa fa-search"></i></span>
-              <img width="100%" src="{{post.main_image.url}}" alt="">
+              <img width="100%" src="{{post.main_image|thumbnail_url:'large'}}" alt="">
               </a>
            </div>
            {% endif %}

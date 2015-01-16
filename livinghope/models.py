@@ -68,7 +68,7 @@ class Leader(Person):
                                 null=True)
     ministries = models.ManyToManyField(Ministry, through="LeadershipRole",)
     active = models.BooleanField(default=True)
-    bio = models.TextField(blank=True, null=True)
+    bio = RichTextField(blank=True, null=True)
     order = models.IntegerField(max_length=2, default=0)
 
     def save(self):
@@ -226,6 +226,7 @@ class SermonSeries(models.Model):
                                                null=True)
     passage_range = models.CharField(max_length=50)
     current_series = models.BooleanField(default=False)
+    description = RichTextField(blank=True, null=True)
 
     def clean(self):
         if self.current_series == True:

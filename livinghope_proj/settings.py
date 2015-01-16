@@ -129,6 +129,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'captcha',
     'ckeditor',
+    'easy_thumbnails',
     'livinghope',
     # 'paypalrestsdk',
     # 'django_comments',
@@ -139,6 +140,18 @@ INSTALLED_APPS = (
 
 if DEBUG==True:
     INSTALLED_APPS += ('debug_toolbar',)
+
+
+#medium is for the news image on the homepage
+#small is for the blog images on the home page
+#large is for the main blog image on the blog post
+THUMBNAIL_ALIASES = {
+    '':{
+        'small':{'size':(300, 300), 'background':'white','upscale':True},
+        'medium':{'size':(360, 300), 'background':'white', 'upscale':True},
+        'large':{'size':(900, 500), 'background':'white', 'upscale':True},
+    }
+}
 
 CKEDITOR_CONFIGS = {
     'default': {

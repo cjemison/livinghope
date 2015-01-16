@@ -14,3 +14,7 @@ a.prev, a.next{
     height:33px;
 }
 
+/*fixes latest blog post on home page text being cut off*/
+.blog-showcase-extra-info{
+    height:auto;
+}
