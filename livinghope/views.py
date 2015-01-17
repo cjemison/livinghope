@@ -13,6 +13,7 @@ from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
 from livinghope.models import SpecialEvent, Ministry, LeadershipRole
 
 from livinghope.forms import PrayerForm, ContactForm
+from django.core.mail import send_mail
 # from livinghope_proj.settings import PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
 import math
 import pickle
@@ -498,6 +499,19 @@ def display_sermon_transcript(request):
         return Http404
     sermon = Sermon.objects.get(id=sermon_id)
     return HttpResponse(sermon.manuscript)
+
+def report_broken_audio(request):
+    sermon_id = request.GET.get('sermon-id', None)
+    if not sermon_id:
+        return Http404
+    subject = "Living Hope - Broken sermon audio for id %s" % sermon_id
+    body = "Please fix this broken audio"
+    send_mail(subject, body, 'prayer@onelivinghope.com',
+              ['rhsiao2@gmail.com'], fail_silently=False)
+    success_message = "Thank you for caring enough to report the broken audio.\
+                        Someone's been dispatched to fix it!"
+    messages.success(request, success_message)
+    return HttpResponse()
 
 def display_event_details(request):
     # here is where the ajax call gets the html to fill the modal

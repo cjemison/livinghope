@@ -61,7 +61,13 @@
 
 <div class="container">
   <br>
-
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
 
 {% if sermons %}
 
@@ -146,7 +152,9 @@
                 {% endif %}
                 {% if sermon.recording %}
                   <a class="btn btn-primary btn-sm" href="{{sermon.recording.url}}" download><i class="fa fa-download"></i> Download Audio</a>
+                  <button type="button" class="btn btn-warning btn-sm pull-right broken-audio-button" data-sermon-id="{{sermon.id}}" data-sermon-title="{{sermon.title}}" data-toggle="modal" data-target="#broken-audio-modal">Report Broken Audio</button>
                 {% endif %}
+
                 </div>
               </div>
             </td>
@@ -159,7 +167,7 @@
   No Sermons
 {% endif %}
 
-<!-- Modal -->
+<!-- transcript modal-->
 <div class="modal fade" id="transcript-modal" tabindex="-1" role="dialog" aria-labelledby="transcript-modal-label" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -176,6 +184,40 @@
     </div>
   </div>
 </div>
+<!-- broken audio modal -->
+<div class="modal fade" id="broken-audio-modal" tabindex="-1" role="dialog" aria-labelledby="transcript-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="broken-audio-modal-label"></h4>
+      </div>
+      <div class="modal-body" id="broken-audio-modal-body">
+          <p>
+            Before submitting a broken audio report, please confirm that you are experiencing the following: <br>
+            <ul class="list-group">
+              <li class="list-group-item">
+                  After pressing play, after 15 seconds (depending on your internet connection) you don't hear any audio
+              </li>
+              <li class="list-group-item">
+                  If you press play, then press pause, you are no longer able to press play again.
+              </li>
+              <li class="list-group-item">
+                  If you click on the download audio button, your browser says that the download failed because there was no file.
+              </li>
+            </ul>
+          </p>        
+      </div>
+      <div class="modal-footer" id="broken-audio-modal-footer">
+        <!-- custom confirm button is put in via js with data attr for sermon id -->
+        <!-- <button type="button" class="btn btn-success confirm-broken-audio">Confirm</button> -->
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
 </div>
 {% endblock %}  
 
@@ -212,6 +254,26 @@
                 $('<p>' +response+'</p>').appendTo('#transcript-modal-body');
             })
         });
+
+        $('.broken-audio-button').click(function(){
+            var sermon_id = $(this).data('sermon-id');
+            var sermon_title = $(this).data('sermon-title')
+            $('#broken-audio-modal-label').text('Confirm broken audio for "'+sermon_title+'"');
+            var footer_html = '<button type="button" data-sermon-id="'+sermon_id+'" \
+                                class="btn btn-success confirm-broken-audio"> \
+                                Confirm</button><button type="button" class="btn btn-default" \
+                                data-dismiss="modal">Cancel</button>'
+            $('#broken-audio-modal-footer').html(footer_html)
+            //this must be here since i can't set the listener before the button exists
+            $('.confirm-broken-audio').click(function(){
+                $(this).attr('disabled', 'disabled');
+                var sermon_id = $(this).data('sermon-id');
+                var report_broken_audio_url = "{% url 'broken_audio' %}";
+                $.get(report_broken_audio_url, {'sermon-id': sermon_id}, function(response){
+                    location.reload();
+                })
+            })
+        })
 
 
         $("#sermonlisting tr:not(.sermon)").hide();

@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^ministries/$', views.ministries, name='ministries'),
     url(r'^contact/$', views.Contact.as_view(), name='contact'),
     url(r'^display-sermon-transcript/$', views.display_sermon_transcript, name='transcript_modal'),
+    url(r'^report-broken-audio/$', views.report_broken_audio, name='broken_audio'),
     url(r'^blog/$', views.blog, name='blog'),
     url(r'^blog/entry/(?P<blog_id>\d+)/$', views.blog_entry, name='blog_entry'),
     url(r'^blog/year/(?P<year>\d{4})/$', views.blog_by_year, name='blog_by_year'),
@@ -32,7 +33,7 @@ urlpatterns = patterns('',
     url(r'^display-event-details/$', views.display_event_details, name='event_details_modal'),
     # url(r'^paypal/create/$', views.paypal_create, name='paypal_create'),
     # url(r'^paypal/execute/$', views.paypal_execute, name='paypal_execute'),
-    url(r'^PayPal_IPN/$', views.paypal_payment_info_receiver),
+    # url(r'^PayPal_IPN/$', views.paypal_payment_info_receiver),
 
 
     ##onetime utilities
