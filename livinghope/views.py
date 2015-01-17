@@ -251,7 +251,11 @@ def statement_of_faith(request):
 
 def services(request):
     services = Service.objects.all()
-    context = {'services':services}
+    try:
+        current_series = SermonSeries.objects.get(current_series=True)
+    except:
+        current_series = None 
+    context = {'services':services, 'current_series': current_series}
     return render(request, 'services.html', context)
 
 def ministries(request):

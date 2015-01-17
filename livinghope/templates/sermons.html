@@ -152,7 +152,7 @@
                 {% endif %}
                 {% if sermon.recording %}
                   <a class="btn btn-primary btn-sm" href="{{sermon.recording.url}}" download><i class="fa fa-download"></i> Download Audio</a>
-                  <button type="button" class="btn btn-warning btn-sm pull-right broken-audio-button" data-sermon-id="{{sermon.id}}" data-sermon-title="{{sermon.title}}" data-toggle="modal" data-target="#broken-audio-modal">Report Broken Audio</button>
+                  <button type="button" class="btn btn-warning btn-sm pull-right broken-audio-button" data-sermon-id="{{sermon.id}}" data-sermon-title="{{sermon.title}}" data-toggle="modal" data-target="#broken-audio-modal"><i class="fa fa-exclamation-circle"></i> Report Broken Audio</button>
                 {% endif %}
 
                 </div>

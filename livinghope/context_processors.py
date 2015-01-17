@@ -1,7 +1,7 @@
 from livinghope.models import Service
 
 def services_processor(request):
-	services = Service.objects.all()
+	services = Service.objects.all().prefetch_related('location')
 	return {'services': services}
 
 def baseurl(request):

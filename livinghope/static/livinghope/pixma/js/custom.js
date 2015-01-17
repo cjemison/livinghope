@@ -138,9 +138,11 @@ $('ul#flickrfeed').jflickrfeed({
             thisTriggers.attr('data-toggle', 'collapse').attr('data-parent', '#' + thisMain).attr('data-target', '#collapseBox' + thisParentIndex + '_' + thisIndex);
         });
         jQuery('.accordion-toggle').prepend('<span class=\"icon\" />');
-		jQuery("div.accordion-item:first-child .accordion-toggle").addClass("current");
-		jQuery("div.accordion-item:first-child .icon").addClass("iconActive");
-		jQuery("div.accordion-item:first-child .panel-collapse").addClass("in");
+        // commenting these out stops the first element in the list from being
+        // automatically activated
+		// jQuery("div.accordion-item:first-child .accordion-toggle").addClass("current");
+		// jQuery("div.accordion-item:first-child .icon").addClass("iconActive");
+		// jQuery("div.accordion-item:first-child .panel-collapse").addClass("in");
         jQuery('.accordionMod .accordion-toggle').click(function () {
             if (jQuery(this).parent().parent().find('.panel-collapse').is('.in')) {
                 jQuery(this).removeClass('current');
