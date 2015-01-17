@@ -506,8 +506,8 @@ def report_broken_audio(request):
         return Http404
     subject = "Living Hope - Broken sermon audio for id %s" % sermon_id
     body = "Please fix this broken audio"
-    send_mail(subject, body, 'prayer@onelivinghope.com',
-              ['rhsiao2@gmail.com'], fail_silently=False)
+    # send_mail(subject, body, 'prayer@onelivinghope.com',
+    #           ['rhsiao2@gmail.com'], fail_silently=False)
     success_message = "Thank you for caring enough to report the broken audio.\
                         Someone's been dispatched to fix it!"
     messages.success(request, success_message)

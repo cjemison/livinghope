@@ -259,7 +259,9 @@
             var sermon_id = $(this).data('sermon-id');
             var sermon_title = $(this).data('sermon-title')
             $('#broken-audio-modal-label').text('Confirm broken audio for "'+sermon_title+'"');
-            var footer_html = '<button type="button" data-sermon-id="'+sermon_id+'" \
+            var footer_html = '<i id="broken-audio-spinner" style="display:none;" \
+                                class="fa fa-cog fa-2x fa-spin"></i> \
+                                <button type="button" data-sermon-id="'+sermon_id+'" \
                                 class="btn btn-success confirm-broken-audio"> \
                                 Confirm</button><button type="button" class="btn btn-default" \
                                 data-dismiss="modal">Cancel</button>'
@@ -267,6 +269,7 @@
             //this must be here since i can't set the listener before the button exists
             $('.confirm-broken-audio').click(function(){
                 $(this).attr('disabled', 'disabled');
+                $('#broken-audio-spinner').show()
                 var sermon_id = $(this).data('sermon-id');
                 var report_broken_audio_url = "{% url 'broken_audio' %}";
                 $.get(report_broken_audio_url, {'sermon-id': sermon_id}, function(response){
