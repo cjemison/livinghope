@@ -184,7 +184,7 @@ def sermon_series(request, series_id=None):
             raise Http404
         sermons = series.sermon_set.all().order_by('-sermon_date')
         #paginate!
-        paginator = Paginator(sermons, 15)
+        paginator = Paginator(sermons, 20)
         page = request.GET.get('page')
         try:
             sermons = paginator.page(page)

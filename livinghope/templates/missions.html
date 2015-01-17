@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block headloaders %}
+<style>
+.popover{
+    max-width: 90%; // Max Width of the popover (depending on the container!)
+}
+</style>
+{% endblock %}
 {% block content %}
 <div class="breadcrumb-wrapper">
    <div class="container">
@@ -28,12 +35,44 @@
       <div class="posts-block col-lg-8 col-md-8 col-sm-6 col-xs-12">
         <article>
            <h3 class="title">Missions at Living Hope</h3>
-           <div class="post-content">
+           <div id="missions-description" class="post-content">
     <!--           <div class="img-content">
                  <img src="img/team/team.jpg" alt="">
               </div> -->
               <p>
-                 Global Missions is the partnering with and sending out (John 20:21) of disciplemaking disciples (Matt. 28:20) by a local church (Acts 13:1-3) or parachurch organization (2 John 5-8) through the power of the Holy Spirit (Acts 1:8) to make disciplemaking disciples across all nations (Matt. 28:19) by the proclaiming of the Good News of Jesus’ life, death and resurrection (Acts 16:31; 1 Cor. 2:2; Rom. 10:9) and calling people to respond with repentance and good deeds thereof (Acts 26:20) until His coming again (Phil. 3:20) for the glory of God (Rom. 11:36). 
+                 Global Missions is the partnering with and sending out 
+                 (<a href="#" tabindex="0" data-toggle="popover" title="John 20:21 (ESV)" data-content="Jesus said to them again, “Peace be with you. As the Father has sent me, even so I am sending you.">John 20:21</a>) 
+
+                 of disciplemaking disciples 
+                 (<a href="#" tabindex="0" data-toggle="popover" title="Matthew 28:20 (ESV)" data-content="...teaching them to observe all that I have commanded you. And behold, I am with you always, to the end of the age.">Matt. 28:20</a>) 
+
+                 by a local church 
+                 (<a href="#" tabindex="0" data-toggle="popover" title="Acts 13:1-3 (ESV)" data-content='Now there were in the church at Antioch prophets and teachers, Barnabas, Simeon who was called Niger, Lucius of Cyrene, Manaen a lifelong friend of Herod the tetrarch, and Saul. While they were worshiping the Lord and fasting, the Holy Spirit said, "Set apart for me Barnabas and Saul for the work to which I have called them." Then after fasting and praying they laid their hands on them and sent them off.'>Acts 13:1-3</a>) 
+
+                 or parachurch organization 
+                 (<a href="#" tabindex="0" data-toggle="popover" title="2 John 5-8 (ESV)" data-content='And now I ask you, dear lady - not as though I were writing you a new commandment, but the one we have had from the beginning - that we love one another. And this is love, that we walk according to his commandments; this is the commandment, just as you have heard from the beginning, so that you should walk in it. For many deceivers have gone out into the world, those who do not confess the coming of Jesus Christ in the flesh. Such a one is the deceiver and the antichrist. Watch yourselves, so that you may not lose what we have worked for, but may win a full reward.'>2 John 5-8</a>)
+
+                 through the power of the Holy Spirit 
+                 (<a href="#" tabindex="0" data-toggle="popover" title="Acts 1:8 (ESV)" data-content='"But you will receive power when the Holy Spirit has come upon you, and you will be my witnesses in Jerusalem and in all Judea and Samaria, and to the end of the earth."'>Acts 1:8</a>) 
+
+                 to make disciplemaking disciples across all nations 
+                 (<a href="#" tabindex="0" data-toggle="popover" title="Matthew 28:19 (ESV)" data-content='Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit'>Matt. 28:19</a>) 
+
+                 by the proclaiming of the Good News of Jesus’ life, death and resurrection 
+                 (<a href="#" tabindex="0" data-toggle="popover" title="Acts 16:31 (ESV)" data-content='And they said, "Believe in the Lord Jesus, and you will be saved, you and your household."'>Acts 16:31</a>; 
+
+                 <a href="#" tabindex="0" data-toggle="popover" title="1 Corinthians 2:2 (ESV)" data-content='For I decided to know nothing among you except Jesus Christ and him crucified.'>1 Cor. 2:2</a>; 
+
+                 <a href="#" tabindex="0" data-toggle="popover" title="Romans 10:9 (ESV)" data-content='...because, if you confess with your mouth that Jesus is Lord and believe in your heart that God raised him from the dead, you will be saved.'>Rom. 10:9</a>) 
+
+                 and calling people to respond with repentance and good deeds thereof 
+                 (<a href="#" tabindex="0" data-toggle="popover" title="Acts 26:20 (ESV)" data-content='...but declared first to those in Damascus, then in Jerusalem and throughout all the region of Judea, and also to the Gentiles, that they should repent and turn to God, performing deeds in keeping with their repentance.'>Acts 26:20</a>) 
+
+                 until His coming again 
+                 (<a href="#" tabindex="0" data-toggle="popover" title="Philippians 3:20 (ESV)" data-content='But our citizenship is in heaven, and from it we await a Savior, the Lord Jesus Christ'>Phil. 3:20</a>) 
+
+                 for the glory of God 
+                 (<a href="#" tabindex="0" data-toggle="popover" title="Romans 11:36 (ESV)" data-content='For from him and through him and to him are all things. To him be glory forever. Amen.'>Rom. 11:36</a>). 
               </p>
               <br>
               <p>
@@ -117,4 +156,18 @@
 
   </div>
 </div>
+{% endblock %}
+
+{% block endloaders %}
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover(
+      {
+        'placement':'top',
+        'trigger':'focus',
+        'viewport': '#missions-description'
+      }
+    )
+})
+</script>
 {% endblock %}
