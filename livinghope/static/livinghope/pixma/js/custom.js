@@ -248,7 +248,7 @@ jQuery(document).ready(function() {
             soloArrowRightVOffset:0,
 
             shadow:0,
-            fullWidth:"on",
+            fullWidth:"off",
             fullScreen:"off",
 
             spinner:"spinner4",
@@ -259,7 +259,7 @@ jQuery(document).ready(function() {
 
             shuffle:"off",
 
-            autoHeight:"off",
+            autoHeight:"on",
             forceFullWidth:"off",
 
 
