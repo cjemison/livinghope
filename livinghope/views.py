@@ -262,6 +262,18 @@ def ministries(request):
     #maybe put in sunday school classes and stuff here?
     return render(request, 'ministries.html')
 
+def small_groups(request):
+    sgs = SmallGroup.objects.all().order_by('region')
+    sg_ministry = Ministry.objects.get(name="Small Groups")
+    #this could be more than one
+    sg_coordinator_roles = LeadershipRole.objects.filter(
+                                ministry=sg_ministry,
+                                primary_leader=True
+                            ).select_related()
+    context = {'sgs':sgs,
+               'sg_coordinator_roles':sg_coordinator_roles}
+    return render(request, 'small_groups.html', context)
+
 def denomination(request):
     return render(request, 'denomination.html')
 
