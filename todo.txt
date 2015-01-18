@@ -17,6 +17,9 @@
 - blog by category, by author
 - consider options for tall blog images. template filter to interleave image in text? image above sidebar? image in one then text in middle then sidebar?
 - Do i need series column in table? do i need an "all sermons" filter?
+- small group announcmeent model? foreign key to small groups
+- small group image model? foreign key to small groups. from small group image_set
+- maybe subclass image (for smallgroupimage and missionaryimage)
 
 - take out all hard coded emails to rhsiao2@gmail.com and put in settings file
 - change email sender from prayer@onelivinghope.com to something else

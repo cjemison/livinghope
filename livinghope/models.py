@@ -201,12 +201,31 @@ class Service(Event):
     def __unicode__(self):
         return "%s service @ %s" % (self.location.name, self.start_time)
 
+
 class SmallGroup(Event):
     leaders = models.ManyToManyField(Leader, null=True, blank=True)
     region = models.CharField(max_length=30)
+    main_image = models.ImageField(upload_to='./small_group_images/',
+                                    blank=True,
+                                    null=True)
+    description = RichTextField(null=True, blank=True)
 
     def __unicode__(self):
-        return "%s small group" % self.region
+        return "%s Small Group" % self.region
+
+class SmallGroupImage(models.Model):
+    image = models.ImageField(upload_to='./small_group_images/')
+    created_on = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=50)
+    caption = models.CharField(max_length=100, blank=True, null=True)
+    small_group = models.ForeignKey(SmallGroup)
+    order = models.IntegerField(max_length=2, default=0)
+
+    #add clean to deal with order
+
+    def __unicode__(self):
+        return '%s for %s' % (self.title, self.small_group)
+
 
 class PrayerMeeting(Event):
     def __unicode__(self):

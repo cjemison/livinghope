@@ -6,7 +6,7 @@ from livinghope.models import Author, SermonSeries, Sermon, \
 							  Location, Service, BannerImage, Missionary, \
 							  Leader, PrayerMeeting, SmallGroup, BlogPost, \
                               BlogTag, SpecialEvent, MissionaryImage, Ministry, \
-                              LeadershipRole
+                              LeadershipRole, SmallGroupImage
 
 def set_leader_inactive(modeladmin, request, queryset):
     queryset.update(active=False)
@@ -21,6 +21,12 @@ class MissionaryImageInline(admin.StackedInline):
 
 class MissionaryAdmin(admin.ModelAdmin):
     inlines = [MissionaryImageInline, ]
+
+class SmallGroupImageInline(admin.StackedInline):
+    model = SmallGroupImage
+
+class SmallGroupAdmin(admin.ModelAdmin):
+    inlines = [SmallGroupImageInline, ]
 
 
 class SpecialEventAdmin(admin.ModelAdmin):
@@ -76,7 +82,7 @@ admin.site.register(BlogTag)
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(Missionary, MissionaryAdmin)
 admin.site.register(PrayerMeeting)
-admin.site.register(SmallGroup)
+admin.site.register(SmallGroup, SmallGroupAdmin)
 admin.site.register(Leader, LeaderAdmin)
 admin.site.register(Location)
 admin.site.register(Service)
