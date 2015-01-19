@@ -12,7 +12,7 @@ from livinghope.models import Missionary, Leader, SmallGroup, Service
 from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
 from livinghope.models import SpecialEvent, Ministry, LeadershipRole
 
-from livinghope.forms import PrayerForm, ContactForm
+from livinghope.forms import PrayerForm, ContactForm, ContactLeaderForm
 from django.core.mail import send_mail
 # from livinghope_proj.settings import PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
 import math
@@ -244,6 +244,42 @@ class Contact(FormView):
         success_message = "Thanks for submitting your message!"
         messages.success(self.request, success_message)
         return super(Contact, self).form_valid(form)
+
+
+
+#handling this in an AJAXy way. split it up into get and process
+#so i don't have to use GET vs POST and worry about CSRF
+# do i really even need to split this up? nothing is writing to the db
+def get_contact_leader_form(request):
+    # this sends back a form with populated leader and system_subject
+    # to be processed by a modal
+    leader_id = request.GET.get('leader-id')
+    try:
+        leader = Leader.objects.get(id=leader_id)
+    except:
+        return Http404
+    system_subject = request.GET.get('system-subject')
+    initial = {'system_subject':system_subject, 'leader':leader}
+    form = ContactLeaderForm(initial=initial)
+    process_url = reverse('process_contact_leader_form')
+    context = {'form':form, 'process_url':process_url}
+    html = render_to_string('contact_leader_form.html',context)
+    return HttpResponse(html)
+
+def process_contact_leader_form(request):
+    form = ContactLeaderForm(request.GET)
+    if form.is_valid():
+        success_message = "Thanks for submitting your message!"
+        messages.success(request, success_message)
+    else:
+        #add bad message here
+        print 'no'
+    return HttpResponse()
+    # HOW DO I SEND THEM BACK TO THEIR ORIGINAL PAGE?
+    #INTERCEPT SUBMIT BUTTON AND DO IT THROUGH JS INSTEAD?
+    # CALLBACK TO RELOAD CURRENT PAGE
+
+
 
 
 def statement_of_faith(request):

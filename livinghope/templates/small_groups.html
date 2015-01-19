@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 
 {% block headloaders %}
 
@@ -29,6 +30,14 @@
 
 <div class="content">
     <div class="container">
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
         <div class="row">
             <div class="col-lg-9 col-md-9 col-sm-6 col-xs-12">
                 <h3 class="title">Why Small Groups?</h3>
@@ -37,29 +46,54 @@
                 </p>
                 <br>
                 {% for sg in sgs %}
-                    <h3 class="title">{{sg}}</h3>
-                    {% if sg.description %}
-                        {{sg.description|safe}}
-                    {% else %}
-                    <p>
-                        Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text 
-                    </p>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="title">{{sg}}</h3>
+                        <p>
+                          <i class="fa fa-clock-o"></i> Typically meets on {{sg.get_day_display}}s at 
+                          {{sg.start_time|time:"g:iA"}}
+                        </p>
+                        {% if sg.description %}
+                            {{sg.description|safe}}
+                        {% else %}
+                        <p>
+                            Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text Here's some random text 
+                        </p>
 
-                    {% endif %}
-                    <br>    
+                        {% endif %}
+                        <div class="portfolio">
+                          {% for sg_img in sg.smallgroupimage_set.all %}
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 item">
+                               <div class="portfolio-item">
+                                <a href='{{sg_img.image.url}}' data-rel="prettyPhoto" class="portfolio-item-link" >
+                                  <span class="portfolio-item-hover"></span>
+                                  <span class="fullscreen"><i class="fa fa-search"></i></span>
+                                      <img src='{{sg_img.image.url}}' >
+                                </a>
+                                  <div class="portfolio-item-title">
+                                     {{sg_img.title}}
+                                  </div>
+                                  <div class="clearfix"></div>
+                               </div>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                    <br>
                 {% endfor %}
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <h3 class="title">What more information?</h3>
                 <p>
-                    For more information on how to get plugged into a small group near you, contact {{sg_coordinator_roles|pluralize:"the,one of our"}} small group coordinator{{sg_coordinator_roles|pluralize}}
+                    For more information on how to get plugged into a small group near you, contact {{sg_coordinator_roles|pluralize:"the,one of our"}} small group coordinator{{sg_coordinator_roles|pluralize}} below:
                     <hr>
                 </p>
                 <div class="portfolio">
                   {% for role in sg_coordinator_roles %}
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 item">
                        <div class="portfolio-item">
-                        <a href="{% url 'leaders' %}" class="portfolio-item-link" >
+                        <a href="#" data-leader-id="{{role.leader.id}}" data-subject="RE: small groups" data-target="#contact-leader" data-toggle="modal" class="portfolio-item-link contact-leader-link" >
                           <span class="portfolio-item-hover"></span>
                           <span class="fullscreen"><i class="fa fa-envelope"></i></span>
                             {% if role.leader.profile_picture %}
@@ -82,4 +116,57 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="contact-leader" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Contact Leader</h4>
+        </div>
+        <div class="modal-body" id="contact-leader-modal-body">
+
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block endloaders %}
+  <script type="text/javascript">
+    $(document).ready(function(){  
+
+        $('.contact-leader-link').click(function(){
+            var leader_id = $(this).data('leader-id');
+            var subject = $(this).data('subject')
+            var url = "{% url 'get_contact_leader_form' %}";
+            var current_url = window.location.href; 
+            $.get(url, {'leader-id': leader_id, 'system-subject':subject}, function(response){
+                $('#contact-leader-modal-body').empty();
+                $('<p>' +response+'</p>').appendTo('#contact-leader-modal-body');
+
+                $('#contact-leader-submit-button').click(function(){
+                    // since i'm doign this in a modal, i need to 
+                    // validate fields here since django won't reload this.
+                    // VALIDATE HERE!!
+                    
+                    // need to use ajax for callback to reload current page
+                    $.ajax({
+                        url: "{% url 'process_contact_leader_form' %}",
+                        type:'get',
+                        data: $('#contact-leader-form').serialize(),
+                        success: function(data){
+                            location.reload();
+                        }
+
+                    })
+                })
+            })
+        });
+
+
+
+    });
+  </script>
 {% endblock %}

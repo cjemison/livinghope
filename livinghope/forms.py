@@ -2,6 +2,7 @@ from django import forms
 from captcha.fields import CaptchaField, CaptchaTextInput
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
+from livinghope.models import Leader
 # from django.utils.safestring import mark_safe
 
 # class BootstrapCaptchaField(CaptchaField):
@@ -30,6 +31,42 @@ class ContactForm(forms.Form):
         body = render_to_string('contact_email_template.html', context)
         send_mail(subject, body, email,
                  ['rhsiao2@gmail.com'], fail_silently=False)
+
+class ContactLeaderForm(forms.Form):
+    your_name = forms.CharField(label='Your Name', max_length=100,
+                                required=True,
+                                widget=forms.TextInput(attrs={'class':'form-control'}))
+    your_email = forms.EmailField(label='Your Email', max_length=100,
+                                  required=True,
+                                  widget=forms.TextInput(attrs={'class':'form-control'}))
+    subject = forms.CharField(label='Subject', max_length=50,
+                              required=True,
+                              widget=forms.TextInput(attrs={'class':'form-control'}))
+    your_message =  forms.CharField(label='Your Message', required=True,
+                                widget=forms.Textarea(attrs={'class':'form-control'}))
+    captcha = CaptchaField(widget=CaptchaTextInput(attrs={'class':'form-control'}))
+
+    system_subject = forms.CharField(required=True,
+                              widget=forms.HiddenInput())
+    leader = forms.ModelChoiceField(queryset=Leader.objects.filter(active=True),
+                                    required=True,
+                                    widget=forms.HiddenInput())
+    def send_contact_email(self):
+        name = self.cleaned_data.get('your_name', 'unknown')
+        email = self.cleaned_data['your_email']
+        message = self.cleaned_data['your_message']
+        leader = self.cleaned_data['leader']
+        system_subject = self.cleaned_data['system_subject']
+        user_subject = self.cleaned_data['subject'] 
+        
+        subject = system_subject + ' - ' + user_subject
+        leader_email = leader.email
+        context = {'name':name, 'email': email,
+                    'message':message}
+        body = render_to_string('contact_email_template.html', context)
+        send_mail(subject, body, email,
+                 [leader_email], fail_silently=False)
+
 
 class PrayerForm(forms.Form):
     your_name = forms.CharField(label='Your Name', max_length=100,
