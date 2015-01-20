@@ -87,17 +87,7 @@
         </nav>
     </div>
     <div class="sidebar col-lg-3 col-md-3 col-sm-4 col-xs-12">
-        <!-- Search Widget Start -->
-        <div class="widget search-form">
-           <div class="input-group">
-              <input type="text" value="Search..." onfocus="if(this.value=='Search...')this.value='';" onblur="if(this.value=='')this.value='Search...';" class="search-input form-control">
-              <span class="input-group-btn">
-              <button type="submit" class="subscribe-btn btn"><i class="fa fa-search"></i></button>
-              </span>
-           </div>
-           <!-- /input-group -->
-        </div>
-        <!-- Search Widget End -->
+        {% include 'search_post_sidebar.html' %}
         <!-- Tab Start -->
         <div class="widget tabs">
            <div id="horizontal-tabs">

@@ -1,6 +1,7 @@
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 from django.template.loader import render_to_string
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse_lazy, reverse
@@ -463,6 +464,59 @@ def blog_by_year(request, year):
                'most_recent_posts': most_recent_posts,
                'tags': tags}
     return render(request, 'blog_by_year.html', context)
+
+def blog_by_tag(request, tag_id):
+    tag = get_object_or_404(BlogTag, id=tag_id)
+    posts = BlogPost.objects.filter(tags=tag).order_by('-created_on')
+    paginator = Paginator(posts, 5)
+    page = request.GET.get('page')
+    tags = BlogTag.objects.all().order_by('name')
+    try:
+        posts_in_tag = paginator.page(page)
+    except PageNotAnInteger:
+        posts_in_tag = paginator.page(1)
+    except EmptyPage:
+        posts_in_tag = paginator.page(paginator.num_pages)
+
+    most_recent_posts = BlogPost.objects.all().order_by('-created_on')[:5].values(
+                                'id', 'title', 'created_on')
+    monthly_archive, yearly_archive = get_archive_post_list()
+    context = {'posts_in_tag': posts_in_tag,
+               'monthly_archive': monthly_archive,
+               'yearly_archive': yearly_archive,
+               'most_recent_posts': most_recent_posts,
+               'selected_tag':tag,
+               'tags': tags}
+    return render(request, 'blog_by_tag.html', context)   
+
+def search_blog(request):
+    query = request.GET.get('query')
+    if query:
+        by_content = Q(content__icontains=query)
+        by_title = Q(title__icontains=query)
+        posts = BlogPost.objects.filter(by_content|by_title)
+        paginator = Paginator(posts, 5)
+        page = request.GET.get('page')
+        tags = BlogTag.objects.all().order_by('name')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        most_recent_posts = BlogPost.objects.all().order_by('-created_on')[:5].values(
+                                    'id', 'title', 'created_on')
+        monthly_archive, yearly_archive = get_archive_post_list()
+        context = {'posts': posts,
+                   'monthly_archive': monthly_archive,
+                   'yearly_archive': yearly_archive,
+                   'most_recent_posts': most_recent_posts,
+                   'tags': tags,
+                   'query': query}
+        return render(request, 'search_blog.html', context)   
+    else:
+        return Http404
 
 
 def blog_entry(request, blog_id):

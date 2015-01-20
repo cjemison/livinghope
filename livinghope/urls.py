@@ -28,10 +28,14 @@ urlpatterns = patterns('',
     
     url(r'^display-sermon-transcript/$', views.display_sermon_transcript, name='transcript_modal'),
     url(r'^report-broken-audio/$', views.report_broken_audio, name='broken_audio'),
+
     url(r'^blog/$', views.blog, name='blog'),
     url(r'^blog/entry/(?P<blog_id>\d+)/$', views.blog_entry, name='blog_entry'),
+    url(r'^blog/tag/(?P<tag_id>\d+)/$', views.blog_by_tag, name='blog_by_tag'),
     url(r'^blog/year/(?P<year>\d{4})/$', views.blog_by_year, name='blog_by_year'),
     url(r'^blog/year/(?P<year>\d{4})/month/(?P<month>\d{1,2})/$', views.blog_by_month, name='blog_by_month'),
+    url(r'^blog/search/$', views.search_blog, name='search_blog'),
+
     (r'^ckeditor/', include('ckeditor.urls')),
     url(r'^giving/$', views.giving, name='giving'),
     url(r'^events/$', views.events, name='events'),

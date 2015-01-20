@@ -1,0 +1,13 @@
+<!-- Search Widget Start -->
+<div class="widget search-form">
+  <form action="{% url 'search_blog' %}" role="form" method="get">
+   <div class="input-group">
+      <input type="text" name="query" id="id_query" value="Search..." onfocus="if(this.value=='Search...')this.value='';" onblur="if(this.value=='')this.value='Search...';" class="search-input form-control">
+      <span class="input-group-btn">
+      <button type="submit" class="subscribe-btn btn"><i class="fa fa-search"></i></button>
+      </span>
+   </div>
+   <!-- /input-group -->
+ </form>
+</div>
+<!-- Search Widget End -->

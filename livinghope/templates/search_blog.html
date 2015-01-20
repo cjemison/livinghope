@@ -11,7 +11,7 @@
    <div class="container">
       <div class="row">
          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-            <h2 class="title">Posts in {{year}}</h2>
+            <h2 class="title">Resulting Posts for "{{query}}"</h2>
          </div>
 <!--          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
             <div class="breadcrumbs pull-right">
@@ -27,22 +27,23 @@
    </div>
 </div>
 
+
 <div class="container">
     <br>
 <div class="row">
     <div class="posts-block col-lg-9 col-md-9 col-sm-8 col-xs-12">
-        {% for post in posts_in_year %}
+        {% for post in posts %}
         <article class="post hentry">
-            {% if post.main_image %}
-            <div class="post-image">
+           {% if post.main_image %}
+           <div class="post-image">
               <a href="{{post.main_image.url}}" data-rel="prettyPhoto">
               <span class="img-hover"></span>
               <span class="fullscreen"><i class="fa fa-search"></i></span>
               <img width="100%" src="{{post.main_image|thumbnail_url:'large'}}" alt="">
               </a>
-            </div>
-            {% endif %}
-            <header class="post-header">
+           </div>
+           {% endif %}
+           <header class="post-header">
               <h3 class="content-title">{{post.title}}</h3>
               <div class="blog-entry-meta">
                  <div class="blog-entry-meta-date">
@@ -64,20 +65,21 @@
                       {% endfor %}
                  </div>
               </div>
-            </header>
-            <div class="post-content">
-                <p>
-                    {{post.content|safe|truncatewords_html:50}}
-                </p>
-            </div>
-            <footer class="post-footer">
-                <a class="btn-small btn-color" href="{% url 'blog_entry' post.id %}">Read full post</a>
-            </footer>
+           </header>
+           <div class="post-content">
+              <p>
+                 {{post.content|safe|truncatewords_html:50}}
+              </p>
+           </div>
+           <footer class="post-footer">
+              <a class="btn-small btn-color" href="{% url 'blog_entry' post.id %}">Read full post</a>
+           </footer>
         </article>
         <div class="blog-divider"></div>
+
         {% endfor %}
         <p class="text-right">
-            Displaying posts {{posts_in_year.start_index}} - {{posts_in_year.end_index}} of {{posts_in_year.paginator.count}}
+            Displaying posts {{posts.start_index}} - {{posts.end_index}} of {{posts.paginator.count}}
         </p>
         <nav>
             <ul class="pagination pull-right" id="pagination">
@@ -110,22 +112,23 @@
 
 {% block endloaders %}
 <script src="{% static 'livinghope/simple-pagination/jquery.simplePagination.js' %}"></script>
+
   <script type="text/javascript">
     $(document).ready(function(){
         $(function() {
             $("#pagination").pagination({
-                pages: {{ posts_in_year.paginator.num_pages }},
+                pages: {{ posts.paginator.num_pages }},
                 prevText: "&laquo;",
                 nextText: "&raquo;",
                 hrefTextPrefix: '?&page=',
-                currentPage: {{ posts_in_year.number }},
+                currentPage: {{ posts.number }},
                 selectOnClick: false,
             });
             
-            if ({{posts_in_year.number}} == 1){
+            if ({{posts.number}} == 1){
                 $('.prev').parent().attr('class','disabled');
             }
-            if ({{posts_in_year.number}} == {{posts_in_year.paginator.num_pages}}){
+            if ({{posts.number}} == {{posts.paginator.num_pages}}){
                 $('.next').parent().attr('class','disabled');
             }
 
