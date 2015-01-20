@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.conf import settings
 from livinghope.models import SermonSeries, Sermon, Author, BannerImage
 from livinghope.models import Missionary, Leader, SmallGroup, Service
 from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
@@ -248,8 +249,23 @@ class Contact(FormView):
 
 
 #handling this in an AJAXy way. split it up into get and process
-#so i don't have to use GET vs POST and worry about CSRF
+#so i don't have to use GET vs POST and worry about CSRF. Don't really understand CSRF
 # do i really even need to split this up? nothing is writing to the db
+#----------------------------
+# What i do here is in a .get jquery call, i get a contact form
+# with leader and system_subject populated based on data attrs in jquery
+# data attrs: leader-id, subject, target=#contact-leader
+# Must also have .contact-leader-link class!!
+# I get the html for the form and pass it back to jquery to load into a modal
+# In the modal, when the user clicks submit, i submit an ajax request
+# to process_contact_leader_form. If the form is not valid, send
+# the html representation of the form with errors back.
+# If hte form is valid, then send back empty request.
+# In ajax success callback, test if it's an empty request of has the form
+# if it has the form, update the modal to have the form with errors.
+# This last part had to be done 'recursively' since i had to 
+# initialize all handlers upon instantiation of the html tags
+# All JS in contact_leader.js
 def get_contact_leader_form(request):
     # this sends back a form with populated leader and system_subject
     # to be processed by a modal
@@ -269,17 +285,18 @@ def get_contact_leader_form(request):
 def process_contact_leader_form(request):
     form = ContactLeaderForm(request.GET)
     if form.is_valid():
-        success_message = "Thanks for submitting your message!"
+        leader = form.cleaned_data['leader']
+        success_message = "Thanks for submitting your message! %s will be in\
+                           touch with you soon!" % leader.first_name
         messages.success(request, success_message)
+        form.send_contact_email()
+
     else:
-        #add bad message here
-        print 'no'
+        process_url = reverse('process_contact_leader_form')
+        context = {'form':form, 'process_url':process_url}
+        html = render_to_string('contact_leader_form.html',context)
+        return HttpResponse(html)
     return HttpResponse()
-    # HOW DO I SEND THEM BACK TO THEIR ORIGINAL PAGE?
-    #INTERCEPT SUBMIT BUTTON AND DO IT THROUGH JS INSTEAD?
-    # CALLBACK TO RELOAD CURRENT PAGE
-
-
 
 
 def statement_of_faith(request):
@@ -558,8 +575,8 @@ def report_broken_audio(request):
         return Http404
     subject = "Living Hope - Broken sermon audio for id %s" % sermon_id
     body = "Please fix this broken audio"
-    # send_mail(subject, body, 'prayer@onelivinghope.com',
-    #           ['rhsiao2@gmail.com'], fail_silently=False)
+    send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
+              ['rhsiao2@gmail.com'], fail_silently=False)
     success_message = "Thank you for caring enough to report the broken audio.\
                         Someone's been dispatched to fix it!"
     messages.success(request, success_message)

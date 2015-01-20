@@ -93,7 +93,7 @@
                   {% for role in sg_coordinator_roles %}
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 item">
                        <div class="portfolio-item">
-                        <a href="#" data-leader-id="{{role.leader.id}}" data-subject="RE: small groups" data-target="#contact-leader" data-toggle="modal" class="portfolio-item-link contact-leader-link" >
+                        <a href="#" data-leader-id="{{role.leader.id}}" data-subject="RE: Living Hope Small Groups" data-target="#contact-leader" data-toggle="modal" class="portfolio-item-link contact-leader-link" >
                           <span class="portfolio-item-hover"></span>
                           <span class="fullscreen"><i class="fa fa-envelope"></i></span>
                             {% if role.leader.profile_picture %}
@@ -134,39 +134,5 @@
 {% endblock %}
 
 {% block endloaders %}
-  <script type="text/javascript">
-    $(document).ready(function(){  
-
-        $('.contact-leader-link').click(function(){
-            var leader_id = $(this).data('leader-id');
-            var subject = $(this).data('subject')
-            var url = "{% url 'get_contact_leader_form' %}";
-            var current_url = window.location.href; 
-            $.get(url, {'leader-id': leader_id, 'system-subject':subject}, function(response){
-                $('#contact-leader-modal-body').empty();
-                $('<p>' +response+'</p>').appendTo('#contact-leader-modal-body');
-
-                $('#contact-leader-submit-button').click(function(){
-                    // since i'm doign this in a modal, i need to 
-                    // validate fields here since django won't reload this.
-                    // VALIDATE HERE!!
-                    
-                    // need to use ajax for callback to reload current page
-                    $.ajax({
-                        url: "{% url 'process_contact_leader_form' %}",
-                        type:'get',
-                        data: $('#contact-leader-form').serialize(),
-                        success: function(data){
-                            location.reload();
-                        }
-
-                    })
-                })
-            })
-        });
-
-
-
-    });
-  </script>
+<script src="{% static 'livinghope/contact_leader.js'%}"></script>
 {% endblock %}

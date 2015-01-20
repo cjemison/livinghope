@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from captcha.fields import CaptchaField, CaptchaTextInput
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
@@ -29,7 +30,7 @@ class ContactForm(forms.Form):
         context = {'name':name, 'email': email,
                     'message':message}
         body = render_to_string('contact_email_template.html', context)
-        send_mail(subject, body, email,
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
                  ['rhsiao2@gmail.com'], fail_silently=False)
 
 class ContactLeaderForm(forms.Form):
@@ -64,7 +65,7 @@ class ContactLeaderForm(forms.Form):
         context = {'name':name, 'email': email,
                     'message':message}
         body = render_to_string('contact_email_template.html', context)
-        send_mail(subject, body, email,
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
                  [leader_email], fail_silently=False)
 
 
@@ -87,7 +88,7 @@ class PrayerForm(forms.Form):
 
     def send_prayer_email(self):
         name = self.cleaned_data.get('your_name', 'unknown')
-        email = self.cleaned_data.get('your_email','prayer@onelivinghope.com')
+        email = self.cleaned_data.get('your_email','unknown')
         prayer_request = self.cleaned_data['prayer_request']
         prayer_meeting = self.cleaned_data['prayer_meeting']
         follow_up = self.cleaned_data['follow_up']
@@ -96,5 +97,6 @@ class PrayerForm(forms.Form):
         context = {'name':name, 'prayer_request': prayer_request,
                     'prayer_meeting':prayer_meeting, 'follow_up':follow_up}
         body = render_to_string('prayer_email_template.html', context)
-        send_mail(subject, body, email,
+        
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
                  ['rhsiao2@gmail.com'], fail_silently=False)

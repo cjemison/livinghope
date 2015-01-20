@@ -31,6 +31,14 @@
 
 <div class="content">
   <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <div class="row">
       <div class="posts-block col-lg-8 col-md-8 col-sm-6 col-xs-12">
         <article>
@@ -99,7 +107,7 @@
               {% for leader_role in ministry_leaders %}
                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 item">
                    <div class="portfolio-item">
-                    <a href="{% url 'leaders' %}" class="portfolio-item-link" >
+                    <a href="#" data-leader-id="{{leader_role.leader.id}}" data-subject="RE: Living Hope Missions" data-target="#contact-leader" data-toggle="modal" class="portfolio-item-link contact-leader-link" >
                       <span class="portfolio-item-hover"></span>
                       <span class="fullscreen"><i class="fa fa-envelope"></i></span>
                         {% if leader_role.leader.profile_picture %}
@@ -156,6 +164,21 @@
 
   </div>
 </div>
+
+<!-- contact leader modal -->
+<div class="modal fade" id="contact-leader" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Contact Leader</h4>
+        </div>
+        <div class="modal-body" id="contact-leader-modal-body">
+
+        </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block endloaders %}
@@ -170,4 +193,6 @@ $(function () {
     )
 })
 </script>
+<script src="{% static 'livinghope/contact_leader.js'%}"></script>
+
 {% endblock %}

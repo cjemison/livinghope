@@ -21,8 +21,11 @@ urlpatterns = patterns('',
     url(r'^ministries/$', views.ministries, name='ministries'),
     url(r'^small-groups/$', views.small_groups, name='small_groups'),
     url(r'^contact/$', views.Contact.as_view(), name='contact'),
+
+    #if you change these two, change in contact_leader.js
     url(r'^get_contact_leader_form/$', views.get_contact_leader_form, name='get_contact_leader_form'),
     url(r'^process_contact_leader_form/$', views.process_contact_leader_form, name='process_contact_leader_form'),
+    
     url(r'^display-sermon-transcript/$', views.display_sermon_transcript, name='transcript_modal'),
     url(r'^report-broken-audio/$', views.report_broken_audio, name='broken_audio'),
     url(r'^blog/$', views.blog, name='blog'),

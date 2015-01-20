@@ -27,6 +27,13 @@
 
 <div class="container">
   <br>
+  {% if messages %}
+      {% for message in messages %}
+          <div class="alert alert-success">
+              {{message}}
+          </div>
+      {% endfor %}
+  {% endif %}
 
   <div class="row">
      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -60,7 +67,7 @@
                   </a>
                   {% endif %}
                     <div class="portfolio-item-title">
-                       <a href="single-project.html">{{leader.first_name}} {{leader.last_name}}</a>
+                       <a href="#">{{leader.first_name}} {{leader.last_name}}</a>
                        <p>
                             {% for role in leader.leadershiprole_set.all %}
                                 {% if role.special_name %}
@@ -116,7 +123,7 @@
                       </small>
                     </h2>
                     <p>
-                        <i class="fa fa-envelope"></i> {{leader.email}}
+                        <i class="fa fa-envelope"></i> <a href="#" data-leader-id="{{leader.id}}" data-subject="RE: Living Hope Leaders" data-target="#contact-leader" data-toggle="modal" class=" contact-leader-link">Contact {{leader.first_name}}</a>
                     </p>
                     <p>
                       {{leader.bio|safe}}
@@ -130,9 +137,25 @@
 </div>
 {% endfor %}
 
+<div class="modal fade" id="contact-leader" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Contact Leader</h4>
+        </div>
+        <div class="modal-body" id="contact-leader-modal-body">
+
+        </div>
+    </div>
+  </div>
+</div>
+
+
 {% endblock %}
 
 {% block endloaders %}
       <script src="{% static 'livinghope/pixma/js/jquery.isotope.js' %}"></script>
       <script src="{% static 'livinghope/pixma/js/portfolio.js' %}"></script>
+      <script src="{% static 'livinghope/contact_leader.js'%}"></script>
 {% endblock %}
