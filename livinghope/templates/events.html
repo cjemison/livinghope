@@ -62,7 +62,7 @@
               <ul class="list-group">
                   {% for leader in event.organizer.all %}
                       <li class="list-group-item">
-                          <a href="#">{{leader}}</a>
+                          <a href="#">{{leader.first_name}} {{leader.last_name}}</a>
                       </li>
                   {% endfor %}
               </ul>
