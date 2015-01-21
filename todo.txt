@@ -1,11 +1,10 @@
-
+- refactor blog templates so blog preview can be the same for each one. CURRENTLY 9 TEMPLATES NEED TO CHANGE TO MAKE A CHANGE TO THE POST PREVIEW
 2. Fix up administration with more useful info on table page
 13. refactor tempaltes and views to not use so many queries - select_related, prefetch_related
 14. ordering for sermon series (based on latest uploaded sermon??)
 24. children's ministry classes
 26. paypal integration 2.2% + .30 per transaction
 27. Put css on top (headloaders) and javascript on bottom (endloader)
-- Blog post image. Model?
 - missions organization (not just missionary person)
 - cma logo where necessary
 - our denomination page
@@ -17,11 +16,9 @@
 - small group announcmeent model? foreign key to small groups
 - small group image model? foreign key to small groups. from small group image_set
 - maybe subclass image (for smallgroupimage and missionaryimage)
-
 - take out all hard coded emails to rhsiao2@gmail.com and put in settings file
 
 - New model to deal with worship order? and description? Service page
-- fix issue where front page slider image is cut off depending on width of browser
 - which is better? repeating image or background color for slider?
     - repeating image: data-bgfit="contain" data-bgrepeat="repeat"
     - background color: data-bgfit="contain" style="background-color:rgba(50, 59, 68, 1)"
@@ -31,6 +28,10 @@
 -django_admin_bootstrapped - templates/admin/includes/fieldset.html MUST CHANGE columns 
 -pip install geopy
 
+
+- Blog post image. Model?
+- fix issue where front page slider image is cut off depending on width of browser
+- link for blog by tag under each individual post
 - search blogs
 17. change send and receive addresses for prayer and contact email
 -redo sermon page such that there is a left column for image and sermon series description and right is the table. 

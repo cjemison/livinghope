@@ -515,15 +515,12 @@ def search_blog(request):
                    'tags': tags,
                    'query': query}
         return render(request, 'search_blog.html', context)   
-    else:
+    else: #is this even possible? if user types it in url manually
         return Http404
 
 
 def blog_entry(request, blog_id):
-    try:
-        post = BlogPost.objects.get(id=blog_id)
-    except:
-        return Http404
+    post = get_object_or_404(BlogPost,id=blog_id)
     try:
         previous_post_id = post.get_previous_by_created_on().id
     except:
@@ -545,6 +542,30 @@ def blog_entry(request, blog_id):
                 'yearly_archive': yearly_archive,
                 'tags':tags}
     return render(request, 'blog_post.html', context)
+
+def blog_by_author(request, author_id):
+    author = get_object_or_404(Author, id=author_id)
+    posts = BlogPost.objects.filter(author=author).order_by('-created_on')
+    paginator = Paginator(posts, 5)
+    page = request.GET.get('page')
+    tags = BlogTag.objects.all().order_by('name')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    most_recent_posts = BlogPost.objects.all().order_by('-created_on')[:5].values(
+                                'id', 'title', 'created_on')
+    monthly_archive, yearly_archive = get_archive_post_list()
+    context = {'posts': posts,
+               'monthly_archive': monthly_archive,
+               'yearly_archive': yearly_archive,
+               'most_recent_posts': most_recent_posts,
+               'tags': tags,
+               'author': author}
+    return render(request, 'blog_by_author.html', context)   
 
 def load_sermons(request):
     #sermon_series_key links old id (key) to new id (value) 
