@@ -202,9 +202,8 @@ def sermon_series(request, series_id=None):
                     'series':series,}
         return render(request, 'sermons.html', context)
     else: #this is to display all sermon series
-        all_series_in_rows = queryset_to_rows(all_series, 3)
 
-        context = {'all_series_in_rows': all_series_in_rows, 'all_series':all_series}
+        context = {'all_series':all_series}
         return render(request, 'sermon_series.html', context)
 
 class Prayer(FormView):
@@ -323,7 +322,8 @@ def small_groups(request):
     #this could be more than one
     sg_coordinator_roles = LeadershipRole.objects.filter(
                                 ministry=sg_ministry,
-                                primary_leader=True
+                                primary_leader=True,
+                                leader__active=True,
                             ).select_related()
     context = {'sgs':sgs,
                'sg_coordinator_roles':sg_coordinator_roles}
