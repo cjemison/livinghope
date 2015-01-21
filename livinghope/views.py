@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.template.loader import render_to_string
 from django.views.generic.edit import FormView
+from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
@@ -331,31 +332,6 @@ def small_groups(request):
 def denomination(request):
     return render(request, 'denomination.html')
 
-#refactor blog portion into class based view?
-def blog(request):
-    # all_posts = BlogPost.objects.all().order_by('-created_on')
-    # most_recent_posts = all_posts[:5]
-    all_posts = BlogPost.objects.all().order_by('-created_on')
-    most_recent_posts = all_posts[:5].values(
-                            'title', 'id', 'created_on')
-    paginator = Paginator(all_posts, 5)
-    page = request.GET.get('page')
-    tags = BlogTag.objects.all().order_by('name')
-    try:
-        all_posts = paginator.page(page)
-    except PageNotAnInteger:
-        all_posts = paginator.page(1)
-    except EmptyPage:
-        all_posts = paginator.page(paginator.num_pages)
-
-    monthly_archive, yearly_archive = get_archive_post_list()
-    # all_post_data = all_posts.values('title', 'created_on')
-    context = {'most_recent_posts': most_recent_posts,
-               'monthly_archive': monthly_archive,
-               'yearly_archive': yearly_archive,
-               'all_posts': all_posts,
-               'tags':tags}
-    return render(request, 'blog.html', context)
 
 def get_archive_post_list():
     all_posts = BlogPost.objects.all().order_by('-created_on')
@@ -408,164 +384,174 @@ def get_archive_post_list():
             archive_contents[(year,month)] = index
     return archive, over_two_years_ago
 
-def blog_by_month(request, year, month):
-    month = int(month)
-    year = int(year)
-    month_name = MONTHS.get(month)
-    if not month_name:
-        return Http404
-    #paginate??
-    tags = BlogTag.objects.all().order_by('name')
-    posts_in_month = BlogPost.objects.filter(created_on__year=year,
-                                             created_on__month=month).order_by(
-                                                'created_on')
-    paginator = Paginator(posts_in_month, 5)
-    page = request.GET.get('page')
-    try:
-        posts_in_month = paginator.page(page)
-    except PageNotAnInteger:
-        posts_in_month = paginator.page(1)
-    except EmptyPage:
-        posts_in_month = paginator.page(paginator.num_pages)
-
-    most_recent_posts = BlogPost.objects.all().order_by('-created_on')[:5].values(
-                                'id', 'title', 'created_on')
-    monthly_archive, yearly_archive = get_archive_post_list()
-    context = {'posts_in_month': posts_in_month,
-               'monthly_archive': monthly_archive,
-               'yearly_archive': yearly_archive,
-               'month_name': month_name,
-               'year': year,
-               'most_recent_posts': most_recent_posts,
-               'tags':tags}
-    return render(request, 'blog_by_month.html', context)
-
-def blog_by_year(request, year):
-    year = int(year)
-    posts_in_year = BlogPost.objects.filter(created_on__year=year).order_by(
-                                                'created_on')
-    paginator = Paginator(posts_in_year, 5)
-    page = request.GET.get('page')
-    tags = BlogTag.objects.all().order_by('name')
-    try:
-        posts_in_year = paginator.page(page)
-    except PageNotAnInteger:
-        posts_in_year = paginator.page(1)
-    except EmptyPage:
-        posts_in_year = paginator.page(paginator.num_pages)
-
-    most_recent_posts = BlogPost.objects.all().order_by('-created_on')[:5].values(
-                                'id', 'title', 'created_on')
-    monthly_archive, yearly_archive = get_archive_post_list()
-    context = {'posts_in_year': posts_in_year,
-               'monthly_archive': monthly_archive,
-               'yearly_archive': yearly_archive,
-               'year': year,
-               'most_recent_posts': most_recent_posts,
-               'tags': tags}
-    return render(request, 'blog_by_year.html', context)
-
-def blog_by_tag(request, tag_id):
-    tag = get_object_or_404(BlogTag, id=tag_id)
-    posts = BlogPost.objects.filter(tags=tag).order_by('-created_on')
-    paginator = Paginator(posts, 5)
-    page = request.GET.get('page')
-    tags = BlogTag.objects.all().order_by('name')
-    try:
-        posts_in_tag = paginator.page(page)
-    except PageNotAnInteger:
-        posts_in_tag = paginator.page(1)
-    except EmptyPage:
-        posts_in_tag = paginator.page(paginator.num_pages)
-
-    most_recent_posts = BlogPost.objects.all().order_by('-created_on')[:5].values(
-                                'id', 'title', 'created_on')
-    monthly_archive, yearly_archive = get_archive_post_list()
-    context = {'posts_in_tag': posts_in_tag,
-               'monthly_archive': monthly_archive,
-               'yearly_archive': yearly_archive,
-               'most_recent_posts': most_recent_posts,
-               'selected_tag':tag,
-               'tags': tags}
-    return render(request, 'blog_by_tag.html', context)   
-
-def search_blog(request):
-    query = request.GET.get('query')
-    if query:
-        by_content = Q(content__icontains=query)
-        by_title = Q(title__icontains=query)
-        posts = BlogPost.objects.filter(by_content|by_title)
-        paginator = Paginator(posts, 5)
-        page = request.GET.get('page')
-        tags = BlogTag.objects.all().order_by('name')
+#class based view for blogs
+class Blog(TemplateView):
+    #all blog pages subclass from this
+    #supplement get_context_data making sure to call super()
+    # override template_name
+    def paginate(self, posts_queryset, num_per_page=5):
+        """
+        Pass in the queryset of posts you want
+        Returns pagination
+        Pass in num_per_page to defined how many posts per page
+        """
+        paginator = Paginator(posts_queryset, num_per_page)
+        page = self.request.GET.get('page')
         try:
             posts = paginator.page(page)
         except PageNotAnInteger:
             posts = paginator.page(1)
         except EmptyPage:
             posts = paginator.page(paginator.num_pages)
+        return posts
 
+    def get_context_data(self):
         most_recent_posts = BlogPost.objects.all().order_by('-created_on')[:5].values(
-                                    'id', 'title', 'created_on')
+                                'id', 'title', 'created_on')
+        tags = BlogTag.objects.all().order_by('name') 
+        published_author_ids = BlogPost.objects.all().values_list(
+                                        'author', flat=True
+                                    )
+        #consider making this a method
         monthly_archive, yearly_archive = get_archive_post_list()
-        context = {'posts': posts,
-                   'monthly_archive': monthly_archive,
+        published_authors = Author.objects.filter(
+                                id__in=published_author_ids)
+        context = {'monthly_archive': monthly_archive,
                    'yearly_archive': yearly_archive,
                    'most_recent_posts': most_recent_posts,
-                   'tags': tags,
-                   'query': query}
-        return render(request, 'search_blog.html', context)   
-    else: #is this even possible? if user types it in url manually
-        return Http404
+                   'published_authors': published_authors,
+                   'tags':tags
+                   }
+        return context
 
+class BlogHome(Blog):
+    template_name = 'blog.html'
 
-def blog_entry(request, blog_id):
-    post = get_object_or_404(BlogPost,id=blog_id)
-    try:
-        previous_post_id = post.get_previous_by_created_on().id
-    except:
-        previous_post_id = None
-    try:
-        next_post_id = post.get_next_by_created_on().id
-    except:
-        next_post_id = None 
-    tags = BlogTag.objects.all().order_by('name')
-    all_posts = BlogPost.objects.all().order_by('-created_on')
-    most_recent_posts = all_posts[:5].values('id', 'title', 'created_on')
+    def get_context_data(self):
+        context = super(BlogHome, self).get_context_data()
+        all_posts = BlogPost.objects.all().order_by('-created_on')
+        posts = self.paginate(all_posts)
+        context.update({'posts':posts, 
+                        'page_title':'From the desk of Living Hope'})
+        return context
 
-    monthly_archive, yearly_archive = get_archive_post_list()
+class BlogMonth(Blog):
+    template_name = 'blog.html'
 
-    context = {'post':post, 'next_post_id':next_post_id,
-                'previous_post_id': previous_post_id,
-                'most_recent_posts': most_recent_posts,
-                'monthly_archive': monthly_archive,
-                'yearly_archive': yearly_archive,
-                'tags':tags}
-    return render(request, 'blog_post.html', context)
+    def get_context_data(self, **kwargs):
+        context = super(BlogMonth, self).get_context_data()
+        month = int(kwargs.get('month'))
+        year = int(kwargs.get('year'))
+        month_name = MONTHS.get(month)
+        if not month_name:
+            raise Http404 #will this work?
+        posts_in_month = BlogPost.objects.filter(
+                                created_on__year=year,
+                                created_on__month=month
+                            ).order_by('created_on')
+        posts = self.paginate(posts_in_month)
+        page_title = "Posts in %s, %d" % (month_name, year)
+        unique_context = {'page_title': page_title,
+                          'posts':posts}
+        context.update(unique_context)
+        return context
 
-def blog_by_author(request, author_id):
-    author = get_object_or_404(Author, id=author_id)
-    posts = BlogPost.objects.filter(author=author).order_by('-created_on')
-    paginator = Paginator(posts, 5)
-    page = request.GET.get('page')
-    tags = BlogTag.objects.all().order_by('name')
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
+class BlogYear(Blog):
+    template_name = 'blog.html'
 
-    most_recent_posts = BlogPost.objects.all().order_by('-created_on')[:5].values(
-                                'id', 'title', 'created_on')
-    monthly_archive, yearly_archive = get_archive_post_list()
-    context = {'posts': posts,
-               'monthly_archive': monthly_archive,
-               'yearly_archive': yearly_archive,
-               'most_recent_posts': most_recent_posts,
-               'tags': tags,
-               'author': author}
-    return render(request, 'blog_by_author.html', context)   
+    def get_context_data(self, **kwargs):
+        context = super(BlogYear, self).get_context_data()
+        year = int(kwargs.get('year'))
+        posts_in_year = BlogPost.objects.filter(created_on__year=year).order_by(
+                                                'created_on')
+        posts = self.paginate(posts_in_year)
+        page_title = 'Posts in %d' % year
+        unique_context = {'page_title': page_title,
+                          'posts':posts}
+        context.update(unique_context)
+        return context    
+
+class BlogByTag(Blog):
+    template_name = 'blog.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BlogByTag, self).get_context_data()
+        tag_id = kwargs.get('tag_id')
+        tag = get_object_or_404(BlogTag, id=tag_id)
+        posts = BlogPost.objects.filter(tags=tag).order_by('-created_on')
+        posts = self.paginate(posts)
+        page_title = 'Posts tagged with %s' % tag
+        unique_context = {'page_title':page_title,
+                          'posts':posts}
+        context.update(unique_context)
+        return context  
+
+class BlogSearch(Blog):
+    template_name = 'blog.html'
+
+    # this checks if the query is empty of has the placeholder
+    # if so, then redirect to blog home
+    def dispatch(self, request, *args, **kwargs):
+        query = self.request.GET.get('query')
+        if not query or query=='Search...':
+            return HttpResponseRedirect(reverse('blog'))
+        else:
+            return super(BlogSearch, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self):
+        context = super(BlogSearch, self).get_context_data()
+        #when given as a url param, in request
+        #when parsed from the url itself, then in kwargs
+        query = self.request.GET.get('query')
+        by_content = Q(content__icontains=query)
+        by_title = Q(title__icontains=query)
+        #ordering??
+        posts = BlogPost.objects.filter(by_content|by_title)
+        posts = self.paginate(posts)
+        page_title = 'Resulting Posts for "%s"' % query
+        unique_context = {'page_title':page_title,
+                          'posts':posts}
+        context.update(unique_context)
+        return context
+
+class BlogEntry(Blog):
+    # this is the only one that can have a unique template
+    template_name = 'blog_post.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BlogEntry, self).get_context_data()
+        post_id = kwargs.get('post_id')
+        post = get_object_or_404(BlogPost,id=post_id)
+        #consider putting these also as methods
+        try:
+            previous_post_id = post.get_previous_by_created_on().id
+        except:
+            previous_post_id = None
+        try:
+            next_post_id = post.get_next_by_created_on().id
+        except:
+            next_post_id = None        
+
+        unique_context = {'next_post_id':next_post_id,
+                          'post':post,
+                          'previous_post_id':previous_post_id}
+        context.update(unique_context)
+        return context
+
+class BlogByAuthor(Blog):
+    template_name = 'blog.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BlogByAuthor, self).get_context_data()
+        author_id = kwargs.get('author_id')
+        author = get_object_or_404(Author, id=author_id)
+        posts = BlogPost.objects.filter(author=author).order_by('-created_on')
+        posts = self.paginate(posts)
+        page_title = 'Posts by %s' % author
+        unique_context = {'page_title':page_title,
+                          'posts':posts}
+        context.update(unique_context)
+        return context
 
 def load_sermons(request):
     #sermon_series_key links old id (key) to new id (value) 

@@ -10,7 +10,7 @@
    <div class="container">
       <div class="row">
          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-            <h2 class="title">From the desk of Living Hope</h2>
+            <h2 class="title">{{page_title}}</h2>
          </div>
 <!--          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
             <div class="breadcrumbs pull-right">
@@ -35,7 +35,7 @@
 
 <div class="row">
      <div class="posts-block col-lg-9 col-md-9 col-sm-8 col-xs-12">
-        {% for post in all_posts %}
+        {% for post in posts %}
         <article class="post hentry">
            {% if post.main_image %}
            <div class="post-image">
@@ -81,7 +81,7 @@
         <div class="blog-divider"></div>
         {% endfor %}
          <p class="text-right">
-        Displaying posts {{all_posts.start_index}} - {{all_posts.end_index}} of {{all_posts.paginator.count}}
+        Displaying posts {{posts.start_index}} - {{posts.end_index}} of {{posts.paginator.count}}
         </p>
         <nav>
             <ul class="pagination pull-right" id="pagination">
@@ -122,18 +122,18 @@
     $(document).ready(function(){
         $(function() {
             $("#pagination").pagination({
-                pages: {{ all_posts.paginator.num_pages }},
+                pages: {{ posts.paginator.num_pages }},
                 prevText: "&laquo;",
                 nextText: "&raquo;",
                 hrefTextPrefix: '?&page=',
-                currentPage: {{ all_posts.number }},
+                currentPage: {{ posts.number }},
                 selectOnClick: false,
             });
             
-            if ({{all_posts.number}} == 1){
+            if ({{posts.number}} == 1){
                 $('.prev').parent().attr('class','disabled');
             }
-            if ({{all_posts.number}} == {{all_posts.paginator.num_pages}}){
+            if ({{posts.number}} == {{posts.paginator.num_pages}}){
                 $('.next').parent().attr('class','disabled');
             }
 

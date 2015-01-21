@@ -46,8 +46,12 @@
                 </article>
                 <div class="blog-divider"></div>
                 <ul class="pager">
-                   <li class="previous"><a href="#">&larr; Older</a></li>
-                   <li class="next"><a href="#">Newer &rarr;</a></li>
+                    {% if previous_post_id %}
+                    <li class="previous"><a href="{% url 'blog_entry' previous_post_id %}">&larr; Older</a></li>
+                    {% endif %}
+                    {% if next_post_id %}
+                    <li class="next"><a href="{% url 'blog_entry' next_post_id %}">Newer &rarr;</a></li>
+                    {% endif %}
                 </ul>
         </div>
         <div class="sidebar col-lg-3 col-md-3 col-sm-4 col-xs-12">
