@@ -10,7 +10,7 @@ TEMPLATES NEED TO CHANGE TO MAKE A CHANGE TO THE POST PREVIEW
 - our denomination page
 - order ministries for leader profiles
 - instead of manually generating series image thumbnails, use easy_thumbnails
-
+- have a number count of blog posts in each category, author?
 - consider options for tall blog images. template filter to interleave image in text? image above sidebar? image in one then text in middle then sidebar?
 - Do i need series column in table? do i need an "all sermons" filter?
 - small group announcmeent model? foreign key to small groups
@@ -24,6 +24,7 @@ TEMPLATES NEED TO CHANGE TO MAKE A CHANGE TO THE POST PREVIEW
     - repeating image: data-bgfit="contain" data-bgrepeat="repeat"
     - background color: data-bgfit="contain" style="background-color:rgba(50, 59, 68, 1)"
     - make images 1920 x 470? proably the best
+-404 search??
 ---------------------
 DONE
 -django-ckeditor MUST CHANGE widget.html to margin-left:0

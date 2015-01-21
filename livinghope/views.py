@@ -415,7 +415,9 @@ class Blog(TemplateView):
         #consider making this a method
         monthly_archive, yearly_archive = get_archive_post_list()
         published_authors = Author.objects.filter(
-                                id__in=published_author_ids)
+                                id__in=published_author_ids).values(
+                                    'id','first_name', 'last_name'
+                                )
         context = {'monthly_archive': monthly_archive,
                    'yearly_archive': yearly_archive,
                    'most_recent_posts': most_recent_posts,
