@@ -1,0 +1,8 @@
+<div class="widget category">
+   <h3 class="title">Authors</h3>
+   <ul class="category-list slide">
+      {% for author in published_authors %}
+      <li><a href="{% url 'blog_by_author' author.id %}">{{author.first_name}} {{author.last_name}}</a></li>
+      {% endfor %}
+   </ul>
+</div>
