@@ -239,10 +239,10 @@ class SermonSeries(models.Model):
     name = models.CharField(max_length=100)
     #consider using django-filer in the future?
     series_image = models.ImageField(upload_to='./sermon_series/',
-                                    blank=True,
-                                    null=True)
-    series_image_thumbnail = models.ImageField(upload_to='./sermon_series_thumb/',
-                                               null=True)
+                                     help_text="Image should be ideally\
+                                                1500x1125 or 720x540")
+    # series_image_thumbnail = models.ImageField(upload_to='./sermon_series_thumb/',
+    #                                            null=True)
     passage_range = models.CharField(max_length=50)
     current_series = models.BooleanField(default=False)
     description = RichTextField(blank=True, null=True)

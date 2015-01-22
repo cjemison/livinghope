@@ -150,6 +150,11 @@ THUMBNAIL_ALIASES = {
         'small':{'size':(300, 300), 'background':'white','upscale':True},
         'medium':{'size':(360, 300), 'background':'white', 'upscale':True},
         'large':{'size':(900, 500), 'background':'white', 'upscale':True},
+        #used for sermonseries page
+        'ss_thumb':{'size':(350,262), 'background':'white', 'upscale':True},
+        #used for sermon series description images
+        'ss_med':{'size':(500,375), 'background':'white', 'upscale':True},
+        'ss_lg':{'size':(1000,750), 'background':'white', 'upscale':True},
     }
 }
 

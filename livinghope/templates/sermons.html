@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 {% block headloaders %}
 <link href="{% static 'livinghope/simple-pagination/simplePagination.css'%}" rel="stylesheet" type="text/css">
   <style type="text/css">
@@ -74,7 +75,7 @@
 <div class="row">
     <div class="col-md-4">
       
-      <img src="{{series.series_image_thumbnail.url}}" class="img-responsive img-thumbnail">
+      <img src="{{series.series_image|thumbnail_url:'ss_med'}}" class="img-responsive img-thumbnail">
       <div class="well">
         <p>
           <h2>{{series.name}} {% if series.current_series %}<br><small>(Current Series)</small>{% endif %}</h2>

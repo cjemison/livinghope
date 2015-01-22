@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load thumbnail %}
 {% block headloaders %}
 <script>
 $(function () {
@@ -56,7 +56,7 @@ $(function () {
                  <div class="portfolio-item">
                     <a href="{% url 'livinghope.views.sermon_series' series.id %}" class="portfolio-item-link" >
                     <span class="portfolio-item-hover"></span>
-                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{series.series_image_thumbnail.url}}" alt=" "/>
+                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{series.series_image|thumbnail_url:'ss_thumb'}}" alt=" "/>
                     </a>
                     <div class="portfolio-item-title">
                        <a href="single-project.html">{{series.name}}</a>
