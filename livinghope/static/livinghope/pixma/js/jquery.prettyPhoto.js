@@ -47,7 +47,6 @@
 								<div class="pp_content"> \
 									<div class="pp_loaderIcon"></div> \
 									<div class="pp_fade"> \
-										<a href="#" class="pp_expand" title="Expand the image">Expand</a> \
 										<div class="pp_hoverContainer"> \
 											<a class="pp_next" href="#">next</a> \
 											<a class="pp_previous" href="#">previous</a> \

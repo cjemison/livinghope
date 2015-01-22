@@ -2,23 +2,9 @@
 {% load static %}
 {% load thumbnail %}
 {% block headloaders %}
-<script>
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
-</script>
-<style>
-.series-image{
-    box-shadow:0;
-    transition:box-shadow 0.25s;
-}
-.series-image:hover{
-        box-shadow: 0px 0px 10px 0px #666,
-              0px 5px 10px 0px #000;}
-}
-</style>
+
 {% endblock %}
-{% block title %} | Sermon Series{%endblock %}
+{% block title %}| Sermon Series{%endblock %}
 
 {% block content %}
 <div class="breadcrumb-wrapper">
