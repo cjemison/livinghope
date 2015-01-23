@@ -48,10 +48,14 @@ class LatestSermonsFeed(Feed):
     iTunes_explicit = u'no'
 
     def feed_extra_kwargs(self, obj):
-        return {'iTunes_name': self.iTunes_name,
-                'iTunes_email': self.iTunes_email,
-                'iTunes_image_url': self.iTunes_image_url,
-                'iTunes_explicit': self.iTunes_explicit}
+        return {'itunes_name': self.iTunes_name,
+                'itunes_email': self.iTunes_email,
+                'itunes_image_url': self.iTunes_image_url,
+                'itunes_explicit': self.iTunes_explicit}
+        # return {'iTunes_name': self.iTunes_name,
+        #         'iTunes_email': self.iTunes_email,
+        #         'iTunes_image_url': self.iTunes_image_url,
+        #         'iTunes_explicit': self.iTunes_explicit}
 
     def item_extra_kwargs(self, item):
         audio = MP3(item.recording.path)
