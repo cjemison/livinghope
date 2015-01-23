@@ -14,6 +14,8 @@ from livinghope.models import SermonSeries, Sermon, Author, BannerImage
 from livinghope.models import Missionary, Leader, SmallGroup, Service
 from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
 from livinghope.models import SpecialEvent, Ministry, LeadershipRole
+from livinghope.models import MissionsPrayerMonth, ChildrensMinistryTeacher
+from livinghope.models import ChildrensMinistryClass
 
 from livinghope.forms import PrayerForm, ContactForm, ContactLeaderForm
 from django.core.mail import send_mail
@@ -554,6 +556,24 @@ class BlogByAuthor(Blog):
                           'posts':posts}
         context.update(unique_context)
         return context
+
+def childrens_ministry(request):
+    # add order
+    childrens_ministry = Ministry.objects.get(name="Children's Ministry")
+    classes = ChildrensMinistryClass.objects.all()
+    ministry_leaders = LeadershipRole.objects.filter(
+                            ministry=childrens_ministry,
+                            primary_leader=True,
+                            leader__active=True
+                        )
+    context = {'classes':classes, 
+               'childrens_ministry': childrens_ministry, # good for ministry description
+               'ministry_leaders': ministry_leaders
+               }
+    return render(request, 'childrens_ministry.html', context)
+
+def prayer_calendar(request):
+    pass
 
 def load_sermons(request):
     #sermon_series_key links old id (key) to new id (value) 

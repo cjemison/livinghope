@@ -1,4 +1,4 @@
-TEMPLATES NEED TO CHANGE TO MAKE A CHANGE TO THE POST PREVIEW
+
 2. Fix up administration with more useful info on table page
 13. refactor tempaltes and views to not use so many queries - select_related, prefetch_related
 14. ordering for sermon series (based on latest uploaded sermon??)
@@ -22,6 +22,19 @@ e- order ministries for leader profiles
     - background color: data-bgfit="contain" style="background-color:rgba(50, 59, 68, 1)"
     - make images 1920 x 470? proably the best
 -404 search??
+- prayer calendar page similar to leader page
+    - needs new model PrayerMonth?
+        - month, year, prayer requests (rich text), main image,
+
+- modeladmin fieldset
+- CBV for "ministryView" for childrens ministry, small groups, women's ministry, missions etc
+- for ministry pages, use ministry description field
+- on save of image, programatically determine if it is landscape or portrait
+    - to be landscape, not just simply width > height but greater by a certain amount
+    - then handle rest with easy_thumbnail
+    - subclass image field??
+    - subclass shoudl override save to test dimensions?
+    - OR just put additional landscape field to model containing the image 
 ---------------------
 DONE
 -django-ckeditor MUST CHANGE widget.html to margin-left:0

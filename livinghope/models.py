@@ -53,11 +53,12 @@ class Author(Person):
     def __unicode__(self):
         return self.full_name()
 
+
 class Ministry(models.Model):
     class Meta:
         verbose_name_plural = "Ministries"
     name = models.CharField(max_length=50)
-    description = models.TextField(blank=True, null=True)
+    description = RichTextField(blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -230,6 +231,52 @@ class SmallGroupImage(models.Model):
 class PrayerMeeting(Event):
     def __unicode__(self):
         return "Prayer Meeting @ %s" % self.location.name
+
+class MissionsPrayerMonth(models.Model):
+    MONTHS = (
+        (1, 'January'),
+        (2, 'February'),
+        (3, 'March'),
+        (4, 'April'),
+        (5, 'May'),
+        (6, 'June'),
+        (7, 'July'),
+        (8, 'August'),
+        (9, 'September'),
+        (10, 'October'),
+        (11, 'November'),
+        (12, 'December'),
+    )
+    main_image = models.ImageField(upload_to='./prayer_month_images/',
+                                   blank=True, null=True)
+    month = models.IntegerField(max_length=2, choices=MONTHS)
+    year = models.IntegerField(max_length=4, help_text="Enter full year not just 15")
+    prayer_requests = RichTextField()
+
+    class Meta:
+        unique_together = ('month', 'year')
+
+    def __unicode__(self):
+        return 'Prayer requests for %s, %s' % (self.month, self.year)
+
+class ChildrensMinistryTeacher(Person):
+    def __unicode__(self):
+        return self.full_name()
+
+class ChildrensMinistryClass(models.Model):
+    main_image = models.ImageField(upload_to='./childrens_ministry_images/',
+                                    null=True, blank=True)
+    youngest = models.CharField(max_length=40,
+                                help_text="What is the lower bound of the age range?")
+    oldest = models.CharField(max_length=40, 
+                              help_text="What is the upper bound of the age range?")
+    teachers = models.ManyToManyField(ChildrensMinistryTeacher, 
+                                      blank=True, null=True)
+    order = models.IntegerField(max_length=2, default=0)
+    description = RichTextField()
+
+    def __unicode__(self):
+        return 'Class from %s to %s' % (self.youngest, self.oldest)
 
 class SermonSeries(models.Model):
     class Meta:

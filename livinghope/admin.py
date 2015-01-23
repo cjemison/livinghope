@@ -6,7 +6,8 @@ from livinghope.models import Author, SermonSeries, Sermon, \
 							  Location, Service, BannerImage, Missionary, \
 							  Leader, PrayerMeeting, SmallGroup, BlogPost, \
                               BlogTag, SpecialEvent, MissionaryImage, Ministry, \
-                              LeadershipRole, SmallGroupImage
+                              LeadershipRole, SmallGroupImage, ChildrensMinistryClass, \
+                              ChildrensMinistryTeacher, MissionsPrayerMonth
 
 def set_leader_inactive(modeladmin, request, queryset):
     queryset.update(active=False)
@@ -27,6 +28,9 @@ class SmallGroupImageInline(admin.StackedInline):
 
 class SmallGroupAdmin(admin.ModelAdmin):
     inlines = [SmallGroupImageInline, ]
+
+class ChildrensMinistryClassAdmin(admin.ModelAdmin):
+    filter_horizontal = ('teachers',)
 
 
 class SpecialEventAdmin(admin.ModelAdmin):
@@ -76,6 +80,7 @@ class BlogPostAdmin(admin.ModelAdmin):
     # class Media:
     #     js = (static('livinghope/ckeditor/ckeditor.js'),)
 
+admin.site.register(ChildrensMinistryClass, ChildrensMinistryClassAdmin)
 admin.site.register(Ministry)
 admin.site.register(SpecialEvent, SpecialEventAdmin)
 admin.site.register(BlogTag)

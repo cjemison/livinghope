@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block headloaders %}
+
+{% endblock %}
+
+{% block title %}
+| Children's Ministry
+{% endblock %}
+
+{% block content %}
+<div class="breadcrumb-wrapper">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <h2 class="title">Children's Ministry</h2>
+         </div>
+<!--          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <div class="breadcrumbs pull-right">
+               <ul>
+                  <li>You are here:</li>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="#">Pages</a></li>
+                  <li>About Us</li>
+               </ul>
+            </div>
+         </div> -->
+      </div>
+   </div>
+</div>
+
+<div class="content">
+  <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+      <div class="posts-block col-lg-8 col-md-8 col-sm-6 col-xs-12">
+        <article>
+           <h3 class="title">Children's Ministry at Living Hope</h3>
+           <div id="childrens-ministry-description" class="post-content">
+              {{childrens_ministry.description|safe}}
+           </div>
+        </article>
+          {% for class in classes %}
+            <h3 class="title">{{class.youngest}} to {{class.oldest}} Class</h3>
+            {% if class.main_image %}
+              <div class="row">
+              {% if class.main_image.height > class.main_image.width %}
+                <div class="col-md-4">
+                  <img src="{{class.main_image.url}}" class="img-responsive img-thumbnail">
+                </div>
+                <div class="col-md-8">
+                  {{class.description|safe}}
+                </div>
+              {% else %}
+                <img src="{{class.main_image.url}}" class="img=thumbnail" width="100%">
+                {{ class.description|safe}}
+              {% endif %}
+              </div>
+            {% else %}
+              {{class.description|safe}}
+            {% endif %}
+          {% endfor %}
+      </div>
+      <div class="skills col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="widget category">
+            <h3 class="title">Get Involved</h3>
+                <p>
+                    For more information on how to get involved in Children's Ministry or serve, contact {{ministry_leaders|pluralize:"the,one of our"}} leader{{ministry_leaders|pluralize}} below:
+                </p>
+            <div class="portfolio">
+              {% for leader_role in ministry_leaders %}
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 item">
+                   <div class="portfolio-item">
+                    <a href="#" data-leader-id="{{leader_role.leader.id}}" data-subject="RE: Living Hope Missions" data-target="#contact-leader" data-toggle="modal" class="portfolio-item-link contact-leader-link" >
+                      <span class="portfolio-item-hover"></span>
+                      <span class="fullscreen"><i class="fa fa-envelope"></i></span>
+                        {% if leader_role.leader.profile_picture %}
+                          <img src='{{leader_role.leader.profile_picture.url}}' >
+                        {% else %}
+                          <img class="img-responsive" src="{% static 'livinghope/placeholderprofile.jpg' %}" />
+                        {% endif %}
+                    </a>
+                      <div class="portfolio-item-title">
+                         {{leader_role.leader.first_name}} {{leader_role.leader.last_name}}
+                      </div>
+                      <div class="clearfix"></div>
+                   </div>
+                </div>
+              {% endfor %}
+            </div>
+        </div>
+      </div>
+    </div><!-- end row -->
+  </div>
+</div>
+
+<!-- contact leader modal -->
+<div class="modal fade" id="contact-leader" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Contact Leader</h4>
+        </div>
+        <div class="modal-body" id="contact-leader-modal-body">
+
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block endloaders %}
+
+<script src="{% static 'livinghope/contact_leader.js'%}"></script>
+
+{% endblock %}

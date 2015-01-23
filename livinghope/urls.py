@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 import views
+from feeds import LatestSermonsFeed
 
 from django.contrib import admin
 admin.autodiscover()
@@ -12,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^home/$', views.home),
     url(r'^sermon-series/$', views.sermon_series, name='sermon_series'),
     url(r'^sermon-series/(?P<series_id>\d{1,8})/$', views.sermon_series, name='sermon_series'),
+    url(r'^childrens-ministry/$', views.childrens_ministry, name='childrens_ministry'),
     url(r'^missions/$', views.missions, name='missions'),
     url(r'^missionary/(?P<missionary_id>\d{1,8})/$', views.missionary_profile, name='missionary_profile'),
     url(r'^our-leaders/$', views.leaders, name='leaders'),
@@ -29,24 +31,12 @@ urlpatterns = patterns('',
     url(r'^display-sermon-transcript/$', views.display_sermon_transcript, name='transcript_modal'),
     url(r'^report-broken-audio/$', views.report_broken_audio, name='broken_audio'),
 
-    # url(r'^blog/$', views.blog, name='blog'),
     url(r'^blog/$', views.BlogHome.as_view(), name='blog'),
-    # url(r'^blog/entry/(?P<blog_id>\d+)/$', views.blog_entry, name='blog_entry'),
     url(r'^blog/entry/(?P<post_id>\d+)/$', views.BlogEntry.as_view(), name='blog_entry'),
-
-    # url(r'^blog/tag/(?P<tag_id>\d+)/$', views.blog_by_tag, name='blog_by_tag'),
     url(r'^blog/tag/(?P<tag_id>\d+)/$', views.BlogByTag.as_view(), name='blog_by_tag'),
-
-    # url(r'^blog/author/(?P<author_id>\d+)/$', views.blog_by_author, name='blog_by_author'),
     url(r'^blog/author/(?P<author_id>\d+)/$', views.BlogByAuthor.as_view(), name='blog_by_author'),
-
-    # url(r'^blog/year/(?P<year>\d{4})/$', views.blog_by_year, name='blog_by_year'),
     url(r'^blog/year/(?P<year>\d{4})/$', views.BlogYear.as_view(), name='blog_by_year'),
-
-    # url(r'^blog/year/(?P<year>\d{4})/month/(?P<month>\d{1,2})/$', views.blog_by_month, name='blog_by_month'),
     url(r'^blog/year/(?P<year>\d{4})/month/(?P<month>\d{1,2})/$', views.BlogMonth.as_view(), name='blog_by_month'),
-
-    # url(r'^blog/search/$', views.search_blog, name='search_blog'),
     url(r'^blog/search/$', views.BlogSearch.as_view(), name='search_blog'),
 
     (r'^ckeditor/', include('ckeditor.urls')),
@@ -54,6 +44,8 @@ urlpatterns = patterns('',
     url(r'^events/$', views.events, name='events'),
     url(r'^our-denomination/$', views.denomination, name='denomination'),
     url(r'^display-event-details/$', views.display_event_details, name='event_details_modal'),
+
+    url(r'^rss/latest-sermons/feed/$', LatestSermonsFeed()),
     # url(r'^paypal/create/$', views.paypal_create, name='paypal_create'),
     # url(r'^paypal/execute/$', views.paypal_execute, name='paypal_execute'),
     # url(r'^PayPal_IPN/$', views.paypal_payment_info_receiver),
