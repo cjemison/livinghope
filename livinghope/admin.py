@@ -80,6 +80,7 @@ class BlogPostAdmin(admin.ModelAdmin):
     # class Media:
     #     js = (static('livinghope/ckeditor/ckeditor.js'),)
 
+admin.site.register(MissionsPrayerMonth)
 admin.site.register(ChildrensMinistryClass, ChildrensMinistryClassAdmin)
 admin.site.register(Ministry)
 admin.site.register(SpecialEvent, SpecialEventAdmin)

@@ -573,7 +573,9 @@ def childrens_ministry(request):
     return render(request, 'childrens_ministry.html', context)
 
 def prayer_calendar(request):
-    pass
+    prayer_months = MissionsPrayerMonth.objects.all().order_by('-year', '-month')
+    context = {'prayer_months': prayer_months}
+    return render(request, 'missions_prayer_calendar.html', context)    
 
 def load_sermons(request):
     #sermon_series_key links old id (key) to new id (value) 

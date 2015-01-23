@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+| Missions Prayer Calendar
+{% endblock %}
+
+{% block headloaders %}
+  <link rel="stylesheet" href="{% static 'livinghope/fix_modal.css' %}">
+{% endblock %}
+{% block content %}
+<div class="breadcrumb-wrapper">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <h2 class="title">Missions Prayer Calendar</h2>
+         </div>
+<!--          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <div class="breadcrumbs pull-right">
+               <ul>
+                  <li>You are here:</li>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="#">Pages</a></li>
+                  <li>About Us</li>
+               </ul>
+            </div>
+         </div> -->
+      </div>
+   </div>
+</div>
+
+<div class="container">
+  <br>
+  {% if messages %}
+      {% for message in messages %}
+          <div class="alert alert-success">
+              {{message}}
+          </div>
+      {% endfor %}
+  {% endif %}
+
+  <div class="row">
+
+<!--      <div class="clearfix"></div> -->
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 portfolio-wrap">
+        <div class="row">
+           <div class="portfolio">
+            {% for prayer_month in prayer_months %}
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 item">
+                 <div class="portfolio-item">
+                  {% if prayer_month.main_image %}
+                  <a href="#" class="portfolio-item-link" data-target="#prayer_month_{{prayer_month.id}}" data-toggle="modal" >
+                    <span class="portfolio-item-hover"></span>
+                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{prayer_month.main_image.url}}" alt=" "/>
+                  </a>
+                  {% else %}
+                  <a href="#" class="portfolio-item-link" data-target="#prayer_month_{{prayer_month.id}}" data-toggle="modal" >
+                    <span class="portfolio-item-hover"></span>
+                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{% static 'livinghope/placeholderprofile.jpg' %}" alt=" "/>
+                  </a>
+                  {% endif %}
+                    <div class="portfolio-item-title">
+                       <a href="#">{{prayer_month.get_month_display}}, {{prayer_month.year}}</a>
+                       <p>
+                          MISSIONS HIGHLIGHT THIS MONTH
+                       </p>
+                    </div>
+                    <div class="clearfix"></div>
+                 </div>
+              </div>
+              {% endfor %}
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+{% for leader in all_leaders %}
+<div class="modal fade" id="leader_{{leader.id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Leader Information</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    {% if leader.profile_picture %}
+                    <img src="{{leader.profile_picture.url}}" class="img-thumbnail img-responsive" width="100%">
+                    {% else %}
+                    <img src="{% static 'livinghope/placeholderprofile.jpg' %}" class="img-responsive">
+                    {% endif %}
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                    <h2>{{leader.first_name}} {{leader.last_name}}<br>
+                      <small>
+                            {% for role in leader.leadershiprole_set.all %}
+                                {% if role.special_name %}
+                                    {{role.special_name}}{% if not forloop.last %} / {%endif%}
+                                {% elif role.primary_leader %}
+                                    {{role.ministry.name}} Leader{% if not forloop.last %} / {%endif%}
+                                {% else %}
+                                    {{role.ministry.name}}{% if not forloop.last %} / {%endif%}
+                                {% endif %}
+                            {% endfor %}
+                      </small>
+                    </h2>
+                    <p>
+                        <i class="fa fa-envelope"></i> <a href="#" data-leader-id="{{leader.id}}" data-subject="RE: Living Hope Leaders" data-target="#contact-leader" data-toggle="modal" class=" contact-leader-link">Contact {{leader.first_name}}</a>
+                    </p>
+                    <p>
+                      {{leader.bio|safe}}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<div class="modal fade" id="contact-leader" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Contact Leader</h4>
+        </div>
+        <div class="modal-body" id="contact-leader-modal-body">
+
+        </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block endloaders %}
+      <script src="{% static 'livinghope/pixma/js/jquery.isotope.js' %}"></script>
+      <script src="{% static 'livinghope/pixma/js/portfolio.js' %}"></script>
+      <script src="{% static 'livinghope/contact_leader.js'%}"></script>
+{% endblock %}

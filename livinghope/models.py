@@ -274,6 +274,9 @@ class MissionsPrayerMonth(models.Model):
     )
     main_image = SmartImageField(upload_to='./prayer_month_images/',
                                    blank=True, null=True)
+    highlight = models.CharField(max_length=100, default='')
+    missionary = models.ForeignKey(Missionary, blank=True, null=True,
+                   help_text='Put this in if the highlight is also a missionary we support')
     month = models.IntegerField(max_length=2, choices=MONTHS)
     year = models.IntegerField(max_length=4, help_text="Enter full year not just 15")
     prayer_requests = RichTextField()
