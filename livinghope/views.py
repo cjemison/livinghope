@@ -314,7 +314,7 @@ def services(request):
     context = {'services':services, 'current_series': current_series}
     return render(request, 'services.html', context)
 
-def ministries(request):
+def ministries(request): # not used
     #maybe put in sunday school classes and stuff here?
     return render(request, 'ministries.html')
 

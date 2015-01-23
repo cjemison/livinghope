@@ -1,7 +1,32 @@
 from django.db import models
+from django.db.models.fields.files import ImageFieldFile, ImageField
 from ckeditor.fields import RichTextField
 from geopy.geocoders import GoogleV3
 
+class SmartImageFieldFile(ImageFieldFile):
+    """
+    This is an image file that, in addition to all the nice
+    things django adds, will expose a method to calculate
+    whether the image is landscape or portrait
+    """
+    def _is_landscape(self):
+        self._require_file()
+        aspect_ratio = float(self.width)/self.height
+        # of should this be 5:3?
+        # show as landscape if aspect ratio of 2:1 or greater
+        if aspect_ratio >= 2:
+            return True
+        return False
+    is_landscape = property(_is_landscape)
+    #this is where to put my method to calculate aspect ratio
+
+class SmartImageField(ImageField):
+    """
+    An extremely thin wrapping around ImageField simply adding
+    a hook into determining if an image should be displayed
+    in landscape or portrait
+    """
+    attr_class = SmartImageFieldFile
 
 class Person(models.Model):
     first_name = models.CharField(max_length=25)
@@ -97,7 +122,7 @@ class BlogTag(models.Model):
         return self.name
 
 class BlogPost(models.Model):
-    main_image = models.ImageField(upload_to='./blog_main_images/',
+    main_image = SmartImageField(upload_to='./blog_main_images/',
                                     blank=True,
                                     null=True,
                                     help_text="For best results, the width of the image \
@@ -206,7 +231,7 @@ class Service(Event):
 class SmallGroup(Event):
     leaders = models.ManyToManyField(Leader, null=True, blank=True)
     region = models.CharField(max_length=30)
-    main_image = models.ImageField(upload_to='./small_group_images/',
+    main_image = SmartImageField(upload_to='./small_group_images/',
                                     blank=True,
                                     null=True)
     description = RichTextField(null=True, blank=True)
@@ -247,7 +272,7 @@ class MissionsPrayerMonth(models.Model):
         (11, 'November'),
         (12, 'December'),
     )
-    main_image = models.ImageField(upload_to='./prayer_month_images/',
+    main_image = SmartImageField(upload_to='./prayer_month_images/',
                                    blank=True, null=True)
     month = models.IntegerField(max_length=2, choices=MONTHS)
     year = models.IntegerField(max_length=4, help_text="Enter full year not just 15")
@@ -264,7 +289,7 @@ class ChildrensMinistryTeacher(Person):
         return self.full_name()
 
 class ChildrensMinistryClass(models.Model):
-    main_image = models.ImageField(upload_to='./childrens_ministry_images/',
+    main_image = SmartImageField(upload_to='./childrens_ministry_images/',
                                     null=True, blank=True)
     youngest = models.CharField(max_length=40,
                                 help_text="What is the lower bound of the age range?")
@@ -313,8 +338,6 @@ class Sermon(models.Model):
                                 blank=True,
                                 null=True)
     manuscript = RichTextField(blank=True, null=True)
-
-    # manuscript = models.TextField(blank=True, null=True)
 
     def clean(self):
         #remove <p>&nbsp;</p> from manuscripts
