@@ -38,14 +38,16 @@ class iTunesPodcastsFeedGenerator(Rss201rev2Feed):
 class LatestSermonsFeed(Feed):
     feed_type = iTunesPodcastsFeedGenerator
     title = "Living Hope Sermons"
-    link = "/sitenews/"
     description = "The latest two sermons preached at Living Hope."
     subtitle = description
     summary = description
-    iTunes_name = u'Free Law Project'
-    iTunes_email = u'feeds@courtlistener.com'
-    iTunes_image_url = u'https://www.courtlistener.com/static/png/producer.png'
+    iTunes_name = u'Living Hope Sermons'
+    iTunes_email = u'info@onelivinghope.com'
+    iTunes_image_url = u''
     iTunes_explicit = u'no'
+
+    def link(self):
+        return reverse(views.sermon_series)
 
     def feed_extra_kwargs(self, obj):
         return {'iTunes_name': self.iTunes_name,
