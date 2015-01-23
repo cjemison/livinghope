@@ -5,6 +5,7 @@ import views
 from mutagen.mp3 import MP3
 from django.core.urlresolvers import reverse
 from django.utils.feedgenerator import Rss201rev2Feed
+from datetime import datetime, time
 
 # For more details on the Podcast "Spec" see: https://www.apple.com/itunes/podcasts/specs.html
 
@@ -85,5 +86,7 @@ class LatestSermonsFeed(Feed):
         except:
             return 5000
 
+    def item_pubdate(self, item):
+        return datetime.combine(item.sermon_date, time())
     item_enclosure_mime_type = 'audio/mpeg'
-    # def item_enclosure_mime_type(self, item):
+
