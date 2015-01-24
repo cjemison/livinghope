@@ -235,7 +235,7 @@ class SmallGroup(Event):
                                     blank=True,
                                     null=True)
     description = RichTextField(null=True, blank=True)
-
+    active = models.BooleanField(default=True)
     def __unicode__(self):
         return "%s Small Group" % self.region
 

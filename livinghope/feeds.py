@@ -65,7 +65,7 @@ class LatestSermonsFeed(Feed):
                 'explicit': u'no'}
 
     def items(self):
-        return Sermon.objects.all().exclude(recording='').order_by('-sermon_date')[:2]
+        return Sermon.objects.all().exclude(recording='').order_by('-sermon_date')[:5]
 
     def item_title(self, item):
         return item.title

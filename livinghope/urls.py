@@ -46,7 +46,7 @@ urlpatterns = patterns('',
     url(r'^our-denomination/$', views.denomination, name='denomination'),
     url(r'^display-event-details/$', views.display_event_details, name='event_details_modal'),
 
-    url(r'^rss/latest-sermons/feed/$', LatestSermonsFeed()),
+    url(r'^feed/latest-sermons/$', LatestSermonsFeed(), name='latest_sermons_feed'),
     # url(r'^paypal/create/$', views.paypal_create, name='paypal_create'),
     # url(r'^paypal/execute/$', views.paypal_execute, name='paypal_execute'),
     # url(r'^PayPal_IPN/$', views.paypal_payment_info_receiver),

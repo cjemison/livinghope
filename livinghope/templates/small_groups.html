@@ -49,9 +49,15 @@
                 <p>
                     Another key component to our small groups is missions. We believe that missions isn't just overseas but in our neighborhoods, backyards, and places of work! This is why we have small groups broken up into geographic locations. We want to be reaching out to our local communities through our small groups. Often it's asked whether our small groups are "inreach" or "outreach". We say they're "both/and".
                 </p>
+                {% if sgs %}
                 <p>
                     We'd love for you to join us at one of our small groups. See below for more information on our small groups.
                 </p>
+                {% else %}
+                <p>
+                    More information on each individual small group coming soon!
+                </p>
+                {% endif %}
                 <br>
                 {% for sg in sgs %}
                   <div class="row">

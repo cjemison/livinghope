@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 {% block title %}
 | Missions Prayer Calendar
 {% endblock %}
@@ -37,11 +38,8 @@
           </div>
       {% endfor %}
   {% endif %}
-
   <div class="row">
-
-<!--      <div class="clearfix"></div> -->
-     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 portfolio-wrap">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="row">
            <div class="portfolio">
             {% for prayer_month in prayer_months %}
@@ -50,18 +48,23 @@
                   {% if prayer_month.main_image %}
                   <a href="#" class="portfolio-item-link" data-target="#prayer_month_{{prayer_month.id}}" data-toggle="modal" >
                     <span class="portfolio-item-hover"></span>
-                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{prayer_month.main_image.url}}" alt=" "/>
+                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{prayer_month.main_image|thumbnail_url:'prayer_calendar'}}" alt=" "/>
+                  </a>
+                  {% elif prayer_month.missionary.profile_picture %}
+                  <a href="#" class="portfolio-item-link" data-target="#prayer_month_{{prayer_month.id}}" data-toggle="modal" >
+                    <span class="portfolio-item-hover"></span>
+                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{prayer_month.missionary.profile_picture|thumbnail_url:'prayer_calendar'}}" alt=" "/>
                   </a>
                   {% else %}
                   <a href="#" class="portfolio-item-link" data-target="#prayer_month_{{prayer_month.id}}" data-toggle="modal" >
                     <span class="portfolio-item-hover"></span>
-                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{% static 'livinghope/placeholderprofile.jpg' %}" alt=" "/>
+                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{% static 'livinghope/placeholderprofile.jpg' %}" height="500px" alt=" "/>
                   </a>
                   {% endif %}
                     <div class="portfolio-item-title">
                        <a href="#">{{prayer_month.get_month_display}}, {{prayer_month.year}}</a>
                        <p>
-                          MISSIONS HIGHLIGHT THIS MONTH
+                          {{prayer_month.highlight}}
                        </p>
                     </div>
                     <div class="clearfix"></div>
@@ -72,44 +75,50 @@
         </div>
      </div>
   </div>
+  <div class="row">
+      <div class="col-md-6">
+
+      </div>
+      <div class="col-md-6">
+        <div class="pull-right text-right">
+          Displaying months {{prayer_months.start_index}} - {{prayer_months.end_index}} of {{prayer_months.paginator.count}}
+          <nav>
+            <ul class="pagination" id="pagination">
+            </ul>
+          </nav>
+        </div>
+      </div>
+  </div>
+
 </div>
 
-{% for leader in all_leaders %}
-<div class="modal fade" id="leader_{{leader.id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+{% for prayer_month in prayer_months %}
+<div class="modal fade" id="prayer_month_{{prayer_month.id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Leader Information</h4>
+          <h4 class="modal-title" id="myModalLabel">Prayer Focus for {{prayer_month.get_month_display}}, {{prayer_month.year}}</h4>
         </div>
         <div class="modal-body">
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                    {% if leader.profile_picture %}
-                    <img src="{{leader.profile_picture.url}}" class="img-thumbnail img-responsive" width="100%">
+                    {% if prayer_month.main_image %}
+                    <img src="{{prayer_month.main_image.url}}" class="img-thumbnail img-responsive" width="100%">
                     {% else %}
                     <img src="{% static 'livinghope/placeholderprofile.jpg' %}" class="img-responsive">
                     {% endif %}
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                    <h2>{{leader.first_name}} {{leader.last_name}}<br>
+                    <h2>{{prayer_month.highlight}}<br>
                       <small>
-                            {% for role in leader.leadershiprole_set.all %}
-                                {% if role.special_name %}
-                                    {{role.special_name}}{% if not forloop.last %} / {%endif%}
-                                {% elif role.primary_leader %}
-                                    {{role.ministry.name}} Leader{% if not forloop.last %} / {%endif%}
-                                {% else %}
-                                    {{role.ministry.name}}{% if not forloop.last %} / {%endif%}
-                                {% endif %}
-                            {% endfor %}
+                            {{prayer_month.get_month_display}}, {{prayer_month.year}}
                       </small>
                     </h2>
                     <p>
-                        <i class="fa fa-envelope"></i> <a href="#" data-leader-id="{{leader.id}}" data-subject="RE: Living Hope Leaders" data-target="#contact-leader" data-toggle="modal" class=" contact-leader-link">Contact {{leader.first_name}}</a>
-                    </p>
-                    <p>
-                      {{leader.bio|safe}}
+                      Please join us in praying for {{prayer_month.highlight}}!
+
+                      {{prayer_month.prayer_requests|safe}}
                     </p>
                 </div>
 
@@ -141,4 +150,28 @@
       <script src="{% static 'livinghope/pixma/js/jquery.isotope.js' %}"></script>
       <script src="{% static 'livinghope/pixma/js/portfolio.js' %}"></script>
       <script src="{% static 'livinghope/contact_leader.js'%}"></script>
+
+      <script src="{% static 'livinghope/simple-pagination/jquery.simplePagination.js' %}"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $(function() {
+            $("#pagination").pagination({
+                pages: {{ prayer_months.paginator.num_pages }},
+                prevText: "&laquo;",
+                nextText: "&raquo;",
+                hrefTextPrefix: '?&page=',
+                currentPage: {{ prayer_months.number }},
+                selectOnClick: false,
+            });
+            
+            if ({{prayer_months.number}} == 1){
+                $('.prev').parent().attr('class','disabled');
+            }
+            if ({{prayer_months.number}} == {{prayer_months.paginator.num_pages}}){
+                $('.next').parent().attr('class','disabled');
+            }
+
+        });        
+    });
+  </script>
 {% endblock %}

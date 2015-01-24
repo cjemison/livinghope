@@ -155,6 +155,7 @@ THUMBNAIL_ALIASES = {
         #used for sermon series description images
         'ss_med':{'size':(500,375), 'background':'white', 'upscale':True},
         'ss_lg':{'size':(1000,750), 'background':'white', 'upscale':True},
+        'prayer_calendar': {'size':(350,500), 'background':'white', 'upscale':True},
     }
 }
 

@@ -319,7 +319,7 @@ def ministries(request): # not used
     return render(request, 'ministries.html')
 
 def small_groups(request):
-    sgs = SmallGroup.objects.all().order_by('region')
+    sgs = SmallGroup.objects.filter(active=True).order_by('region')
     sg_ministry = Ministry.objects.get(name="Small Groups")
     #this could be more than one
     sg_coordinator_roles = LeadershipRole.objects.filter(
@@ -574,6 +574,14 @@ def childrens_ministry(request):
 
 def prayer_calendar(request):
     prayer_months = MissionsPrayerMonth.objects.all().order_by('-year', '-month')
+    paginator = Paginator(prayer_months, 12)
+    page = request.GET.get('page')
+    try:
+        prayer_months = paginator.page(page)
+    except PageNotAnInteger:
+        prayer_months = paginator.page(1)
+    except EmptyPage:
+        prayer_months = paginator.page(paginator.num_pages)
     context = {'prayer_months': prayer_months}
     return render(request, 'missions_prayer_calendar.html', context)    
 
