@@ -1,4 +1,5 @@
 from django.contrib.syndication.views import Feed
+from django.templatetags.static import static
 from django.core.urlresolvers import reverse
 from livinghope.models import Sermon
 import views
@@ -26,7 +27,7 @@ class iTunesPodcastsFeedGenerator(Rss201rev2Feed):
         handler.addQuickElement(u'itunes:name', self.feed['iTunes_name'])
         handler.addQuickElement(u'itunes:email', self.feed['iTunes_email'])
         handler.endElement(u"itunes:owner")
-        handler.addQuickElement(u'itunes:image', self.feed['iTunes_image_url'])
+        handler.addQuickElement(u'itunes:image', attrs={"href":self.feed['iTunes_image_url']})
 
     def add_item_elements(self, handler, item):
         super(iTunesPodcastsFeedGenerator, self).add_item_elements(
@@ -34,6 +35,7 @@ class iTunesPodcastsFeedGenerator(Rss201rev2Feed):
         handler.addQuickElement(u'itunes:duration', item['duration'])
         handler.addQuickElement(u'itunes:explicit', item['explicit'])
         handler.addQuickElement(u'itunes:author', item['author'])
+        handler.addQuickElement(u'itunes:image', attrs={"href":item['image']})
 
 
 class LatestSermonsFeed(Feed):
@@ -44,7 +46,7 @@ class LatestSermonsFeed(Feed):
     summary = description
     iTunes_name = u'Living Hope Sermons'
     iTunes_email = u'info@onelivinghope.com'
-    iTunes_image_url = u''
+    iTunes_image_url = static('livinghope/living-hope-bad.png')
     iTunes_explicit = u'no'
 
     def link(self):
@@ -60,12 +62,16 @@ class LatestSermonsFeed(Feed):
     def item_extra_kwargs(self, item):
         audio = MP3(item.recording.path)
         duration = audio.info.length
+        m, s = divmod(duration, 60)
+        h, m = divmod(m, 60)
+        image = item.sermon_series.series_image.url
         return {'author': item.author.full_name(),
-                'duration': str(duration),
-                'explicit': u'no'}
+                'duration': '%d:%02d:%02d' % (h, m, s),
+                'explicit': u'no',
+                'image': image}
 
     def items(self):
-        return Sermon.objects.all().exclude(recording='').order_by('-sermon_date')[:5]
+        return Sermon.objects.all().exclude(recording='').order_by('-sermon_date')[:1]
 
     def item_title(self, item):
         return item.title
