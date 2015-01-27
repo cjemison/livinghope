@@ -188,7 +188,13 @@ def sermon_series(request, series_id=None):
             series = SermonSeries.objects.get(id=int(series_id))
         except ObjectDoesNotExist:
             raise Http404
-        sermons = series.sermon_set.all().order_by('-sermon_date')
+        #current series are put latest first but completed series
+        #ordered by earliest first
+        if series.current_series:
+            sermons = series.sermon_set.all().order_by('-sermon_date')
+        else:
+            sermons = series.sermon_set.all().order_by('sermon_date')
+
         #paginate!
         paginator = Paginator(sermons, 20)
         page = request.GET.get('page')
