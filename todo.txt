@@ -37,11 +37,13 @@ e- order ministries for leader profiles
     - OR just put additional landscape field to model containing the image 
 - give thumbnailed images to feeds.py
 - keep query in search form verses?
+
 ---------------------
 DONE
 -django-ckeditor MUST CHANGE widget.html to margin-left:0
 -django_admin_bootstrapped - templates/admin/includes/fieldset.html MUST CHANGE columns 
 
+- sermon search page polish
 - fix parsing of verses to handle commas
 - Do i need series column in table? do i need an "all sermons" filter?
 - take out full screen on lightbox

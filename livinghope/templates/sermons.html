@@ -87,7 +87,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <form class="form-inline" role="form"> <!-- action="" method="get" -->
             <div class="form-group">
-                <input type="text" autocomplete="off" class="form-control" id="id_query" name="query" placeholder="Enter Verses">
+                <input type="text" autocomplete="off" class="form-control" id="id_query" name="query" placeholder="Enter Verses" value="{{query}}">
             </div>
             <button type="submit" class="btn btn-primary ladda-button" data-style="zoom-in" data-spinner-color="#000"><span class="ladda-label">Search</span></button>
         </form>
@@ -98,14 +98,16 @@
 {% if sermons %}
 
 <div class="row">
+    {% if series %}
     <div class="col-md-4">
       {% if series %}
       <img src="{{series.series_image|thumbnail_url:'ss_med'}}" class="img-responsive img-thumbnail">
+      {% else %}
+      <img src="{% static 'livinghope/openbiblethumb.jpg' %}" class="img-responsive img-thumbnail">
       {% endif %}
 
       <div class="well">
         <p>
-          {% if series %}
           <h2>{{series.name}} {% if series.current_series %}<br><small>(Current Series)</small>{% endif %}</h2>
           <i class="fa fa-calendar"></i>&nbsp;
           {% if series.end_date %}
@@ -116,11 +118,6 @@
           <br>
           <i class="fa fa-book"></i>&nbsp;
           {{series.passage_range}}
-          {% else %}
-            <h2>Sermon Search Results For...</h2>
-            
-            <h3><i class="fa fa-search"></i>&nbsp; {{query}}</h3>
-          {% endif %}
 
         </p>
         {% if series.description %}
@@ -128,8 +125,15 @@
         {% endif %}
       </div>
     </div>
+    {% endif %}
 
-    <div class="col-md-8">
+    {% if series %}
+      <div class="col-md-8">
+    {% else %}
+      <div class="col-md-12">
+        <h3><i class="fa fa-search"></i>&nbsp; Search results for "{{query}}"</h3>
+    {% endif %}
+
       <div class="row">
           <div class="col-md-6">
               <nav>
@@ -148,13 +152,14 @@
       <table class="table" id="sermonlisting">
         <thead>
           <tr>
-            <th>Date</th><th>Title</th><th>Passage</th><th>Author</th><th></th>
+            <th>Date</th><th>Title</th>{%if query%}<th>Series</th>{%endif%}<th>Passage</th><th>Author</th><th></th>
           </tr>
         </thead>
         {% for sermon in sermons %}
           <tr class="sermon">
             <td>{{sermon.sermon_date}}</td>
             <td>{{sermon.title}}</td>
+            {% if query %}<td>{{sermon.sermon_series.name}}</td>{% endif%}
             <td>{{sermon.passage}}</td>
             <td>{{sermon.author}}</td>
             <td><div class="arrow"></div></td>
@@ -167,10 +172,14 @@
                   Date: {{sermon.sermon_date}}
                 </p>
             </td> -->
+            {% if series %}
             <td colspan=5>
+            {% else %}
+            <td colspan=6>
+            {% endif %}
               <div class="row">
                 {% if sermon.recording %}
-                <audio preload="none" class="col-md-12" controls>
+                <audio preload="none" width="100%" class="col-md-12 pull-left" controls>
                   <source type="audio/mpeg" src="{{sermon.recording.url}}">
                   Your browser does not support audio.
                 </audio>
@@ -266,7 +275,11 @@
                 pages: {{ sermons.paginator.num_pages }},
                 prevText: "&laquo;",
                 nextText: "&raquo;",
-                hrefTextPrefix: '?&page=',
+                {% if query %}
+                hrefTextPrefix: '?query={{query}}&page=',
+                {% else %}
+                hrefTextPrefix: '?page=',
+                {% endif %}
                 currentPage: {{ sermons.number }},
                 selectOnClick: false,
             });
