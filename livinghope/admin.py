@@ -7,7 +7,8 @@ from livinghope.models import Author, SermonSeries, Sermon, \
 							  Leader, PrayerMeeting, SmallGroup, BlogPost, \
                               BlogTag, SpecialEvent, MissionaryImage, Ministry, \
                               LeadershipRole, SmallGroupImage, ChildrensMinistryClass, \
-                              ChildrensMinistryTeacher, MissionsPrayerMonth
+                              ChildrensMinistryTeacher, MissionsPrayerMonth, \
+                              Book, Chapter, Verse
 
 def set_leader_inactive(modeladmin, request, queryset):
     queryset.update(active=False)
@@ -63,6 +64,7 @@ class SermonAdmin(admin.ModelAdmin):
                     'passage')
     ordering = ('-sermon_date',)
     search_fields = ['title', 'passage']
+    exclude = ('verses', )
 
     # formfield_overrides = {models.TextField: {'widget': forms.Textarea(attrs={'class':'ckeditor'})},}
    
@@ -80,6 +82,9 @@ class BlogPostAdmin(admin.ModelAdmin):
     # class Media:
     #     js = (static('livinghope/ckeditor/ckeditor.js'),)
 
+admin.site.register(Book)
+admin.site.register(Chapter)
+admin.site.register(Verse)
 admin.site.register(MissionsPrayerMonth)
 admin.site.register(ChildrensMinistryClass, ChildrensMinistryClassAdmin)
 admin.site.register(Ministry)

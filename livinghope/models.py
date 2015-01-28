@@ -306,6 +306,31 @@ class ChildrensMinistryClass(models.Model):
     def __unicode__(self):
         return 'Class from %s to %s' % (self.youngest, self.oldest)
 
+
+class Book(models.Model):
+    name = models.CharField(max_length=30)
+    num_chapters = models.IntegerField(verbose_name='number of chapters')
+    order_index = models.IntegerField(primary_key=True)
+    
+    def __unicode__(self):
+        return self.name
+    
+class Chapter(models.Model):
+    book = models.ForeignKey(Book)
+    number = models.IntegerField(verbose_name="chapter")
+    num_verses = models.IntegerField(verbose_name="number of verses")
+    
+    def __unicode__(self):
+        return u'%s %s' % (self.book, self.number)
+    
+class Verse(models.Model):
+    book = models.ForeignKey(Book)
+    chapter = models.ForeignKey(Chapter)
+    number = models.IntegerField()
+    def __unicode__(self):
+        return u'%s:%s' % (self.chapter,self.number)
+
+
 class SermonSeries(models.Model):
     class Meta:
         verbose_name_plural = "Sermon Series"
@@ -336,10 +361,12 @@ class Sermon(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(Author)
     sermon_series = models.ForeignKey(SermonSeries)
-    recording = models.FileField(upload_to='./sermon_recordings/')
+    recording = models.FileField(upload_to='./sermon_recordings/',
+                                 null=True, blank=True)
     passage = models.CharField(max_length=50, 
                                 blank=True,
                                 null=True)
+    verses = models.ManyToManyField(Verse, blank=True)
     manuscript = RichTextField(blank=True, null=True)
 
     def clean(self):
@@ -352,3 +379,8 @@ class Sermon(models.Model):
                                     self.passage,
                                     self.author.full_name())
 
+# class SermonVerse(models.Model):
+#     sermon = models.ForeignKey(Sermon)
+#     verse = models.ForeignKey(Verse)
+#     SV_popularity = models.IntegerField(default=1)
+ 

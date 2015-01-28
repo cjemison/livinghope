@@ -1,7 +1,7 @@
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.template.loader import render_to_string
 from django.views.generic.edit import FormView
 from django.views.generic import TemplateView
@@ -15,10 +15,14 @@ from livinghope.models import Missionary, Leader, SmallGroup, Service
 from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
 from livinghope.models import SpecialEvent, Ministry, LeadershipRole
 from livinghope.models import MissionsPrayerMonth, ChildrensMinistryTeacher
-from livinghope.models import ChildrensMinistryClass
+from livinghope.models import ChildrensMinistryClass, Verse
 
-from livinghope.forms import PrayerForm, ContactForm, ContactLeaderForm
+from livinghope.forms import PrayerForm, ContactForm, ContactLeaderForm, SearchVerseForm
+from livinghope.functions import parse_string_to_verses, test_parsable
 from django.core.mail import send_mail
+from aggregate_if import Count as CountIf
+
+
 # from livinghope_proj.settings import PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
 import math
 import pickle
@@ -183,6 +187,36 @@ def leaders(request):
 
 def sermon_series(request, series_id=None):
     all_series = SermonSeries.objects.all().order_by('-start_date')
+    searched = False
+    if 'query' in request.GET: # this is if something was searched for
+        searched = True
+        form = SearchVerseForm(request.GET)
+        if form.is_valid():
+            cd = form.cleaned_data
+            query = cd['query']
+            verse_ids = parse_string_to_verses(query)
+            verse_ids = list(set(verse_ids))
+            #gets queryset of all songs that have a verse tag in the verse search list
+            sermons = Sermon.objects.filter(
+                                verses__id__in=verse_ids
+                            ).distinct().annotate(
+                                verse_matches=CountIf('verses', only=Q(verses__id__in=verse_ids))
+                            ).order_by('-verse_matches') #[:2] limits to 2
+            # sermons = sermons.prefetch_related('authors', 'publisher')
+
+            paginator = Paginator(sermons, 20)
+            page = request.GET.get('page')
+            try:
+                sermons = paginator.page(page)
+            except PageNotAnInteger:
+                sermons = paginator.page(1)
+            except EmptyPage:
+                sermons = paginator.page(paginator.num_pages)
+            
+            #no longer needs just songs context element
+            return render(request, 'sermons.html', {'sermons': sermons,
+                'form':form, 'query':query,'all_series': all_series,})
+
     if series_id: #this is if a sermon series was selected
         try:
             series = SermonSeries.objects.get(id=int(series_id))
@@ -208,11 +242,51 @@ def sermon_series(request, series_id=None):
         context = {'sermons': sermons,
                     'all_series': all_series,
                     'series':series,}
+        if searched:
+            context.update({'form': form})
         return render(request, 'sermons.html', context)
     else: #this is to display all sermon series
 
         context = {'all_series':all_series}
+        if searched:
+            context.update({'form': form})
         return render(request, 'sermon_series.html', context)
+
+# def search_sermons(request):
+#     if 'query' in request.GET:
+#         form = SearchVerseForm(request.GET)
+#         if form.is_valid():
+#             cd = form.cleaned_data
+#             query = cd['query']
+#             verse_ids = parse_string_to_verses(query)
+#             verse_ids = list(set(verse_ids))
+#             #gets queryset of all songs that have a verse tag in the verse search list
+#             import pdb; pdb.set_trace()
+#             sermons = Sermon.objects.filter(
+#                                 verses__id__in=verse_ids
+#                             ).aggregate(
+#                                 verse_matches=CountIf('verses', only=Q(verses__id__in=verses_ids))
+#                             ).distinct().order_by('verse_matches') #[:2] limits to 2
+#             # sermons = sermons.prefetch_related('authors', 'publisher')
+#             for sermon in sermons:
+#                 print 'blah'
+#                 print sermons.verse_matches
+#             paginator = Paginator(sermons, 20)
+#             page = request.GET.get('page')
+#             try:
+#                 sermons = paginator.page(page)
+#             except PageNotAnInteger:
+#                 sermons = paginator.page(1)
+#             except EmptyPage:
+#                 sermons = paginator.page(paginator.num_pages)
+            
+#             #no longer needs just songs context element
+#             return render(request, 'sermons.html', {'sermons': sermons,
+#                 'form':form, 'query':query,})
+#         return render(request, 'search_form_verses.html', {'form':form,})
+#     return Http404
+
+#     return render(request, 'search_form_verses.html', {'form':form, 'ministries':ministries})
 
 class Prayer(FormView):
     template_name = 'prayer_form.html'
@@ -700,3 +774,51 @@ def display_event_details(request):
 
 def giving(request):
     return render(request, 'giving.html')
+
+
+# def migrate_sermon_verses(request):
+#     all_sermons = Sermon.objects.all()
+#     ids = []
+#     for sermon in all_sermons:
+#         passage = sermon.passage
+#         sermon_id = sermon.id
+#         if 'Gen.' in passage:
+#             passage = passage.replace('Gen.', 'Genesis')
+#         if 'Thess.' in passage:
+#             passage = passage.replace('Thess.', 'Thessalonians')
+#         if 'Is.' in passage:
+#             passage = passage.replace('Is.', 'Isaiah')
+#         if 'Matt.' in passage:
+#             passage = passage.replace('Matt.', 'Matthew')
+#         if 'Gal.' in passage:
+#             passage = passage.replace('Gal.', 'Galatians')
+#         if 'Sam.' in passage:
+#             passage = passage.replace('Sam.', 'Samuel')
+#         if 'Col.' in passage:
+#             passage = passage.replace('Col.', 'Colossians')
+#         if 'Ps.' in passage:
+#             passage = passage.replace('Ps.', 'Psalm')
+#         if 'Tim.' in passage:
+#             passage = passage.replace('Tim.', 'Timothy')
+#         if 'Pet.' in passage:
+#             passage = passage.replace('Pet.', 'Peter')
+#         if 'Neh.' in passage:
+#             passage = passage.replace('Neh.', 'Nehemiah')
+#         if 'Rev.' in passage:
+#             passage = passage.replace('Rev.', 'Revelation')
+#         if 'Phil.' in passage:
+#             passage = passage.replace('Phil.', 'Philippians')
+#         if ';' in passage:
+#             passage = passage.replace(';', ',')
+#         sermon.passage = passage
+#         print passage
+#         verse_list = parse_string_to_verses(passage)
+#         verses = Verse.objects.filter(id__in=verse_list)
+#         sermon.verses.add(*verses)
+#         sermon.save()
+#         print 'success!'
+
+#         sermon.save()
+#     print ids
+#         # print passage#, parse_string_to_verses(passage)
+

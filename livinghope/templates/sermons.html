@@ -50,6 +50,7 @@
             <div class="pull-right">
               <br>
               <select class="form-control" id="sermon-series-selector">
+                <option value=0>--- Sermon Series ----</option>
                 {% for s in all_series %}
                   {% ifequal series.id s.id %}
                     <option value={{s.id}} selected>{{s.name}}</option>
@@ -74,14 +75,37 @@
     {% endfor %}
 {% endif %}
 
+<div id='alerts'>
+{% if form.errors %}
+    {% for error in form.query.errors %}
+        <div class="alert alert-danger">{{ error|escape }}</div>
+    {% endfor %}
+{% endif %}
+</div>
+
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <form class="form-inline" role="form"> <!-- action="" method="get" -->
+            <div class="form-group">
+                <input type="text" autocomplete="off" class="form-control" id="id_query" name="query" placeholder="Enter Verses">
+            </div>
+            <button type="submit" class="btn btn-primary ladda-button" data-style="zoom-in" data-spinner-color="#000"><span class="ladda-label">Search</span></button>
+        </form>
+    </div>
+  </div>
+<br>
+
 {% if sermons %}
 
 <div class="row">
     <div class="col-md-4">
-      
+      {% if series %}
       <img src="{{series.series_image|thumbnail_url:'ss_med'}}" class="img-responsive img-thumbnail">
+      {% endif %}
+
       <div class="well">
         <p>
+          {% if series %}
           <h2>{{series.name}} {% if series.current_series %}<br><small>(Current Series)</small>{% endif %}</h2>
           <i class="fa fa-calendar"></i>&nbsp;
           {% if series.end_date %}
@@ -92,6 +116,11 @@
           <br>
           <i class="fa fa-book"></i>&nbsp;
           {{series.passage_range}}
+          {% else %}
+            <h2>Sermon Search Results For...</h2>
+            
+            <h3><i class="fa fa-search"></i>&nbsp; {{query}}</h3>
+          {% endif %}
 
         </p>
         {% if series.description %}
@@ -227,6 +256,8 @@
 {% endblock %}  
 
 {% block endloaders %}
+<script src="{% static 'livinghope/bootstrap/js/typeahead.js' %}"></script>  
+<link href="{% static 'livinghope/bootstrap/css/typeahead.js-bootstrap.css'%}" rel="stylesheet" type="text/css">
 <script src="{% static 'livinghope/simple-pagination/jquery.simplePagination.js' %}"></script>
   <script type="text/javascript">
     $(document).ready(function(){
@@ -301,8 +332,27 @@
 
         $('#sermon-series-selector').on('change', function(){
             var series_id = $(this).val();
+            if (series_id == 0){
+              return;
+            }
             window.location.href = "{% url 'livinghope.views.sermon_series' %}" + series_id;
         })
+
+        $('#id_query').typeahead({
+            local:["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua",
+                    "Judges", "Ruth", '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', 
+                    '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job',
+                    'Psalm', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah',
+                    'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel',
+                    'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah',
+                    'Haggai', 'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John',
+                    'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 
+                    'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians',
+                    '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon',
+                    'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John',
+                    'Jude', 'Revelation']
+        });
     });
   </script>
+
 {% endblock %}

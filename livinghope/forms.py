@@ -1,9 +1,11 @@
 from django import forms
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from captcha.fields import CaptchaField, CaptchaTextInput
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from livinghope.models import Leader
+from livinghope.functions import test_parsable
 # from django.utils.safestring import mark_safe
 
 # class BootstrapCaptchaField(CaptchaField):
@@ -100,3 +102,10 @@ class PrayerForm(forms.Form):
         
         send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
                  ['rhsiao2@gmail.com'], fail_silently=False)
+
+def validate_parsable(value):
+    if not test_parsable(value):
+        raise ValidationError("Oops! We don't understand what you typed or the verses don't exist.")
+
+class SearchVerseForm(forms.Form):
+    query = forms.CharField(validators=[validate_parsable,])
