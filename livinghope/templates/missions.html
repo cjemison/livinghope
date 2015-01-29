@@ -102,7 +102,8 @@
         <div class="widget category">
             <h3 class="title">Get Involved</h3>
             <ul class="category-list slide">
-                <li><a href="#">Join us in praying for each country of the month</a></li>
+                <li><a href="{% url 'missions_prayer_calendar' %}">Join us in praying for each country of the month</a></li>
+                <li><a href="{% url 'missions_partners' %}">Find out more about the ministries we support</a></li>
                 <li><a href="#">Give to the missions fund</a></li>
             </ul>
         </div>
@@ -134,41 +135,6 @@
         </div>
       </div>
     </div><!-- end row -->
-  
-  <h3 class="title">Who we partner with</h3>
-  <p>
-  We are grateful to be able to partner with ministries that God is using to build up His kingdom. You can learn more about the ministries we partner with below:
-  </p>
-     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="row">
-           <div class="portfolio">
-            {% for missionary in missionaries %}
-              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 item">
-                 <div class="portfolio-item">
-                  <a href="{% url 'missionary_profile' missionary.id %}" class="portfolio-item-link" >
-                    <span class="portfolio-item-hover"></span>
-                    <span class="fullscreen"><i class="fa fa-search"></i></span>
-                    {% if missionary.profile_picture %}
-                    <img class="img-responsive" src="{{missionary.profile_picture.url}}" alt=" "/>
-                    {% else %}
-                    <img class="img-responsive" src="{% static 'livinghope/placeholderprofile.jpg' %}" />
-                    {% endif %}
-                  </a>
-                    <div class="portfolio-item-title">
-                       <a href="single-project.html">{{missionary.first_name}} {{missionary.last_name}}</a>
-                       <p>
-                          {% if missionary.organization %}
-                          Serving with {{missionary.organization}}
-                          {% endif %}
-                       </p>
-                    </div>
-                    <div class="clearfix"></div>
-                 </div>
-              </div>
-              {% endfor %}
-           </div>
-        </div>
-     </div>
 
   </div>
 </div>

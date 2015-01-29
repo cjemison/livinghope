@@ -108,9 +108,17 @@
                            </ul>
                         </li>
                         <li>
-                           <a href="{% url 'missions' %}" class="sf-with-ul">
+                           <a href="#" class="sf-with-ul">
                            Missions
-                            </a>
+                           <span class="sf-sub-indicator">
+                           <i class="fa fa-angle-down "></i>
+                           </span>
+                           </a>
+                           <ul>
+                              <li><a href="{% url 'missions' %}" class="sf-with-ul">Missions at LH</a></li>
+                              <li><a href="{% url 'missions_partners' %}" class="sf-with-ul">Ministry Partners</a></li>
+                              <li><a href="{% url 'missions_prayer_calendar'%}" class="sf-with-ul">Prayer Calendar</a></li>
+                           </ul>
                         </li>
                         <li>
                            <a href="#" class="sf-with-ul">

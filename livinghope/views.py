@@ -158,6 +158,18 @@ def missions(request):
                'ministry_leaders': ministry_leaders}
     return render(request, 'missions.html', context)
 
+def missions_partners(request):
+    missions_ministry = Ministry.objects.get(name='Missions')
+    ministry_leaders = LeadershipRole.objects.filter(
+                            ministry=missions_ministry,
+                            primary_leader=True,
+                            leader__active=True
+                        ).select_related('leader')
+    missionaries = Missionary.objects.all().order_by('last_name')
+    context = {'missionaries': missionaries,
+               'ministry_leaders': ministry_leaders}
+    return render(request, 'missions_partners.html', context)
+
 def missionary_profile(request, missionary_id):
     try:
         missionary = Missionary.objects.get(id=missionary_id)
