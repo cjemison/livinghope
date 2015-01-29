@@ -87,7 +87,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <form class="form-inline" role="form"> <!-- action="" method="get" -->
             <div class="form-group">
-                <input type="text" autocomplete="off" class="form-control" id="id_query" name="query" placeholder="Enter Verses" value="{{query}}">
+                <input type="text" autocomplete="off" class="form-control" id="id_query" name="query" placeholder="Enter Search Verses..." value="{{query}}">
             </div>
             <button type="submit" class="btn btn-primary ladda-button" data-style="zoom-in" data-spinner-color="#000"><span class="ladda-label">Search</span></button>
         </form>
@@ -165,27 +165,22 @@
             <td><div class="arrow"></div></td>
           </tr>
           <tr class="details">
-<!--             <td>
-                <p>
-                  Scripture: {{sermon.passage}}<br>
-                  Author: {{sermon.author}}<br>
-                  Date: {{sermon.sermon_date}}
-                </p>
-            </td> -->
             {% if series %}
             <td colspan=5>
             {% else %}
             <td colspan=6>
             {% endif %}
               <div class="row">
-                {% if sermon.recording %}
-                <audio preload="none" width="100%" class="col-md-12 pull-left" controls>
-                  <source type="audio/mpeg" src="{{sermon.recording.url}}">
-                  Your browser does not support audio.
-                </audio>
-                {% else %}
-                <p>No Recording Available!</p>
-                {% endif %}
+                  {% if sermon.recording %}
+                  <audio preload="none" width="100%" class="col-md-12 pull-left" controls>
+                    <source type="audio/mpeg" src="{{sermon.recording.url}}">
+                    Your browser does not support audio.
+                  </audio>
+                  {% else %}
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <p>No Recording Available!</p>
+                  </div>
+                  {% endif %}
               </div>
               <br>
               <div class="row">
@@ -207,7 +202,7 @@
     </div>
 </div>
 {% else %}
-  No Sermons
+  <h3><i class="fa fa-search"></i> Sorry! No Sermons Found!</h3>
 {% endif %}
 
 <!-- transcript modal-->
