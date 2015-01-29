@@ -15,7 +15,6 @@ e- order ministries for leader profiles
 - small group image model? foreign key to small groups. from small group image_set
 - maybe subclass image (for smallgroupimage and missionaryimage)
 - take out all hard coded emails to rhsiao2@gmail.com and put in settings file
-- add titles to each page?
 - New model to deal with worship order? and description? Service page
 - which is better? repeating image or background color for slider?
     - repeating image: data-bgfit="contain" data-bgrepeat="repeat"
@@ -29,20 +28,25 @@ e- order ministries for leader profiles
 - modeladmin fieldset
 - CBV for "ministryView" for childrens ministry, small groups, women's ministry, missions etc
 - for ministry pages, use ministry description field
+- give thumbnailed images to feeds.py
+- remove admin views for books, chapters, and verses?
+- add help text to give guidelines for good passage entry in sermon
+- write tests
+---------------------
+DONE
+-django-ckeditor MUST CHANGE widget.html to margin-left:0
+-django_admin_bootstrapped - templates/admin/includes/fieldset.html MUST CHANGE columns 
+
+
+- BEFORE NEXT SERMON GETS UPLOADED, OVERRIDE SAVE ON SERMON TO PARSE PASSAGE THEN SAVE VERSES
+- add titles to each page?
 - on save of image, programatically determine if it is landscape or portrait
     - to be landscape, not just simply width > height but greater by a certain amount
     - then handle rest with easy_thumbnail
     - subclass image field??
     - subclass shoudl override save to test dimensions?
     - OR just put additional landscape field to model containing the image 
-- give thumbnailed images to feeds.py
 - keep query in search form verses?
-
----------------------
-DONE
--django-ckeditor MUST CHANGE widget.html to margin-left:0
--django_admin_bootstrapped - templates/admin/includes/fieldset.html MUST CHANGE columns 
-
 - sermon search page polish
 - fix parsing of verses to handle commas
 - Do i need series column in table? do i need an "all sermons" filter?

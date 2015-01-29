@@ -357,6 +357,15 @@ class SermonSeries(models.Model):
         return self.name
 
 class Sermon(models.Model):
+    PASSAGE_HELP_TEXT = """
+                        Do not abbreviate book names. Separate verses by commas
+                        and always include chapter number if applicable.<br>
+                        If the passage spans whole chapters, it's acceptable to 
+                        separate chapter numbers with a "-" if book name is given.<br>
+                        Good, very clear: Philippians 1:1-3, 1:6-8, 1 John 1 <br>
+                        Bad, ambiguous: Phi. 1:1-3, 6-8. Is this Philippians or Philemon? 
+                        6-8 would be interpreted as chapters 6-8 not verses 1:6-8
+                        """
     sermon_date = models.DateField()
     title = models.CharField(max_length=100)
     author = models.ForeignKey(Author)
@@ -365,22 +374,48 @@ class Sermon(models.Model):
                                  null=True, blank=True)
     passage = models.CharField(max_length=50, 
                                 blank=True,
-                                null=True)
+                                null=True,
+                                help_text = PASSAGE_HELP_TEXT)
     verses = models.ManyToManyField(Verse, blank=True)
     manuscript = RichTextField(blank=True, null=True)
+
+    __original_passage = None
+
+    def __init__(self, *args, **kwargs):
+        #override this to check if passage has changed
+        super(Sermon, self).__init__(*args, **kwargs)
+        self.__original_passage = self.passage
 
     def clean(self):
         #remove <p>&nbsp;</p> from manuscripts
         self.manuscript = self.manuscript.replace('<p>&nbsp;</p>', '')
         super(Sermon, self).clean()
 
+    def save(self):
+        #Overriding save to parse passage into verse objects
+
+        # import this here to avoid circular import
+        from livinghope.functions import parse_string_to_verses
+
+        # this is needed for the case where sermon is new object
+        # must have object before establishgin M2M relationship
+        super(Sermon, self).save()
+
+        #if the passage has changed or first time initializing
+        # also covers case where a sermon's passage hasn't been parsed to verses
+        if self.passage:
+            if self.__original_passage != self.passage or (self.passage and not self.verses.all()):
+                print 'recalc'
+                self.verses.clear()
+                try: #if there is an error in parsing, just quit
+                    verse_list = parse_string_to_verses(self.passage)
+                except:
+                    return
+                verses = Verse.objects.filter(id__in=verse_list)
+                self.verses.add(*verses)
+                super(Sermon, self).save()
+
     def __unicode__(self):
         return "%s - %s by %s" % (str(self.sermon_date), 
                                     self.passage,
                                     self.author.full_name())
-
-# class SermonVerse(models.Model):
-#     sermon = models.ForeignKey(Sermon)
-#     verse = models.ForeignKey(Verse)
-#     SV_popularity = models.IntegerField(default=1)
- 
