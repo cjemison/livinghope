@@ -9,7 +9,7 @@ class SmartImageFieldFile(ImageFieldFile):
     things django adds, will expose a method to calculate
     whether the image is landscape or portrait
     """
-    def _is_landscape(self):
+    def _is_wide(self):
         self._require_file()
         aspect_ratio = float(self.width)/self.height
         # of should this be 5:3?
@@ -17,6 +17,14 @@ class SmartImageFieldFile(ImageFieldFile):
         if aspect_ratio >= 2:
             return True
         return False
+
+    def _is_landscape(self):
+        self._require_file()
+        if self.width > self.height:
+            return True
+        return False
+
+    is_wide = property(_is_wide)
     is_landscape = property(_is_landscape)
     #this is where to put my method to calculate aspect ratio
 
@@ -48,8 +56,8 @@ class Missionary(Person):
     profile_picture = models.ImageField(upload_to='./missionary_images/',
                                 blank=True,
                                 null=True)
-    website = models.URLField(max_length=200, blank=True, null=True)
-    organization = models.CharField(max_length=100, blank=True, null=True)
+    website = models.URLField(max_length=255, blank=True, null=True)
+    organization = models.CharField(max_length=255, blank=True, null=True)
     bio = RichTextField(blank=True, null=True)
 
     def __unicode__(self):
@@ -64,7 +72,7 @@ class MissionaryImage(models.Model):
     image = models.ImageField(upload_to='./missionary_images/')
     created_on = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=50)
-    caption = models.CharField(max_length=100, blank=True, null=True)
+    caption = models.CharField(max_length=255, blank=True, null=True)
     missionary = models.ForeignKey(Missionary)
     order = models.IntegerField(max_length=2, default=0)
 
@@ -112,7 +120,7 @@ class Leader(Person):
 class LeadershipRole(models.Model): #rename this roles?
     leader = models.ForeignKey(Leader)
     ministry = models.ForeignKey(Ministry)
-    special_name = models.CharField(max_length=100, blank=True, null=True)
+    special_name = models.CharField(max_length=255, blank=True, null=True)
     primary_leader = models.BooleanField(default=False)
 
 class BlogTag(models.Model):
@@ -128,7 +136,7 @@ class BlogPost(models.Model):
                                     help_text="For best results, the width of the image \
                                                 should be larger than the height. Ideally \
                                                 5:3 aspect ratio")
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=255)
     author = models.ForeignKey(Author)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -147,7 +155,7 @@ class BannerImage(models.Model):
                                 null=True)
     order = models.IntegerField(max_length=2)
     #must be hardcoded pretty much UGH!!!
-    link_to = models.CharField(max_length=100, blank=True, null=True, default='#')
+    link_to = models.CharField(max_length=255, blank=True, null=True, default='#')
 
     def save(self):
         #make sure there are no repeats in order.
@@ -164,8 +172,8 @@ class BannerImage(models.Model):
         return self.name
 
 class Location(models.Model):
-    name = models.CharField(max_length=100)
-    street_address = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
+    street_address = models.CharField(max_length=255)
     city = models.CharField(max_length=25)
     state = models.CharField(max_length=30)
     zip_code = models.CharField(max_length=10)
@@ -214,7 +222,7 @@ class Event(models.Model):
     location = models.ForeignKey(Location)
 
 class SpecialEvent(Event):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
     date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
     organizer = models.ManyToManyField(Leader)
@@ -243,7 +251,7 @@ class SmallGroupImage(models.Model):
     image = models.ImageField(upload_to='./small_group_images/')
     created_on = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=50)
-    caption = models.CharField(max_length=100, blank=True, null=True)
+    caption = models.CharField(max_length=255, blank=True, null=True)
     small_group = models.ForeignKey(SmallGroup)
     order = models.IntegerField(max_length=2, default=0)
 
@@ -273,10 +281,12 @@ class MissionsPrayerMonth(models.Model):
         (12, 'December'),
     )
     main_image = SmartImageField(upload_to='./prayer_month_images/',
-                                   blank=True, null=True)
-    highlight = models.CharField(max_length=100, default='')
-    missionary = models.ForeignKey(Missionary, blank=True, null=True,
-                   help_text='Put this in if the highlight is also a missionary we support')
+                                   blank=True, null=True, 
+                                   help_text="This image will be displayed portrait-style\
+                                              so landscape images will be cropped.")
+    highlight = models.CharField(max_length=255, default='')
+    # missionary = models.ForeignKey(Missionary, blank=True, null=True,
+    #                help_text='Put this in if the highlight is also a missionary we support')
     month = models.IntegerField(max_length=2, choices=MONTHS)
     year = models.IntegerField(max_length=4, help_text="Enter full year not just 15")
     prayer_requests = RichTextField()
@@ -285,7 +295,7 @@ class MissionsPrayerMonth(models.Model):
         unique_together = ('month', 'year')
 
     def __unicode__(self):
-        return 'Prayer requests for %s, %s' % (self.month, self.year)
+        return 'Prayer requests for %s, %s (%s)' % (self.month, self.year, self.highlight)
 
 class ChildrensMinistryTeacher(Person):
     def __unicode__(self):
@@ -336,7 +346,7 @@ class SermonSeries(models.Model):
         verbose_name_plural = "Sermon Series"
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
     #consider using django-filer in the future?
     series_image = models.ImageField(upload_to='./sermon_series/',
                                      help_text="Image should be ideally\
@@ -367,7 +377,7 @@ class Sermon(models.Model):
                         6-8 would be interpreted as chapters 6-8 not verses 1:6-8
                         """
     sermon_date = models.DateField()
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=255)
     author = models.ForeignKey(Author)
     sermon_series = models.ForeignKey(SermonSeries)
     recording = models.FileField(upload_to='./sermon_recordings/',

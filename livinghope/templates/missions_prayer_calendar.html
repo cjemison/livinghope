@@ -39,7 +39,7 @@
       {% endfor %}
   {% endif %}
   <div class="row">
-     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 portfolio-wrap">
         <div class="row">
            <div class="portfolio">
             {% for prayer_month in prayer_months %}
@@ -48,7 +48,8 @@
                   {% if prayer_month.main_image %}
                   <a href="#" class="portfolio-item-link" data-target="#prayer_month_{{prayer_month.id}}" data-toggle="modal" >
                     <span class="portfolio-item-hover"></span>
-                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{prayer_month.main_image|thumbnail_url:'prayer_calendar'}}" alt=" "/>
+                    <span class="fullscreen"><i class="fa fa-search"></i></span>
+                    <img src="{{prayer_month.main_image|thumbnail_url:'prayer_calendar_l'}}" alt=" "/>
                   </a>
                   {% elif prayer_month.missionary.profile_picture %}
                   <a href="#" class="portfolio-item-link" data-target="#prayer_month_{{prayer_month.id}}" data-toggle="modal" >
@@ -58,7 +59,7 @@
                   {% else %}
                   <a href="#" class="portfolio-item-link" data-target="#prayer_month_{{prayer_month.id}}" data-toggle="modal" >
                     <span class="portfolio-item-hover"></span>
-                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{% static 'livinghope/placeholderprofile.jpg' %}" height="500px" alt=" "/>
+                    <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{% static 'livinghope/placeholderprofile.jpg' %}" height="361px" alt=" "/>
                   </a>
                   {% endif %}
                     <div class="portfolio-item-title">
@@ -103,8 +104,9 @@
         <div class="modal-body">
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
                     {% if prayer_month.main_image %}
-                    <img src="{{prayer_month.main_image.url}}" class="img-thumbnail img-responsive" width="100%">
+                        <img src="{{prayer_month.main_image|thumbnail_url:'prayer_calendar_l'}}" alt=" " class="img-thumbnail img-responsive"/>
                     {% else %}
                     <img src="{% static 'livinghope/placeholderprofile.jpg' %}" class="img-responsive">
                     {% endif %}

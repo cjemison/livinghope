@@ -52,7 +52,7 @@
             <h3 class="title">{{class.youngest}} to {{class.oldest}} Class</h3>
             {% if class.main_image %}
               <div class="row">
-              {% if class.main_image.is_landscape %}
+              {% if class.main_image.is_wide %}
                 <img src="{{class.main_image.url}}" class="img=thumbnail" width="100%">
                 {{ class.description|safe}}
               {% else %}
