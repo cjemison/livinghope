@@ -63,9 +63,9 @@
                   </a>
                   {% endif %}
                     <div class="portfolio-item-title">
-                       <a href="#">{{prayer_month.get_month_display}}, {{prayer_month.year}}</a>
+                       <a href="#">{{prayer_month.highlight}}</a>
                        <p>
-                          {{prayer_month.highlight}}
+                          {{prayer_month.get_month_display}} {{prayer_month.year}}
                        </p>
                     </div>
                     <div class="clearfix"></div>
@@ -99,27 +99,28 @@
     <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Prayer Focus for {{prayer_month.get_month_display}}, {{prayer_month.year}}</h4>
+          <h4 class="modal-title" id="myModalLabel">Missions Prayer Calendar</h4>
         </div>
         <div class="modal-body">
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-
                     {% if prayer_month.main_image %}
                         <img src="{{prayer_month.main_image|thumbnail_url:'prayer_calendar_l'}}" alt=" " class="img-thumbnail img-responsive"/>
                     {% else %}
                     <img src="{% static 'livinghope/placeholderprofile.jpg' %}" class="img-responsive">
                     {% endif %}
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                    <div class="text-center">
+                      <hr>
                     <h2>{{prayer_month.highlight}}<br>
                       <small>
-                            {{prayer_month.get_month_display}}, {{prayer_month.year}}
+                            {{prayer_month.get_month_display}} {{prayer_month.year}}
                       </small>
                     </h2>
+                      </div>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                    <h3 class="title">Prayer Requests</h3>
                     <p>
-                      Please join us in praying for {{prayer_month.highlight}}!
-
                       {{prayer_month.prayer_requests|safe}}
                     </p>
                 </div>
