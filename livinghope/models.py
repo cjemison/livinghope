@@ -405,7 +405,6 @@ class Sermon(models.Model):
         # also covers case where a sermon's passage hasn't been parsed to verses
         if self.passage:
             if self.__original_passage != self.passage or (self.passage and not self.verses.all()):
-                print 'recalc'
                 self.verses.clear()
                 try: #if there is an error in parsing, just quit
                     verse_list = parse_string_to_verses(self.passage)
