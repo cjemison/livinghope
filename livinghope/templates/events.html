@@ -1,16 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 {% block headloaders %}
   <style>
 
-    #map-canvas {
+    .map-canvas {
       height: 400px;
       background-color: #CCC;
       margin-bottom: 15px;
       /*padding: 0px;*/
     }
+    .canvas-short {
+      height: 300px;
+      background-color: #CCC;
+      margin-bottom: 15px;
+      /*padding: 0px;*/}
   </style>
-  <link rel="stylesheet" href="{% static 'livinghope/fix_modal.css' %}">
+  <!-- <link rel="stylesheet" href="{% static 'livinghope/fix_modal.css' %}"> -->
 
 {% endblock %}
 
@@ -43,7 +49,7 @@
     <div class="container">
       {% for event in events %}
       <div class="row">
-          <div class="posts-block col-lg-8 col-md-8 col-sm-6 col-xs-12">
+          <div class="posts-block col-lg-9 col-md-9 col-sm-6 col-xs-12">
               <h3 class="title">{{event.name}}
               </h3>
               <h4>{{event.date}} at {{event.start_time}} 
@@ -56,17 +62,93 @@
                         {% endif %}
 
                     {%endif%}
-                </h4>
-              <p>{{event.description|truncatewords:50}}</p>
-              <button class="btn btn-primary event-details-button" data-id="{{event.id}}" data-toggle="modal" data-target="#details-modal">Details</button>
+              </h4>
+              {% if not event.main_image %}
+              <!--No main image-->
+                  <div class="row">
+                      <div data-lat="{{event.location.latitude}}" data-lon="{{event.location.longitude}}" class="col-md-12 map-canvas">
+                      </div>
+                  </div>
+                  <div class="row">
+                      {% if event.location.public %}
+                      <address>
+                          {{event.location.name}}<br>
+                          {{event.location.street_address}}<br>
+                          {{event.location.city}}, {{event.location.state}} {{event.location.zip_code}}
+                      </address>
+                      {% endif %}  
+
+                      <p>
+                        {{event.description|truncatewords:50}}
+                      </p>
+                  </div>
+              <!--End no main image  -->
+              {% else %}
+              <!-- Main image -->
+                  {% if event.main_image.is_wide %}
+                  <!-- Wide Image -->
+                      <div class="row">
+                        <img class="img-thumbnail" src="{{event.main_image|thumbnail_url:'large'}}">
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-7">
+                            <p>
+                              {{event.description|safe}}
+                            </p>
+                        </div>
+                        <div class="col-md-5">
+                            <div data-lat="{{event.location.latitude}}" data-lon="{{event.location.longitude}}" class="map-canvas canvas-short">
+                            </div>
+                            <div>
+                                {% if event.location.public %}
+                                <address>
+                                    {{event.location.name}}<br>
+                                    {{event.location.street_address}}<br>
+                                    {{event.location.city}}, {{event.location.state}} {{event.location.zip_code}}
+                                </address>
+                                {% endif %}  
+                            </div>
+                        </div>
+                      </div>
+                  <!-- end wide image -->
+                  {% else %} 
+                  <!-- Narrow image -->
+                    <div class="row">
+                        <div class="col-md-5">
+                          <div class="row">
+                              <img class="img-thumbnail" src="{{event.main_image|thumbnail_url:'med-square'}}">
+                          </div>
+                        </div>
+                        <div class="col-md-7">
+                              <div data-lat="{{event.location.latitude}}" data-lon="{{event.location.longitude}}" class="map-canvas canvas-short">
+                              </div>
+                                {% if event.location.public %}
+                                <address>
+                                    {{event.location.name}}<br>
+                                    {{event.location.street_address}}<br>
+                                    {{event.location.city}}, {{event.location.state}} {{event.location.zip_code}}
+                                </address>
+                                {% endif %}  
+                        </div>
+                    </div>
+                    <div class="row">
+                            <p>
+                              {{event.description|safe}}
+                            </p>
+                    </div>
+                    <!-- End narrow image -->
+                  {% endif %}
+              <!-- End main image -->
+              {% endif %}
           </div>
-          <div class="skills col-lg-4 col-md-4 col-sm-6 col-xs-12">
+          <div class="skills col-lg-3 col-md-3 col-sm-6 col-xs-12">
               <h3 class="title">More Info</h3>
               <p>
                 For more information or ways that you can help with this event, contact {{event.organizer.all|pluralize:"the,one of our"}} leader{{event.organizer.all|pluralize}} below:
               <div class="portfolio">
                   {% for leader in event.organizer.all %}
-                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 item">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 item">
                        <div class="portfolio-item">
                         <a href="#" data-leader-id="{{leader.id}}" data-subject="RE: Living Hope Event ({{event.name}})" data-target="#contact-leader" data-toggle="modal" class="portfolio-item-link contact-leader-link" >
                           <span class="portfolio-item-hover"></span>
@@ -92,22 +174,7 @@
     </div>
     <hr>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="details-modal" tabindex="-1" role="dialog" aria-labelledby="details-modal-label" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-<!--       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="details-modal-label">Event Details</h4>
-      </div> -->
-      <div class="modal-body" id="details-modal-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <!-- contact leader modal -->
 <div class="modal fade" id="contact-leader" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -129,38 +196,26 @@
 <script src="https://maps.googleapis.com/maps/api/js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+        function initialize(mapCanvas, latitude, longitude) {
+            var latlon =  new google.maps.LatLng(latitude, longitude)
+            // var mapCanvas = document.getElementById('map-canvas');
+            var mapOptions = {
+              center: latlon,
+              zoom: 13,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+            var marker = new google.maps.Marker({
+                    map: map,
+                    position: latlon
+                });
+        }
+        $('.map-canvas').each(function(index){
+            var latitude = $(this).data('lat');
+            var longitude = $(this).data('lon');
+            initialize(this, latitude, longitude);
+        })
 
-
-        $('.event-details-button').click(function(){
-            var event_id = $(this).data('id')
-            var url = "{% url 'event_details_modal' %}";
-
-            $.get(url, {'event-id': event_id}, function(response){
-                $('#details-modal-body').empty();
-                $(response).appendTo('#details-modal-body');
-                var latitude = $('#map-canvas').data('lat')
-                var longitude = $('#map-canvas').data('lon')
-
-                function initialize() {
-                    var latlon =  new google.maps.LatLng(latitude, longitude)
-                    var mapCanvas = document.getElementById('map-canvas');
-                    var mapOptions = {
-                      center: latlon,
-                      zoom: 14,
-                      mapTypeId: google.maps.MapTypeId.ROADMAP
-                    }
-                    var map = new google.maps.Map(mapCanvas, mapOptions);
-                    var marker = new google.maps.Marker({
-                            map: map,
-                            position: latlon
-                        });
-                }
-                $('#details-modal').on('shown.bs.modal', function () {
-                    initialize();
-                })
-
-            })
-        });
     })
 </script>
 <script src="{% static 'livinghope/contact_leader.js'%}"></script>

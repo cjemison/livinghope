@@ -14,7 +14,7 @@ class SmartImageFieldFile(ImageFieldFile):
         aspect_ratio = float(self.width)/self.height
         # of should this be 5:3?
         # show as landscape if aspect ratio of 2:1 or greater
-        if aspect_ratio >= 2:
+        if aspect_ratio >= 1.66:
             return True
         return False
 
@@ -225,8 +225,20 @@ class SpecialEvent(Event):
     name = models.CharField(max_length=255)
     date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
+    main_image = SmartImageField(upload_to='./event_images/',
+                                    blank=True,
+                                    null=True)
     organizer = models.ManyToManyField(Leader)
-    description = models.TextField(null=True, blank=True)
+    display_on_home_page = models.BooleanField(
+                                    default=False,
+                                    help_text="Should this be shown on the \
+                                    home page slider when the event draws near?"
+                                )
+    home_page_image = SmartImageField(upload_to='./event_images/',
+                                    blank=True,
+                                    null=True)
+
+    description = RichTextField(null=True, blank=True)
     
     def __unicode__(self):
         return self.name
@@ -340,6 +352,23 @@ class Verse(models.Model):
     def __unicode__(self):
         return u'%s:%s' % (self.chapter,self.number)
 
+class EventDocument(models.Model):
+    name = models.CharField(max_length=255)
+    document = models.FileField(upload_to='./event_documents/')
+    event = models.ForeignKey(SpecialEvent)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return u'%s for %s' % (self.name, self.event)
+
+class MinistryDocument(models.Model):
+    name = models.CharField(max_length=255)
+    document = models.FileField(upload_to='./ministry_documents/')
+    ministry = models.ForeignKey(Ministry)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return u'%s for %s' % (self.name, self.ministry)
 
 class SermonSeries(models.Model):
     class Meta:

@@ -16,28 +16,40 @@ e- order ministries for leader profiles
 - maybe subclass image (for smallgroupimage and missionaryimage)
 - take out all hard coded emails to rhsiao2@gmail.com and put in settings file
 - New model to deal with worship order? and description? Service page
-- which is better? repeating image or background color for slider?
-    - repeating image: data-bgfit="contain" data-bgrepeat="repeat"
-    - background color: data-bgfit="contain" style="background-color:rgba(50, 59, 68, 1)"
-    - make images 1920 x 470? proably the best
 -404 search??
-- prayer calendar page similar to leader page
-    - needs new model PrayerMonth?
-        - month, year, prayer requests (rich text), main image,
 - rss feed for blog, individual sermon series?
 - modeladmin fieldset
 - CBV for "ministryView" for childrens ministry, small groups, women's ministry, missions etc
 - for ministry pages, use ministry description field
 - give thumbnailed images to feeds.py
 - remove admin views for books, chapters, and verses?
-- add help text to give guidelines for good passage entry in sermon
 - write tests
+
+-change event page to not use modals
+    - show details right there on main page
+    - paginate
+    - map
+    - main image for events
+- make admin order of fields make more sense
 ---------------------
 DONE
 -django-ckeditor MUST CHANGE widget.html to margin-left:0
 -django_admin_bootstrapped - templates/admin/includes/fieldset.html MUST CHANGE columns 
 
-
+- MinistryDocument and EventDocument objects
+- change special event model
+    - display_on_home_page boolean
+    - main image
+    - home_page_image
+    - EVENTDOCUMENT FK to SpeicalEvent
+- which is better? repeating image or background color for slider?
+    - repeating image: data-bgfit="contain" data-bgrepeat="repeat"
+    - background color: data-bgfit="contain" style="background-color:rgba(50, 59, 68, 1)"
+    - make images 1920 x 470? proably the best
+- add help text to give guidelines for good passage entry in sermon
+- prayer calendar page similar to leader page
+    - needs new model PrayerMonth?
+        - month, year, prayer requests (rich text), main image,
 - BEFORE NEXT SERMON GETS UPLOADED, OVERRIDE SAVE ON SERMON TO PARSE PASSAGE THEN SAVE VERSES
 - add titles to each page?
 - on save of image, programatically determine if it is landscape or portrait

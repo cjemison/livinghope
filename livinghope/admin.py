@@ -8,7 +8,7 @@ from livinghope.models import Author, SermonSeries, Sermon, \
                               BlogTag, SpecialEvent, MissionaryImage, Ministry, \
                               LeadershipRole, SmallGroupImage, ChildrensMinistryClass, \
                               ChildrensMinistryTeacher, MissionsPrayerMonth, \
-                              Book, Chapter, Verse
+                              Book, Chapter, Verse, MinistryDocument, EventDocument
 
 def set_leader_inactive(modeladmin, request, queryset):
     queryset.update(active=False)
@@ -24,6 +24,13 @@ class MissionaryImageInline(admin.StackedInline):
 class MissionaryAdmin(admin.ModelAdmin):
     inlines = [MissionaryImageInline, ]
 
+
+class MinistryDocumentInline(admin.StackedInline):
+    model = MinistryDocument
+
+class MinistryAdmin(admin.ModelAdmin):
+    inlines = [MinistryDocumentInline, ]
+
 class SmallGroupImageInline(admin.StackedInline):
     model = SmallGroupImage
 
@@ -34,11 +41,15 @@ class ChildrensMinistryClassAdmin(admin.ModelAdmin):
     filter_horizontal = ('teachers',)
 
 
+class EventDocumentInline(admin.StackedInline):
+    model = EventDocument
+
 class SpecialEventAdmin(admin.ModelAdmin):
     list_display = ('name', 'date', 'start_time', 'location')
     ordering = ('-date', '-start_time')
     filter_horizontal = ('organizer', )
     search_fields = ['name', 'location']
+    inlines = [EventDocumentInline,]
 
 class BannerImageAdmin(admin.ModelAdmin):
     list_display = ( 'name','order', 'image')
@@ -66,10 +77,6 @@ class SermonAdmin(admin.ModelAdmin):
     search_fields = ['title', 'passage']
     exclude = ('verses', )
 
-    # formfield_overrides = {models.TextField: {'widget': forms.Textarea(attrs={'class':'ckeditor'})},}
-   
-    # class Media:
-    #     js = (static('livinghope/ckeditor/ckeditor.js'),)
 
 class BlogPostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'created_on', 'updated_on',)
@@ -77,17 +84,14 @@ class BlogPostAdmin(admin.ModelAdmin):
     search_fields = ['title', 'content']
     filter_horizontal = ('tags', )
 
-    # formfield_overrides = {models.TextField: {'widget': forms.Textarea(attrs={'class':'ckeditor'})},}
-   
-    # class Media:
-    #     js = (static('livinghope/ckeditor/ckeditor.js'),)
+
 
 # admin.site.register(Book)
 # admin.site.register(Chapter)
 # admin.site.register(Verse)
 admin.site.register(MissionsPrayerMonth)
 admin.site.register(ChildrensMinistryClass, ChildrensMinistryClassAdmin)
-admin.site.register(Ministry)
+admin.site.register(Ministry, MinistryAdmin)
 admin.site.register(SpecialEvent, SpecialEventAdmin)
 admin.site.register(BlogTag)
 admin.site.register(BlogPost, BlogPostAdmin)
