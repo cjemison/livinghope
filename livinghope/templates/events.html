@@ -2,6 +2,7 @@
 {% load static %}
 {% load thumbnail %}
 {% block headloaders %}
+<link href="{% static 'livinghope/simple-pagination/simplePagination.css'%}" rel="stylesheet" type="text/css">
   <style>
 
     .map-canvas {
@@ -48,8 +49,8 @@
 <div class="content">
     <div class="container">
       {% for event in events %}
-      <div class="row">
-          <div class="posts-block col-lg-9 col-md-9 col-sm-6 col-xs-12">
+      <div class="row"> <!-- begin event row -->
+          <div class="posts-block col-lg-9 col-md-9 col-sm-6 col-xs-12"> <!-- begin left column -->
               <h3 class="title">{{event.name}}
               </h3>
               <h4>{{event.date}} at {{event.start_time}} 
@@ -141,8 +142,8 @@
                   {% endif %}
               <!-- End main image -->
               {% endif %}
-          </div>
-          <div class="skills col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          </div> <!-- end left column -->
+          <div class="skills col-lg-3 col-md-3 col-sm-6 col-xs-12"> <!-- begin right column -->
               <h3 class="title">More Info</h3>
               <p>
                 For more information or ways that you can help with this event, contact {{event.organizer.all|pluralize:"the,one of our"}} leader{{event.organizer.all|pluralize}} below:
@@ -167,13 +168,27 @@
                     </div>
                   {% endfor %}
               </div>
-          </div>
-      </div>
+          </div> <!-- end left column -->
+      </div> <!-- end event row -->
       <br><br>
       {% endfor %}
-    </div>
-    <hr>
-</div>
+      <hr>
+      <div class="row"> <!-- begin pagination row -->
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-6">
+            <div class="pull-right text-right">
+              Displaying events {{events.start_index}} - {{events.end_index}} of {{events.paginator.count}}
+              <nav>
+                <ul class="pagination" id="pagination">
+                </ul>
+              </nav>
+            </div>
+          </div>
+      </div> <!-- end pagination row -->
+
+    </div> <!-- end container -->
+</div> <!-- end content -->
 
 
 <!-- contact leader modal -->
@@ -194,6 +209,8 @@
 
 {% block endloaders %}
 <script src="https://maps.googleapis.com/maps/api/js"></script>
+<script src="{% static 'livinghope/simple-pagination/jquery.simplePagination.js' %}"></script>
+<script src="{% static 'livinghope/contact_leader.js'%}"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         function initialize(mapCanvas, latitude, longitude) {
@@ -216,7 +233,26 @@
             initialize(this, latitude, longitude);
         })
 
+        $(function() {
+            $("#pagination").pagination({
+                pages: {{ events.paginator.num_pages }},
+                prevText: "&laquo;",
+                nextText: "&raquo;",
+                hrefTextPrefix: '?&page=',
+                currentPage: {{ events.number }},
+                selectOnClick: false,
+            });
+            
+            if ({{events.number}} == 1){
+                $('.prev').parent().attr('class','disabled');
+            }
+            if ({{events.number}} == {{events.paginator.num_pages}}){
+                $('.next').parent().attr('class','disabled');
+            }
+
+        });   
+
     })
 </script>
-<script src="{% static 'livinghope/contact_leader.js'%}"></script>
+
 {% endblock %}

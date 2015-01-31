@@ -108,6 +108,17 @@ MONTHS = {1: 'January',
 #     import pdb; pdb.set_trace()
 #     return HttpResponseRedirect(reverse('home'))
 
+def paginate(request, queryset, num_per_page):
+    paginator = Paginator(queryset, num_per_page)
+    page = request.GET.get('page')
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        queryset = paginator.page(1)
+    except EmptyPage:
+        queryset = paginator.page(paginator.num_pages)
+    return queryset
+
 def queryset_to_rows(queryset, num_cols):
     """
     helper function that accepts a queryset and returns
@@ -192,7 +203,9 @@ def events(request):
                 ).prefetch_related(
                     'organizer'
                 ).order_by('date')
-                
+
+    events = paginate(request, events, 3)
+
     context = {'events':events}
     return render(request, 'events.html', context)
 
@@ -235,15 +248,7 @@ def sermon_series(request, series_id=None):
                                 'author', 'sermon_series'
                             ).order_by('-verse_matches') #[:2] limits to 2
             # sermons = sermons.prefetch_related('authors', 'publisher')
-
-            paginator = Paginator(sermons, 20)
-            page = request.GET.get('page')
-            try:
-                sermons = paginator.page(page)
-            except PageNotAnInteger:
-                sermons = paginator.page(1)
-            except EmptyPage:
-                sermons = paginator.page(paginator.num_pages)
+            sermons = paginate(request, sermons, 20)
             
             #no longer needs just songs context element
             return render(request, 'sermons.html', {'sermons': sermons,
@@ -261,15 +266,7 @@ def sermon_series(request, series_id=None):
         else:
             sermons = series.sermon_set.all().select_related('author').order_by('sermon_date')
 
-        #paginate!
-        paginator = Paginator(sermons, 20)
-        page = request.GET.get('page')
-        try:
-            sermons = paginator.page(page)
-        except PageNotAnInteger:
-            sermons = paginator.page(1)
-        except EmptyPage:
-            sermons = paginator.page(paginator.num_pages)
+        sermons = paginate(request, sermons, 20)
             
         context = {'sermons': sermons,
                     'all_series': all_series,
@@ -395,14 +392,21 @@ def ministries(request): # not used
     return render(request, 'ministries.html')
 
 def small_groups(request):
-    sgs = SmallGroup.objects.filter(active=True).order_by('region')
+    sgs = SmallGroup.objects.filter(
+                    active=True
+                ).prefetch_related(
+                    'smallgroupimage_set'
+                ).order_by('region')
+
     sg_ministry = Ministry.objects.get(name="Small Groups")
     #this could be more than one
-    sg_coordinator_roles = LeadershipRole.objects.filter(
+    sg_coordinator_roles = LeadershipRole.objects.select_related(
+                                'leader'
+                            ).filter(
                                 ministry=sg_ministry,
                                 primary_leader=True,
                                 leader__active=True,
-                            ).select_related()
+                            )
     context = {'sgs':sgs,
                'sg_coordinator_roles':sg_coordinator_roles}
     return render(request, 'small_groups.html', context)
@@ -467,20 +471,13 @@ class Blog(TemplateView):
     #all blog pages subclass from this
     #supplement get_context_data making sure to call super()
     # override template_name
-    def paginate(self, posts_queryset, num_per_page=5):
+    def paginate_blog(self, posts_queryset, num_per_page=5):
         """
         Pass in the queryset of posts you want
         Returns pagination
         Pass in num_per_page to defined how many posts per page
         """
-        paginator = Paginator(posts_queryset, num_per_page)
-        page = self.request.GET.get('page')
-        try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            posts = paginator.page(1)
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
+        posts = paginate(self.request, posts_queryset, num_per_page)
         return posts
 
     def get_context_data(self):
@@ -510,7 +507,7 @@ class BlogHome(Blog):
     def get_context_data(self):
         context = super(BlogHome, self).get_context_data()
         all_posts = BlogPost.objects.all().order_by('-created_on')
-        posts = self.paginate(all_posts)
+        posts = self.paginate_blog(all_posts)
         context.update({'posts':posts, 
                         'page_title':'From the desk of Living Hope'})
         return context
@@ -529,7 +526,7 @@ class BlogMonth(Blog):
                                 created_on__year=year,
                                 created_on__month=month
                             ).order_by('created_on')
-        posts = self.paginate(posts_in_month)
+        posts = self.paginate_blog(posts_in_month)
         page_title = "Posts in %s, %d" % (month_name, year)
         unique_context = {'page_title': page_title,
                           'posts':posts}
@@ -544,7 +541,7 @@ class BlogYear(Blog):
         year = int(kwargs.get('year'))
         posts_in_year = BlogPost.objects.filter(created_on__year=year).order_by(
                                                 'created_on')
-        posts = self.paginate(posts_in_year)
+        posts = self.paginate_blog(posts_in_year)
         page_title = 'Posts in %d' % year
         unique_context = {'page_title': page_title,
                           'posts':posts}
@@ -559,7 +556,7 @@ class BlogByTag(Blog):
         tag_id = kwargs.get('tag_id')
         tag = get_object_or_404(BlogTag, id=tag_id)
         posts = BlogPost.objects.filter(tags=tag).order_by('-created_on')
-        posts = self.paginate(posts)
+        posts = self.paginate_blog(posts)
         page_title = 'Posts tagged with %s' % tag
         unique_context = {'page_title':page_title,
                           'posts':posts}
@@ -587,7 +584,7 @@ class BlogSearch(Blog):
         by_title = Q(title__icontains=query)
         #ordering??
         posts = BlogPost.objects.filter(by_content|by_title)
-        posts = self.paginate(posts)
+        posts = self.paginate_blog(posts)
         page_title = 'Resulting Posts for "%s"' % query
         unique_context = {'page_title':page_title,
                           'posts':posts}
@@ -626,7 +623,7 @@ class BlogByAuthor(Blog):
         author_id = kwargs.get('author_id')
         author = get_object_or_404(Author, id=author_id)
         posts = BlogPost.objects.filter(author=author).order_by('-created_on')
-        posts = self.paginate(posts)
+        posts = self.paginate_blog(posts)
         page_title = 'Posts by %s' % author
         unique_context = {'page_title':page_title,
                           'posts':posts}
@@ -636,7 +633,7 @@ class BlogByAuthor(Blog):
 def childrens_ministry(request):
     # add order
     childrens_ministry = Ministry.objects.get(name="Children's Ministry")
-    classes = ChildrensMinistryClass.objects.all()
+    classes = ChildrensMinistryClass.objects.all().order_by('order')
     ministry_leaders = LeadershipRole.objects.filter(
                             ministry=childrens_ministry,
                             primary_leader=True,
@@ -650,14 +647,8 @@ def childrens_ministry(request):
 
 def prayer_calendar(request):
     prayer_months = MissionsPrayerMonth.objects.all().order_by('-year', '-month')
-    paginator = Paginator(prayer_months, 12)
-    page = request.GET.get('page')
-    try:
-        prayer_months = paginator.page(page)
-    except PageNotAnInteger:
-        prayer_months = paginator.page(1)
-    except EmptyPage:
-        prayer_months = paginator.page(paginator.num_pages)
+
+    prayer_months = paginate(request, prayer_months, 12)
     context = {'prayer_months': prayer_months}
     return render(request, 'missions_prayer_calendar.html', context)    
 

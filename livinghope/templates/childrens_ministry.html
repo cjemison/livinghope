@@ -41,35 +41,15 @@
     {% endif %}
 
     <div class="row">
-      <div class="posts-block col-lg-8 col-md-8 col-sm-6 col-xs-12">
+      <div class="posts-block col-lg-9 col-md-9 col-sm-6 col-xs-12">
         <article>
            <h3 class="title">Children's Ministry at Living Hope</h3>
            <div id="childrens-ministry-description" class="post-content">
               {{childrens_ministry.description|safe}}
            </div>
         </article>
-          {% for class in classes %}
-            <h3 class="title">{{class.youngest}} to {{class.oldest}} Class</h3>
-            {% if class.main_image %}
-              <div class="row">
-              {% if class.main_image.is_wide %}
-                <img src="{{class.main_image.url}}" class="img=thumbnail" width="100%">
-                {{ class.description|safe}}
-              {% else %}
-                <div class="col-md-4">
-                  <img src="{{class.main_image.url}}" class="img-responsive img-thumbnail">
-                </div>
-                <div class="col-md-8">
-                  {{class.description|safe}}
-                </div>
-              {% endif %}
-              </div>
-            {% else %}
-              {{class.description|safe}}
-            {% endif %}
-          {% endfor %}
       </div>
-      <div class="skills col-lg-4 col-md-4 col-sm-6 col-xs-12">
+      <div class="skills col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="widget category">
             <h3 class="title">Get Involved</h3>
                 <p>
@@ -77,7 +57,7 @@
                 </p>
             <div class="portfolio">
               {% for leader_role in ministry_leaders %}
-                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 item">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 item">
                    <div class="portfolio-item">
                     <a href="#" data-leader-id="{{leader_role.leader.id}}" data-subject="RE: Living Hope Missions" data-target="#contact-leader" data-toggle="modal" class="portfolio-item-link contact-leader-link" >
                       <span class="portfolio-item-hover"></span>
@@ -99,6 +79,36 @@
         </div>
       </div>
     </div><!-- end row -->
+    {% for class in classes %}
+      <div class="row"><!--  individual class row -->
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            {% if class.youngest == class.oldest %}
+            <h3 class="title">{{class.youngest}} Class</h3>
+            {% else %}
+            <h3 class="title">{{class.youngest}} to {{class.oldest}} Class</h3>
+            {% endif %}
+            {% if class.main_image %}
+              <div class="row">
+              {% if class.main_image.is_wide %}
+                <img src="{{class.main_image.url}}" class="img=thumbnail" width="100%">
+                {{ class.description|safe}}
+              {% else %}
+                <div class="col-md-4">
+                  <img src="{{class.main_image.url}}" class="img-responsive img-thumbnail">
+                </div>
+                <div class="col-md-8">
+                  {{class.description|safe}}
+                </div>
+              {% endif %}
+              </div>
+            {% else %}
+              {{class.description|safe}}
+            {% endif %}
+        </div>
+      </div> <!-- end individual class row -->
+      <br>
+    {% endfor %}
+
   </div>
 </div>
 

@@ -1,6 +1,5 @@
 
 2. Fix up administration with more useful info on table page
-13. refactor tempaltes and views to not use so many queries - select_related, prefetch_related
 14. ordering for sermon series (based on latest uploaded sermon??)
 24. children's ministry classes
 26. paypal integration 2.2% + .30 per transaction
@@ -9,7 +8,6 @@
 - cma logo where necessary
 - our denomination page
 e- order ministries for leader profiles
-- have a number count of blog posts in ach category, author?
 - consider options for tall blog images. template filter to interleave image in text? image above sidebar? image in one then text in middle then sidebar?
 - small group announcmeent model? foreign key to small groups
 - small group image model? foreign key to small groups. from small group image_set
@@ -25,12 +23,14 @@ e- order ministries for leader profiles
 
 
 - make admin order of fields make more sense
-- make a datefield for specialevent for show on homepage on this date
+
 ---------------------
 DONE
 -django-ckeditor MUST CHANGE widget.html to margin-left:0
 -django_admin_bootstrapped - templates/admin/includes/fieldset.html MUST CHANGE columns 
 
+13. refactor tempaltes and views to not use so many queries - select_related, prefetch_related
+- make a datefield for specialevent for show on homepage on this date
 - give thumbnailed images to feeds.py
 -change event page to not use modals
     - show details right there on main page

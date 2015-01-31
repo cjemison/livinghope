@@ -380,10 +380,10 @@
                               <h3>Service Times / Directions</h3>
                               <p>
                                  We would love it if you would join us at one of our worship services. <br>
-                                    {{services.0.start_time|time:"g:iA"}} on {{services.0.get_day_display}} @ 
-                                    {{services.0.location.name}}<br>
-                                    {{services.0.location.street_address}}<br>
-                                    {{services.0.location.city}}, {{services.0.location.state}} {{services.0.location.zip_code}}
+                                    {{service.start_time|time:"g:iA"}} on {{service.get_day_display}} @ 
+                                    {{service.location.name}}<br>
+                                    {{service.location.street_address}}<br>
+                                    {{service.location.city}}, {{service.location.state}} {{service.location.zip_code}}
                                   <br>
                               </p>
 

@@ -38,6 +38,8 @@ class SmallGroupAdmin(admin.ModelAdmin):
     inlines = [SmallGroupImageInline, ]
 
 class ChildrensMinistryClassAdmin(admin.ModelAdmin):
+    list_display = ('youngest', 'oldest', 'order')
+    ordering = ('order',)
     filter_horizontal = ('teachers',)
 
 

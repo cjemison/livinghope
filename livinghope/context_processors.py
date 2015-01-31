@@ -1,8 +1,8 @@
 from livinghope.models import Service
 
 def services_processor(request):
-	services = Service.objects.select_related('location').all()
-	return {'services': services}
+	service = Service.objects.select_related('location').all()[0]
+	return {'service': service}
 
 def baseurl(request):
     """
