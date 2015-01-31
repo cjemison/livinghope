@@ -7,7 +7,8 @@ from mutagen.mp3 import MP3
 from django.core.urlresolvers import reverse
 from django.utils.feedgenerator import Rss201rev2Feed
 from datetime import datetime, time
-
+from easy_thumbnails.files import get_thumbnailer
+from django.conf import settings
 # For more details on the Podcast "Spec" see: https://www.apple.com/itunes/podcasts/specs.html
 
 class iTunesPodcastsFeedGenerator(Rss201rev2Feed):
@@ -41,12 +42,12 @@ class iTunesPodcastsFeedGenerator(Rss201rev2Feed):
 class LatestSermonsFeed(Feed):
     feed_type = iTunesPodcastsFeedGenerator
     title = "Living Hope Sermons"
-    description = "The latest two sermons preached at Living Hope."
+    description = "The latest sermons preached at Living Hope."
     subtitle = description
     summary = description
     iTunes_name = u'Living Hope Sermons'
     iTunes_email = u'info@onelivinghope.com'
-    iTunes_image_url = static('livinghope/living-hope-bad.png')
+    iTunes_image_url = static('livinghope/living-hope.jpg')
     iTunes_explicit = u'no'
 
     def link(self):
@@ -64,7 +65,10 @@ class LatestSermonsFeed(Feed):
         duration = audio.info.length
         m, s = divmod(duration, 60)
         h, m = divmod(m, 60)
-        image = item.sermon_series.series_image.url
+        thumbnailer = get_thumbnailer(item.sermon_series.series_image)
+        thumbnailer_options = {'size':(500, 500), 'background':'white', 'upscale':True}
+        image = thumbnailer.get_thumbnail(thumbnailer_options).url
+
         return {'author': item.author.full_name(),
                 'duration': '%d:%02d:%02d' % (h, m, s),
                 'explicit': u'no',

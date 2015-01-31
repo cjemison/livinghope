@@ -49,6 +49,32 @@ class SpecialEventAdmin(admin.ModelAdmin):
     ordering = ('-date', '-start_time')
     filter_horizontal = ('organizer', )
     search_fields = ['name', 'location']
+    fieldsets = (
+        ('Starting At', 
+            {
+               'fields': ('start_time', 'day', 'date'),
+            }
+        ),
+        ('Ending At', 
+            {
+                'fields': ('end_time', 'end_date'),
+            }
+        ),
+        ('Main Info', 
+            {
+                'fields': ('name', 'main_image', 'organizer',
+                            'description'
+                            )
+            }
+        ),
+        ('Home Page Automatic Display',
+            {
+                'fields': ('display_on_home_page', 'display_on',
+                            'home_page_image',
+                          )
+            }
+        )
+    )
     inlines = [EventDocumentInline,]
 
 class BannerImageAdmin(admin.ModelAdmin):

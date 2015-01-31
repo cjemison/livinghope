@@ -21,21 +21,23 @@ e- order ministries for leader profiles
 - modeladmin fieldset
 - CBV for "ministryView" for childrens ministry, small groups, women's ministry, missions etc
 - for ministry pages, use ministry description field
-- give thumbnailed images to feeds.py
-- remove admin views for books, chapters, and verses?
 - write tests
 
--change event page to not use modals
-    - show details right there on main page
-    - paginate
-    - map
-    - main image for events
+
 - make admin order of fields make more sense
+- make a datefield for specialevent for show on homepage on this date
 ---------------------
 DONE
 -django-ckeditor MUST CHANGE widget.html to margin-left:0
 -django_admin_bootstrapped - templates/admin/includes/fieldset.html MUST CHANGE columns 
 
+- give thumbnailed images to feeds.py
+-change event page to not use modals
+    - show details right there on main page
+    - paginate
+    - map
+    - main image for events
+- remove admin views for books, chapters, and verses?
 - MinistryDocument and EventDocument objects
 - change special event model
     - display_on_home_page boolean

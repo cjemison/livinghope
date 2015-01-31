@@ -234,9 +234,16 @@ class SpecialEvent(Event):
                                     help_text="Should this be shown on the \
                                     home page slider when the event draws near?"
                                 )
+    display_on = models.DateField(null=True, blank=True, 
+                                  verbose_name="Display on home page on this date",
+                                  )
     home_page_image = SmartImageField(upload_to='./event_images/',
                                     blank=True,
-                                    null=True)
+                                    null=True,
+                                    help_text="This is the background image that\
+                                    will be displayed on the homepage slider.<br>\
+                                    This needs to be 1920x470 otherwise will look\
+                                    strange.")
 
     description = RichTextField(null=True, blank=True)
     

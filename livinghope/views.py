@@ -129,7 +129,14 @@ def queryset_to_rows(queryset, num_cols):
     return all_objects_in_rows
 
 def home(request):
-    banner_images = BannerImage.objects.all().order_by('order')
+    # banner_images = BannerImage.objects.all().order_by('order')
+    today = datetime.datetime.today()
+    # date_cutoff = today + datetime.timedelta(days=60)
+    upcoming_events = SpecialEvent.objects.select_related('location').filter(
+                                display_on_home_page=True,
+                                display_on__lte=today,
+                                date__gte=today
+                            )
     headline = BlogPost.objects.filter(tags__name="News and Announcements").order_by(
                 '-created_on')[0]
     
@@ -137,9 +144,9 @@ def home(request):
                 id=headline.id).order_by(
                     '-created_on')[:5]
 
-    latest_posts = BlogPost.objects.all().order_by('-created_on')[:3]
+    latest_posts = BlogPost.objects.select_related('author').all().order_by('-created_on')[:3]
 
-    context = {'banner_images': banner_images,
+    context = {'upcoming_events':upcoming_events,
                'news': news, 'headline': headline,
                'latest_posts': latest_posts}
     return render(request, 'home.html', context)
@@ -180,13 +187,24 @@ def missionary_profile(request, missionary_id):
 
 def events(request):
     now = datetime.datetime.now()
-    events = SpecialEvent.objects.filter(date__gte=now).order_by('date')
+    events = SpecialEvent.objects.filter(
+                    date__gte=now
+                ).prefetch_related(
+                    'organizer'
+                ).order_by('date')
+                
     context = {'events':events}
     return render(request, 'events.html', context)
 
 def leaders(request):
     #ORDER BY ORDER!!!!!
-    leaders = Leader.objects.filter(active=True).order_by('order','last_name')
+    leaders = Leader.objects.filter(
+                    active=True
+                ).prefetch_related(
+                    'leadershiprole_set',
+                    'leadershiprole_set__ministry',
+                    'ministries'
+                ).order_by('order','last_name')
     #get leaders into rows of two
     #depending on formatting, maybe don't need rows
     #consider modal? just thumnails of htem and then ajax modal 
@@ -213,6 +231,8 @@ def sermon_series(request, series_id=None):
                                 verses__id__in=verse_ids
                             ).distinct().annotate(
                                 verse_matches=CountIf('verses', only=Q(verses__id__in=verse_ids))
+                            ).select_related(
+                                'author', 'sermon_series'
                             ).order_by('-verse_matches') #[:2] limits to 2
             # sermons = sermons.prefetch_related('authors', 'publisher')
 
@@ -237,9 +257,9 @@ def sermon_series(request, series_id=None):
         #current series are put latest first but completed series
         #ordered by earliest first
         if series.current_series:
-            sermons = series.sermon_set.all().order_by('-sermon_date')
+            sermons = series.sermon_set.all().select_related('author').order_by('-sermon_date')
         else:
-            sermons = series.sermon_set.all().order_by('sermon_date')
+            sermons = series.sermon_set.all().select_related('author').order_by('sermon_date')
 
         #paginate!
         paginator = Paginator(sermons, 20)

@@ -100,12 +100,7 @@
 <div class="row">
     {% if series %}
     <div class="col-md-4">
-      {% if series %}
       <img src="{{series.series_image|thumbnail_url:'ss_med'}}" class="img-responsive img-thumbnail">
-      {% else %}
-      <img src="{% static 'livinghope/openbiblethumb.jpg' %}" class="img-responsive img-thumbnail">
-      {% endif %}
-
       <div class="well">
         <p>
           <h2>{{series.name}} {% if series.current_series %}<br><small>(Current Series)</small>{% endif %}</h2>

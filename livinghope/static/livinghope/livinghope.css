@@ -18,3 +18,7 @@ a.prev, a.next{
 .blog-showcase-extra-info{
     height:auto;
 }
+
+.text-shadow{
+    text-shadow: 0.1em 0.1em 0.2em black
+}
