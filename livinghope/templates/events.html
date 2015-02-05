@@ -67,21 +67,48 @@
               {% if not event.main_image %}
               <!--No main image-->
                   <div class="row">
-                      <div data-lat="{{event.location.latitude}}" data-lon="{{event.location.longitude}}" class="col-md-12 map-canvas">
+                      <div class="col-md-12">
+                          <div data-lat="{{event.location.latitude}}" data-lon="{{event.location.longitude}}" class="col-md-12 map-canvas">
+                          </div>
                       </div>
                   </div>
                   <div class="row">
-                      {% if event.location.public %}
-                      <address>
-                          {{event.location.name}}<br>
-                          {{event.location.street_address}}<br>
-                          {{event.location.city}}, {{event.location.state}} {{event.location.zip_code}}
-                      </address>
-                      {% endif %}  
+                      <div class="col-md-12">
+                          {% if event.location.public %}
+                          <address>
+                              {{event.location.name}}<br>
+                              {{event.location.street_address}}<br>
+                              {{event.location.city}}, {{event.location.state}} {{event.location.zip_code}}
+                          </address>
+                          {% endif %}  
 
-                      <p>
-                        {{event.description|safe}}
-                      </p>
+                          <p>
+                            {{event.description|safe}}
+                          </p>
+                      </div>
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-9">
+                        {% if event.eventdocument_set.all %}
+                              <ul class='list-group'>
+                              {% for event_document in event.eventdocument_set.all %}
+                                  <li class='list-group-item'>
+                                    <div class="row">
+                                      <div class="col-md-8">
+                                        {{event_document.name}} 
+                                      </div>
+
+                                      <div class="col-md-4">
+                                          <a class="btn btn-primary btn-sm pull-right" href="{{event_document.document.url}}" download><i class="fa fa-download"></i> Download</a>
+                                      </div>
+                                    </div>
+
+                                  </li>
+                              {% endfor %}
+                              </ul>
+                        {% endif %}
+                      </div>
                   </div>
               <!--End no main image  -->
               {% else %}
@@ -89,7 +116,9 @@
                   {% if event.main_image.is_wide %}
                   <!-- Wide Image -->
                       <div class="row">
-                        <img class="img-thumbnail" src="{{event.main_image|thumbnail_url:'large'}}">
+                          <div class="col-md-12">
+                              <img class="img-thumbnail" src="{{event.main_image|thumbnail_url:'large'}}">
+                          </div>
                       </div>
                       <br>
                       <div class="row">
@@ -112,32 +141,87 @@
                             </div>
                         </div>
                       </div>
+                      <div class="row">
+                        <div class="col-md-9">
+                            {% if event.eventdocument_set.all %}
+                                  <ul class='list-group'>
+                                  {% for event_document in event.eventdocument_set.all %}
+                                      <li class='list-group-item'>
+                                        <div class="row">
+                                          <div class="col-md-8">
+                                            {{event_document.name}} 
+                                          </div>
+
+                                          <div class="col-md-4">
+                                              <a class="btn btn-primary btn-sm pull-right" href="{{event_document.document.url}}" download><i class="fa fa-download"></i> Download</a>
+                                          </div>
+                                        </div>
+
+                                      </li>
+                                  {% endfor %}
+                                  </ul>
+                            {% endif %}
+                          </div>
+                      </div>
                   <!-- end wide image -->
                   {% else %} 
                   <!-- Narrow image -->
                     <div class="row">
                         <div class="col-md-5">
-                          <div class="row">
-                              <img class="img-thumbnail" src="{{event.main_image|thumbnail_url:'med-square'}}">
-                          </div>
+                            <img class="img-thumbnail" src="{{event.main_image|thumbnail_url:'med-square'}}">
                         </div>
                         <div class="col-md-7">
-                              <div data-lat="{{event.location.latitude}}" data-lon="{{event.location.longitude}}" class="map-canvas canvas-short">
-                              </div>
-                                {% if event.location.public %}
-                                <address>
-                                    {{event.location.name}}<br>
-                                    {{event.location.street_address}}<br>
-                                    {{event.location.city}}, {{event.location.state}} {{event.location.zip_code}}
-                                </address>
-                                {% endif %}  
+                            <div data-lat="{{event.location.latitude}}" data-lon="{{event.location.longitude}}" class="map-canvas canvas-short">
+                            </div>
+                            {% if event.location.public %}
+                            <address>
+                                {{event.location.name}}<br>
+                                {{event.location.street_address}}<br>
+                                {{event.location.city}}, {{event.location.state}} {{event.location.zip_code}}
+                            </address>
+                            {% endif %}  
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-12">
                             <p>
                               {{event.description|safe}}
                             </p>
+                            {% if event.eventdocument_set.all %}
+                              <div class="col-md-8">
+                                  <ul class='list-group'>
+                                  {% for event_document in eventdocument_set.all %}
+                                      <li class='list-item'>
+                                        {{event_document.name}} <a class="btn btn-primary btn-sm" href="{{event_document.document.url}}" download><i class="fa fa-download"></i> Download</a>
+                                      </li>
+                                  {% endfor %}
+                                  </ul>
+                              </div>
+                            {% endif %}
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            {% if event.eventdocument_set.all %}
+                                  <ul class='list-group'>
+                                  {% for event_document in event.eventdocument_set.all %}
+                                      <li class='list-group-item'>
+                                        <div class="row">
+                                          <div class="col-md-8">
+                                            {{event_document.name}} 
+                                          </div>
+
+                                          <div class="col-md-4">
+                                              <a class="btn btn-primary btn-sm pull-right" href="{{event_document.document.url}}" download><i class="fa fa-download"></i> Download</a>
+                                          </div>
+                                        </div>
+
+                                      </li>
+                                  {% endfor %}
+                                  </ul>
+                            {% endif %}
+                          </div>
+                      </div>
                     <!-- End narrow image -->
                   {% endif %}
               <!-- End main image -->
