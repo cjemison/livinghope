@@ -438,7 +438,7 @@
             <div class="product-lead bottom-pad">
                <div class="container">
                   <div class="row">
-                     <div class="col-md-4 col-sm-12 col-xs-12 text-center animate_afl d1">
+                     <div class="col-md-4 col-sm-12 col-xs-12 text-center animate_afl">
                         {% if headline.main_image %}
                         <img src="{{headline.main_image.url}}">
                         {% else %}
@@ -446,7 +446,7 @@
                         {% endif %}
                         <!-- <i class="fa fa-leaf fa-5x"></i> -->
                      </div>
-                     <div class="col-md-8 col-sm-12 col-xs-12 animate_afr d3">
+                     <div class="col-md-8 col-sm-12 col-xs-12 animate_afr d2">
                         <div class="app-service">
                            <h3>{{headline.title}}</h3>
                            <h4><i class="fa fa-calendar"></i> {{headline.created_on|date}}</h4>
@@ -469,7 +469,7 @@
                         <h3 class="title">Latest Blog Posts</h3>
                      </div>
                      <div class="clearfix"></div>
-                     <div class="blog-showcase col-lg-12 col-md-12 col-sm-12 col-xs-12 animate_afb d1">
+                     <div class="blog-showcase col-lg-12 col-md-12 col-sm-12 col-xs-12 animate_afb "> <!-- add class d1 - 7 to add animation delay -->
                         <ul>
                           {% for post in latest_posts %}
                            <li class="">
