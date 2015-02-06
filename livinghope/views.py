@@ -736,7 +736,7 @@ def report_broken_audio(request):
     subject = "Living Hope - Broken sermon audio for id %s" % sermon_id
     body = "Please fix this broken audio"
     send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
-              ['rhsiao2@gmail.com'], fail_silently=False)
+              settings.ADMIN_RECIPIENTS, fail_silently=False)
     success_message = "Thank you for caring enough to report the broken audio.\
                         Someone's been dispatched to fix it!"
     messages.success(request, success_message)

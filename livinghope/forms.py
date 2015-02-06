@@ -33,7 +33,7 @@ class ContactForm(forms.Form):
                     'message':message}
         body = render_to_string('contact_email_template.html', context)
         send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
-                 ['rhsiao2@gmail.com'], fail_silently=False)
+                 settings.EMAIL_RECIPIENTS, fail_silently=False)
 
 class ContactLeaderForm(forms.Form):
     your_name = forms.CharField(label='Your Name', max_length=100,
@@ -101,7 +101,7 @@ class PrayerForm(forms.Form):
         body = render_to_string('prayer_email_template.html', context)
         
         send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
-                 ['rhsiao2@gmail.com'], fail_silently=False)
+                 settings.EMAIL_RECIPIENTS, fail_silently=False)
 
 def validate_parsable(value):
     if not test_parsable(value):
