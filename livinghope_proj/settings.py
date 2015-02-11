@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'ckeditor',
     'easy_thumbnails',
     'livinghope',
+    'analytical',
     # 'paypalrestsdk',
     # 'django_comments',
     # 'mptt',
