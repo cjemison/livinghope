@@ -126,6 +126,11 @@ class LeadershipRole(models.Model): #rename this roles?
 class BlogTag(models.Model):
     name = models.CharField(max_length=40)
 
+    def save(self):
+        # force name to be title case
+        self.name = self.name.title()
+        super(BlogTag, self).save()
+
     def __unicode__(self):
         return self.name
 
@@ -227,12 +232,15 @@ class SpecialEvent(Event):
     end_date = models.DateField(null=True, blank=True)
     main_image = SmartImageField(upload_to='./event_images/',
                                     blank=True,
-                                    null=True)
+                                    null=True,
+                                    help_text="This is the image that will be\
+                                    displayed on the event page. NOT displayed on\
+                                    the home page.")
     organizer = models.ManyToManyField(Leader)
     display_on_home_page = models.BooleanField(
                                     default=False,
                                     help_text="Should this be shown on the \
-                                    home page slider when the event draws near?"
+                                    home page slider when the event approaches?"
                                 )
     display_on = models.DateField(null=True, blank=True, 
                                   verbose_name="Display on home page on this date",
@@ -303,7 +311,8 @@ class MissionsPrayerMonth(models.Model):
                                    blank=True, null=True, 
                                    help_text="This image will be displayed portrait-style\
                                               so landscape images will be cropped.")
-    highlight = models.CharField(max_length=255, default='')
+    highlight = models.CharField(max_length=255, default='',
+                                 help_text="What is being highlighted this month?")
     # missionary = models.ForeignKey(Missionary, blank=True, null=True,
     #                help_text='Put this in if the highlight is also a missionary we support')
     month = models.IntegerField(max_length=2, choices=MONTHS)
@@ -329,7 +338,9 @@ class ChildrensMinistryClass(models.Model):
                               help_text="What is the upper bound of the age range?")
     teachers = models.ManyToManyField(ChildrensMinistryTeacher, 
                                       blank=True, null=True)
-    order = models.IntegerField(max_length=2, default=0)
+    order = models.IntegerField(max_length=2, default=0,
+                                help_text="This determines the ordering of classes\
+                                on the Children's ministry page.")
     description = RichTextField()
 
     def __unicode__(self):
@@ -390,7 +401,8 @@ class SermonSeries(models.Model):
     # series_image_thumbnail = models.ImageField(upload_to='./sermon_series_thumb/',
     #                                            null=True)
     passage_range = models.CharField(max_length=50)
-    current_series = models.BooleanField(default=False)
+    current_series = models.BooleanField(default=False,
+                                         help_text="Is this the current series?")
     description = RichTextField(blank=True, null=True)
 
     def clean(self):
@@ -412,7 +424,7 @@ class Sermon(models.Model):
                         Bad, ambiguous: Phi. 1:1-3, 6-8. Is this Philippians or Philemon? 
                         6-8 would be interpreted as chapters 6-8 not verses 1:6-8
                         """
-    sermon_date = models.DateField()
+    sermon_date = models.DateField(help_text="When was the sermon preached?")
     title = models.CharField(max_length=255)
     author = models.ForeignKey(Author)
     sermon_series = models.ForeignKey(SermonSeries)
