@@ -106,6 +106,9 @@
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                     {% if prayer_month.main_image %}
                         <img src="{{prayer_month.main_image|thumbnail_url:'prayer_calendar_l'}}" alt=" " class="img-thumbnail img-responsive"/>
+                        {% if prayer_month.main_image_caption %}
+                          <p class="text-center"><small>{{prayer_month.main_image_caption}}</small></p>
+                        {% endif %}
                     {% else %}
                     <img src="{% static 'livinghope/placeholderprofile.jpg' %}" class="img-responsive">
                     {% endif %}

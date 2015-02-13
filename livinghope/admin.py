@@ -113,11 +113,15 @@ class BlogPostAdmin(admin.ModelAdmin):
     filter_horizontal = ('tags', )
 
 
+class MissionsPrayerMonthAdmin(admin.ModelAdmin):
+    list_display = ('highlight', 'month', 'year')
+    ordering = ('-year', '-month')
+    search_fields = ['highlight',]
 
 # admin.site.register(Book)
 # admin.site.register(Chapter)
 # admin.site.register(Verse)
-admin.site.register(MissionsPrayerMonth)
+admin.site.register(MissionsPrayerMonth, MissionsPrayerMonthAdmin)
 admin.site.register(ChildrensMinistryClass, ChildrensMinistryClassAdmin)
 admin.site.register(Ministry, MinistryAdmin)
 admin.site.register(SpecialEvent, SpecialEventAdmin)
