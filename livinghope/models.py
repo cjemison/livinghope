@@ -311,6 +311,10 @@ class MissionsPrayerMonth(models.Model):
                                    blank=True, null=True, 
                                    help_text="This image will be displayed portrait-style\
                                               so landscape images will be cropped.")
+    main_image_caption = models.CharField(blank=True,
+                                          null=True,
+                                          max_length=255,
+                                          help_text="Brief description of the image")
     highlight = models.CharField(max_length=255, default='',
                                  help_text="What is being highlighted this month?")
     # missionary = models.ForeignKey(Missionary, blank=True, null=True,
