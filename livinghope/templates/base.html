@@ -39,6 +39,16 @@
 </head>
    <body class="home">
       <div class="page-mask">
+            <noscript>
+              <style>
+                  .page-mask {
+                      visibility: hidden;
+                  }
+              </style>
+              <div class="no-javascript">
+                  Please enable Javascript to view this site.
+              </div>
+            </noscript>
             <div class="page-loader"> 
 
                 <div class="spinner"></div>
@@ -155,6 +165,15 @@
          <!-- Header End --> 
          <!-- Content Start -->
          <div id="main">
+            <noscript>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="alert alert-warning">
+                      Please enable Javascript! Things will look ugly if you don't!
+                  </div>
+                </div>
+              </div>
+            </noscript>
          {% block content %}
 
          {% endblock %} 

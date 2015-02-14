@@ -17,6 +17,14 @@
 	font-size: 12px;
 }
 
+.no-javascript{ 
+  width: 100%; 
+  position: fixed; 
+  background: #fff; 
+  text-align: center; 
+  margin: 16% auto 0 auto; 
+  font-size: 12px;
+}
 
 .spinner {
   border: 2px solid #eeeeee;
