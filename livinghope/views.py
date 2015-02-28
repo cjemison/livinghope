@@ -649,7 +649,13 @@ def prayer_calendar(request):
     prayer_months = MissionsPrayerMonth.objects.all().order_by('-year', '-month')
 
     prayer_months = paginate(request, prayer_months, 12)
-    context = {'prayer_months': prayer_months}
+    latest_image = None
+    for prayer_month in prayer_months:
+        if prayer_month.main_image:
+            latest_image = prayer_month.main_image
+            break
+
+    context = {'prayer_months': prayer_months, 'latest_image': latest_image}
     return render(request, 'missions_prayer_calendar.html', context)    
 
 def load_sermons(request):

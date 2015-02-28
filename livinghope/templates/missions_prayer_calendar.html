@@ -7,6 +7,10 @@
 
 {% block headloaders %}
   <link rel="stylesheet" href="{% static 'livinghope/fix_modal.css' %}">
+  <meta property="og:title" content="Living Hope | Missions Prayer Calendar" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="{{latest_image.|thumbnail_url:'prayer_calendar_l'}}" />
+  <meta property="og:description" content="Join us in praying for God's kingdom to advance through the world. Each month features a different country/region's prayer needs." />
 {% endblock %}
 {% block content %}
 <div class="breadcrumb-wrapper">
