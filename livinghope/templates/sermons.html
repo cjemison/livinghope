@@ -32,7 +32,15 @@
       }
   </style>
   <link rel="stylesheet" href="{% static 'livinghope/fix_modal.css'%}">
-
+  <meta property="og:title" content="Living Hope | Sermons" />
+  <meta property="og:type" content="website" />
+  {% if series %}
+  <meta property="og:image" content="{{series.series_image|thumbnail_url:'ss_med'}}" />
+  <meta property="og:description" content="Listen, download, or read the sermons in the sermon series {{series.name }}" />
+  {% else %}
+  <meta property="og:image" content="{{current_series_image|thumbnail_url:'ss_med'}}" />
+  <meta property="og:description" content="Couldn't join us for a service or live too far away? Listen to our sermon recordings online or download to listen to them on the go. If you'd rather read your sermons, we've got you covered! Sermon transcripts are available as well!" />
+  {% endif %}
 {% endblock %}
 
 {% block title %}

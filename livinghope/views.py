@@ -230,6 +230,8 @@ def leaders(request):
 
 def sermon_series(request, series_id=None):
     all_series = SermonSeries.objects.all().order_by('-start_date')
+    current_series_image = SermonSeries.objects.get(
+                                current_series=True).series_image
     searched = False
     if 'query' in request.GET: # this is if something was searched for
         searched = True
@@ -252,7 +254,8 @@ def sermon_series(request, series_id=None):
             
             #no longer needs just songs context element
             return render(request, 'sermons.html', {'sermons': sermons,
-                'form':form, 'query':query,'all_series': all_series,})
+                'form':form, 'query':query,'all_series': all_series,
+                'current_series_image':current_series_image})
 
     if series_id: #this is if a sermon series was selected
         try:
@@ -270,13 +273,13 @@ def sermon_series(request, series_id=None):
             
         context = {'sermons': sermons,
                     'all_series': all_series,
-                    'series':series,}
+                    'series':series,'current_series_image':current_series_image}
         if searched:
             context.update({'form': form})
         return render(request, 'sermons.html', context)
     else: #this is to display all sermon series
 
-        context = {'all_series':all_series}
+        context = {'all_series':all_series, 'current_series_image':current_series_image}
         if searched:
             context.update({'form': form})
         return render(request, 'sermon_series.html', context)

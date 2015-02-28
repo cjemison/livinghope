@@ -2,7 +2,10 @@
 {% load static %}
 {% load thumbnail %}
 {% block headloaders %}
-
+  <meta property="og:title" content="Living Hope | Sermon Series" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="{{current_series_image|thumbnail_url:'ss_med'}}" />
+  <meta property="og:description" content="Couldn't join us for a service or live too far away? Listen to our sermon recordings online or download to listen to them on the go. If you'd rather read your sermons, we've got you covered! Sermon transcripts are available as well!" />
 {% endblock %}
 
 {% block title %}| Sermon Series{%endblock %}
