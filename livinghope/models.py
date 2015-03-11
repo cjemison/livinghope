@@ -236,7 +236,9 @@ class SpecialEvent(Event):
                                     help_text="This is the image that will be\
                                     displayed on the event page. NOT displayed on\
                                     the home page.")
-    organizer = models.ManyToManyField(Leader)
+    organizer = models.ManyToManyField(Leader,
+                                       help_text="This is who the main point of contact\
+                                       should be for this event.")
     display_on_home_page = models.BooleanField(
                                     default=False,
                                     help_text="Should this be shown on the \
@@ -264,13 +266,19 @@ class Service(Event):
 
 
 class SmallGroup(Event):
-    leaders = models.ManyToManyField(Leader, null=True, blank=True)
+    leaders = models.ManyToManyField(Leader, null=True, blank=True,
+                                     help_text="This is currently optional and will \
+                                     not actually display publicly")
     region = models.CharField(max_length=30)
     main_image = SmartImageField(upload_to='./small_group_images/',
                                     blank=True,
-                                    null=True)
+                                    null=True,
+                                    help_text="This image will be displayed at the top\
+                                    of your small group section on the small groups page")
     description = RichTextField(null=True, blank=True)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True,
+                                 help_text="Only small groups marked as active will be\
+                                 displayed on the small groups page")
     def __unicode__(self):
         return "%s Small Group" % self.region
 
