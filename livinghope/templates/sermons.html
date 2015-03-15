@@ -198,6 +198,28 @@
 
                 </div>
               </div>
+              {% if sermon.sermondocument_set.all %}
+                <div class="row">
+                  <br>
+                  <div class="col-md-12">
+                      <ul class='list-group'>
+                      {% for sermon_document in sermon.sermondocument_set.all %}
+                          <li class='list-group-item'>
+                            <div class="row">
+                              <div class="col-md-8">
+                                {{sermon_document.name}} 
+                              </div>
+                              <div class="col-md-4">
+                                  <a class="btn btn-primary btn-sm pull-right" href="{{sermon_document.document.url}}" download><i class="fa fa-download"></i> Download</a>
+                              </div>
+                            </div>
+
+                          </li>
+                      {% endfor %}
+                      </ul>
+                  </div>
+                </div>
+              {% endif %}
             </td>
           </tr>
         {% endfor %}

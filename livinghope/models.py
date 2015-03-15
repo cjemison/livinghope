@@ -488,3 +488,12 @@ class Sermon(models.Model):
         return "%s - %s by %s" % (str(self.sermon_date), 
                                     self.passage,
                                     self.author.full_name())
+
+class SermonDocument(models.Model):
+    name = models.CharField(max_length=255)
+    document = models.FileField(upload_to='./sermon_documents/')
+    sermon = models.ForeignKey(Sermon)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return u'%s for %s' % (self.name, self.sermon)

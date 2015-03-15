@@ -8,7 +8,8 @@ from livinghope.models import Author, SermonSeries, Sermon, \
                               BlogTag, SpecialEvent, MissionaryImage, Ministry, \
                               LeadershipRole, SmallGroupImage, ChildrensMinistryClass, \
                               ChildrensMinistryTeacher, MissionsPrayerMonth, \
-                              Book, Chapter, Verse, MinistryDocument, EventDocument
+                              Book, Chapter, Verse, MinistryDocument, EventDocument, \
+                              SermonDocument
 
 def set_leader_inactive(modeladmin, request, queryset):
     queryset.update(active=False)
@@ -98,13 +99,16 @@ class SermonSeriesAdmin(admin.ModelAdmin):
                     'current_series')
     ordering = ('-start_date',)
 
+class SermonDocumentInline(admin.StackedInline):
+    model = SermonDocument
+
 class SermonAdmin(admin.ModelAdmin):
     list_display = ('title', 'sermon_date', 'author', 'sermon_series', 
                     'passage')
     ordering = ('-sermon_date',)
     search_fields = ['title', 'passage']
     exclude = ('verses', )
-
+    inlines = [SermonDocumentInline,]
 
 class BlogPostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'created_on', 'updated_on',)
