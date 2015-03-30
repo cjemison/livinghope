@@ -412,6 +412,13 @@ class SermonSeries(models.Model):
                                                 1500x1125 or 720x540")
     # series_image_thumbnail = models.ImageField(upload_to='./sermon_series_thumb/',
     #                                            null=True)
+    homepage_image = models.ImageField(upload_to='./sermon_series_home/',
+                                       help_text="This image is the one that\
+                                              will be displayed on the home page when\
+                                              this series is the current series. \
+                                              Ideally this should be 1920x470",
+                                       blank=True,
+                                       null=True)
     passage_range = models.CharField(max_length=50)
     current_series = models.BooleanField(default=False,
                                          help_text="Is this the current series?")

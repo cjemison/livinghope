@@ -148,6 +148,10 @@ def home(request):
                                 display_on__lte=today,
                                 date__gte=today
                             )
+    try:
+        current_series = SermonSeries.objects.filter(current_series=True)[0]
+    except:
+        current_series = None
     headline = BlogPost.objects.filter(tags__name="News and Announcements").order_by(
                 '-created_on')[0]
     
@@ -159,7 +163,8 @@ def home(request):
 
     context = {'upcoming_events':upcoming_events,
                'news': news, 'headline': headline,
-               'latest_posts': latest_posts}
+               'latest_posts': latest_posts,
+               'current_series': current_series}
     return render(request, 'home.html', context)
 
 def missions(request):
@@ -230,8 +235,13 @@ def leaders(request):
 
 def sermon_series(request, series_id=None):
     all_series = SermonSeries.objects.all().order_by('-start_date')
-    current_series_image = SermonSeries.objects.get(
+    try:
+        current_series_image = SermonSeries.objects.get(
                                 current_series=True).series_image
+    except:
+        current_series_image = SermonSeries.objects.all().order_by(
+                                        '-start_date'
+                                    )[0].series_image
     searched = False
     if 'query' in request.GET: # this is if something was searched for
         searched = True

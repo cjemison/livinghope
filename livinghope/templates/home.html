@@ -125,8 +125,9 @@
                              <a class="btn-special hidden-xs btn-grey" href="{% url 'statement_of_faith' %}">What we believe</a>
                          </div>
                      </li>
+                     {% if current_series and current_series.homepage_image %}
                      <li data-transition="fade" data-slotamount="7" data-masterspeed="500"  data-saveperformance="on">
-                         <img class="img-responsive" src="{% static 'livinghope/gospeldna.jpg'%}"  alt="Pixma" data-lazyload="{% static 'livinghope/gospeldna.jpg'%}" >
+                         <img class="img-responsive" src="{{current_series.homepage_image.url}}"  alt="Pixma" data-lazyload="{{current_series.homepage_image.url}}" >
 
                          <div class="caption h1 lft tp-caption start"
                               data-x="40"
@@ -138,16 +139,6 @@
                               data-endeasing="easeOutQuint">
                              <h3>Current<br>Sermon Series</h3>
                          </div>
-<!--                          <div class="caption h1 lft tp-caption start"
-                              data-x="40"
-                              data-y="210"
-                              data-speed="700"
-                              data-endspeed="800"
-                              data-start="1000"
-                              data-easing="easeOutQuint"
-                              data-endeasing="easeOutQuint">
-                             <h3>Sermon Series</h3>
-                         </div> -->
                          <div class="caption lfb caption_button_1 fadeout tp-caption start"
                               data-x="40"
                               data-y="300"
@@ -159,6 +150,7 @@
                              <a class="btn-special hidden-xs btn-grey" href="{% url 'services' %}">Learn More</a>
                          </div>
                      </li>
+                     {% endif %}
                      <li data-transition="fade" data-slotamount="7" data-masterspeed="500"  data-saveperformance="on">
                          <img class="img-responsive" src="{% static 'livinghope/cma-banner-logo1.jpg'%}"  alt="Pixma" data-lazyload="{% static 'livinghope/cma-banner-logo1.jpg'%}" >
 
