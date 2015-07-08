@@ -66,6 +66,7 @@ class SpecialEventAdmin(admin.ModelAdmin):
         ('Main Info', 
             {
                 'fields': ('name', 'main_image', 'organizer',
+                            'location',
                             'description'
                             )
             }
