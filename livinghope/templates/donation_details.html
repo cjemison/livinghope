@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block headloaders %}
+{% endblock %}
+{% block title %}
+| Donation
+{% endblock %}
+{% block content %}
+<div class="breadcrumb-wrapper">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <h2 class="title">Donation Details</h2>
+         </div>
+<!--          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <div class="breadcrumbs pull-right">
+               <ul>
+                  <li>You are here:</li>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="#">Pages</a></li>
+                  <li>About Us</li>
+               </ul>
+            </div>
+         </div> -->
+      </div>
+   </div>
+</div>
+
+<div class="container">
+  <br>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+          {{message}}
+      </div>
+    {% endfor %}
+  {% endif %}
+  <div class="container">
+    {% if donation.donationpostingimage_set.all %}
+      <div class="row">
+        <h3 class="title">Images</h3>
+        <div class="col-md-12">
+            {% for donation_image in donation.donationpostingimage_set.all %}
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 item">
+              <div class="portfolio-item">
+                {% if donation_image.image %}
+                <a href="{{donation_image.image.url}}" class="portfolio-item-link" data-rel="prettyPhoto" title="{{image.caption}}" >
+                  <span class="portfolio-item-hover"></span>
+                  <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{{donation_image.image.url}}" alt=" "/>
+                </a>
+                {% else %}
+                <a href="{% static 'livinghope/placeholderprofile.jpg' %}" class="portfolio-item-link" data-rel="prettyPhoto">
+                  <span class="portfolio-item-hover"></span>
+                  <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{% static 'livinghope/mysterybox.jpg' %}" alt=" "/>
+                </a>
+                {% endif %}
+                <div class="portfolio-item-title">
+                   <p>
+                      {{donation_image.title}}
+                   </p>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+        </div>
+      </div>
+      <hr>
+    {% endif %}
+    <div class="row">
+      <h3 class="title">Description</h3>
+      <div class="col-md-12">
+        <div class="blog-entry-meta">
+           <div class="blog-entry-meta-date">
+              <i class="fa fa-clock-o"></i>
+              <span class="blog-entry-meta-date-month">Posted on {{donation.created_on}}</span>
+           </div>
+           <div class="blog-entry-meta-author">
+              <i class="fa fa-user"></i>
+              <span class="blog-entry-meta-author">Posted by {{donation.contact_name}}</span>
+           </div>
+        </div>
+        <p>
+          {{donation.description|safe}}
+        </p> 
+        <hr>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#contact-donor">I'm Interested!</button>
+        <a href="{% url 'donations' %}" class="pull-right btn btn-danger">Nah, take me back</a>
+      </div>
+    </div>
+  </div>
+    
+</div>
+
+<div class="modal fade" id="contact-donor" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Contact Donor</h4>
+        </div>
+        <div class="modal-body" id="contact-leader-modal-body">
+          <form id="contact-leader-form" role="form" method="post">
+          {% csrf_token %}
+          {{contact_form.non_field_errors}}
+          {% for field in contact_form %}
+          <div class="form-group">
+              {% if not field.is_hidden%}
+              <label for="{{field.id_for_label}}">{{field.label}}</label>
+              {% endif %}
+              {% if field.errors %}
+                  {% for error in field.errors %}
+                      <div class="alert alert-danger">
+                          {{error}}
+                      </div>
+                  {% endfor %}
+              {% endif %}
+              {{field}}
+          </div>
+          {% endfor %}
+      <button id="contact-donor-submit-button" type="submit" class="btn btn-primary">Submit</button><i id="contact-donor-submit-spinner" style="display:none;" class="fa fa-cog fa-2x fa-spin"></i>
+      </form>
+
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block endloaders %}
+<script>
+  $(document).ready(function(){
+    {% if contact_form_error %}
+        $('#contact-donor').modal('show');
+    {% endif %}
+
+      $("#contact-donor-submit-button").click(function(){
+        $("#contact-donor-submit-button").attr('disabled', 'disabled');
+        $("#contact-donor-submit-spinner").show();
+        $(this).parents('form').submit();
+      })
+
+  })
+</script>
+
+{% endblock %}

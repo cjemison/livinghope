@@ -1,7 +1,6 @@
 
 2. Fix up administration with more useful info on table page
 14. ordering for sermon series (based on latest uploaded sermon??)
-26. paypal integration 2.2% + .30 per transaction
 27. Put css on top (headloaders) and javascript on bottom (endloader)
 - missions organization (not just missionary person)
 - cma logo where necessary

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block headloaders %}
+{% endblock %}
+{% block title %}
+| Donations
+{% endblock %}
+{% block content %}
+<div class="breadcrumb-wrapper">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <h2 class="title">Post a Donation</h2>
+         </div>
+<!--          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <div class="breadcrumbs pull-right">
+               <ul>
+                  <li>You are here:</li>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="#">Pages</a></li>
+                  <li>About Us</li>
+               </ul>
+            </div>
+         </div> -->
+      </div>
+   </div>
+</div>
+
+<div class="container">
+  <br>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+          {{message}}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="row">
+    <div class="col-md-12">
+      <p>
+          Do you have something that you are looking to get rid of that someone in our church body might want?<br>
+          Looking to offload that cursed VHS tape onto a poor unsuspecting chump as a hilarious prank? We've got you covered!<br><br>
+
+          Simply fill out the form below to create a donation posting that will be publically accessible pending approval from our admins. Since these postings will be available for anyone to see, please refrain from putting any sensitive information in the description or images. Your email address will not be exposed to the public.
+      </p>    
+    </div>
+  </div>
+  <div class="row">
+    <form id="donation-form" role="form" method="post" enctype="multipart/form-data">
+      <div class="col-md-12 well">
+        <h3>Submit a Donation Posting</h3>
+        {{form.non_field_errors}}
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{field.id_for_label}}">{{field.label}}
+              {% if field.help_text %}<small>{{field.help_text}}</small>{%endif%}</label>
+            {% if field.errors %}
+              {% for error in field.errors %}
+                <div class="alert alert-danger">
+                  {{error}}
+                </div>
+              {% endfor %}
+            {% endif %}
+            {{field}}
+          </div>
+        {% endfor %}
+        <hr>
+        <h3>Add images</h3>
+        <div class="row">
+          {{image_formset.management_form}}
+          {% for image_form in image_formset %}
+              <div class="col-md-4">
+                {% for field in image_form %}
+                  <div class="form-group">
+                    <label for="{{field.id_for_label}}">{{field.label}}
+                      {% if field.help_text %}<small>{{field.help_text}}</small>{%endif%}</label>
+                    {% if field.errors %}
+                      {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                          {{error}}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+                    {{field}}
+                  </div>
+                {% endfor %}
+              </div>
+          {% endfor %}
+        </div>
+        <button id="donation-submit-button" type="submit" class="btn btn-primary">Submit</button><i id="donation-submit-spinner" style="display:none;" class="fa fa-cog fa-2x fa-spin"></i>
+      </div>
+    </form>
+  </div>
+    
+</div>
+{% endblock %}
+
+{% block endloaders %}
+<script>
+  $(document).ready(function(){
+    $("#donation-submit-button").click(function(){
+      $("#donation-submit-button").attr('disabled', 'disabled');
+      $("#donation-submit-spinner").show();
+      $(this).parents('form').submit();
+    })
+
+  })
+
+</script>
+
+{% endblock %}

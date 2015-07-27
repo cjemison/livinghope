@@ -7,6 +7,7 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+DONATION_ADMIN = []
 MANAGERS = ADMINS
 
 DATABASES = {

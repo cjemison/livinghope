@@ -3,21 +3,27 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q, Count
 from django.template.loader import render_to_string
-from django.views.generic.edit import FormView
-from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.conf import settings
-from livinghope.models import SermonSeries, Sermon, Author, BannerImage
-from livinghope.models import Missionary, Leader, SmallGroup, Service
-from livinghope.models import PrayerMeeting, Location, BlogPost, BlogTag
-from livinghope.models import SpecialEvent, Ministry, LeadershipRole
-from livinghope.models import MissionsPrayerMonth, ChildrensMinistryTeacher
-from livinghope.models import ChildrensMinistryClass, Verse
+from django.forms.formsets import formset_factory
+from django.views.generic.edit import FormView
+from django.views.generic import TemplateView
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from livinghope.models import (SermonSeries, Sermon, Author, BannerImage, 
+        Missionary, Leader, SmallGroup, Service, PrayerMeeting, Location, 
+        BlogPost, BlogTag, SpecialEvent, Ministry, LeadershipRole, 
+        MissionsPrayerMonth, ChildrensMinistryTeacher, ChildrensMinistryClass, 
+        Verse, DonationPosting, DonationPostingImage
+    )
 
-from livinghope.forms import PrayerForm, ContactForm, ContactLeaderForm, SearchVerseForm
+from livinghope.forms import (PrayerForm, ContactForm, ContactLeaderForm, 
+        SearchVerseForm, DonationPostingForm, DonationPostingImageForm,
+        ContactDonorForm
+    )
 from livinghope.functions import parse_string_to_verses, test_parsable
 from django.core.mail import send_mail
 from aggregate_if import Count as CountIf
@@ -311,6 +317,106 @@ class Prayer(FormView):
 
         messages.success(self.request, success_message)
         return super(Prayer, self).form_valid(form)
+
+class DonationPostingList(ListView):
+    model = DonationPosting
+    template_name = 'donation_postings.html'
+    context_object_name = 'donation_list'
+
+    # def dispatch(self):
+
+    #     return super(DonationPostingList, self).dispatch()
+
+    def get_context_data(self, **kwargs):
+        #could make this configurable i guess
+        today = datetime.datetime.today().date()
+        thirty_days_ago = today - datetime.timedelta(days=30)
+        old_postings = DonationPosting.objects.filter(
+            created_on__lt=thirty_days_ago)
+        old_postings.update(active=False)
+        #do i need this?
+        context = super(DonationPostingList, self).get_context_data(**kwargs)
+        return context
+
+    def get_queryset(self):
+        return DonationPosting.objects.filter(active=True, approved=True)
+
+class DonationPostingDetails(DetailView):
+    model = DonationPosting
+    template_name = 'donation_details.html'
+    context_object_name = 'donation'
+
+    def get_context_data(self, **kwargs):
+        context = super(DonationPostingDetails, self).get_context_data(**kwargs)
+        donation_posting = self.get_object()
+        if 'contact_form' in kwargs:
+            contact_form = kwargs['contact_form']
+        else:
+            contact_form = ContactDonorForm(
+                initial={'donation_posting':donation_posting})
+        context.update({'contact_form':contact_form})
+        return context
+
+    def post(self, request, **kwargs):
+        contact_form = ContactDonorForm(request.POST)
+        self.object = self.get_object()
+        if contact_form.is_valid():
+            contact_form.send_contact_email()
+            success_message = "Your message has been delivered to %s!" % self.object.contact_name
+            messages.success(request, success_message)
+            context = self.get_context_data(**kwargs)
+            return self.render_to_response(context)
+        else:
+            context = self.get_context_data(
+                request=request, contact_form=contact_form, **kwargs)
+            context.update({'contact_form_error': True})
+            return self.render_to_response(context)
+
+
+class CreateDonationPosting(FormView):
+    template_name = 'donation_posting_form.html'
+    form_class = DonationPostingForm
+    success_url = reverse_lazy('create_donation_posting')
+    DonationImageFormset = formset_factory(DonationPostingImageForm, extra=3)
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateDonationPosting, self).get_context_data(**kwargs)
+        #this handles if there is an image_formset already existing in the case
+        #of form invalid
+        if 'image_formset' in kwargs:
+            image_formset = kwargs['image_formset']
+        else:
+            image_formset = self.DonationImageFormset()
+        context.update({'image_formset':image_formset})
+        return context
+
+    def post(self, request, *args, **kwargs):
+        # need to override post because i want validation on both
+        #the DonationPostingForm and Image Formset
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        image_formset = self.DonationImageFormset(request.POST, request.FILES)
+        if form.is_valid() and image_formset.is_valid():
+            return self.form_valid(form, image_formset)
+        else:
+            return self.form_invalid(form, image_formset, **kwargs)
+
+    def form_invalid(self, form, image_formset, **kwargs):
+        context = self.get_context_data(form=form, image_formset=image_formset, **kwargs)
+        return self.render_to_response(context)
+
+
+    def form_valid(self, form, image_formset):
+        donation_posting = form.save()
+        for image_form in image_formset:
+            if image_form.has_changed():
+                image_form.save(donation_posting)
+
+        success_message = """Thank you for submitting a donation. Once approved
+            by an admin, it will appear on the donations page!"""
+        messages.success(self.request, success_message)
+        return super(CreateDonationPosting, self).form_valid(form)
+
 
 def paypal_payment_info_receiver(request):
     #this is where notify_url from a paypal button redirects to

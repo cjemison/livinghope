@@ -2,14 +2,15 @@ from django.contrib import admin
 from django.db import models
 from django import forms
 from django.templatetags.static import static
-from livinghope.models import Author, SermonSeries, Sermon, \
-							  Location, Service, BannerImage, Missionary, \
-							  Leader, PrayerMeeting, SmallGroup, BlogPost, \
-                              BlogTag, SpecialEvent, MissionaryImage, Ministry, \
-                              LeadershipRole, SmallGroupImage, ChildrensMinistryClass, \
-                              ChildrensMinistryTeacher, MissionsPrayerMonth, \
-                              Book, Chapter, Verse, MinistryDocument, EventDocument, \
-                              SermonDocument
+from livinghope.models import (Author, SermonSeries, Sermon,
+        Location, Service, BannerImage, Missionary,
+		Leader, PrayerMeeting, SmallGroup, BlogPost, 
+        BlogTag, SpecialEvent, MissionaryImage, Ministry, 
+        LeadershipRole, SmallGroupImage, ChildrensMinistryClass,
+        ChildrensMinistryTeacher, MissionsPrayerMonth,
+        Book, Chapter, Verse, MinistryDocument, EventDocument,
+        SermonDocument, DonationPosting, DonationPostingImage
+    )
 
 def set_leader_inactive(modeladmin, request, queryset):
     queryset.update(active=False)
@@ -21,6 +22,13 @@ set_leader_active.short_description = "Mark selected leaders as active"
 
 class MissionaryImageInline(admin.StackedInline):
     model = MissionaryImage
+
+class DonationPostingAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_on', 'contact_name', 'contact_email',
+            'active', 'approved'
+        )
+    ordering = ('-created_on',)
+    search_fields = ['name', 'contact_name', 'contact_email']
 
 class MissionaryAdmin(admin.ModelAdmin):
     inlines = [MissionaryImageInline, ]
@@ -126,6 +134,7 @@ class MissionsPrayerMonthAdmin(admin.ModelAdmin):
 # admin.site.register(Book)
 # admin.site.register(Chapter)
 # admin.site.register(Verse)
+admin.site.register(DonationPosting, DonationPostingAdmin)
 admin.site.register(MissionsPrayerMonth, MissionsPrayerMonthAdmin)
 admin.site.register(ChildrensMinistryClass, ChildrensMinistryClassAdmin)
 admin.site.register(Ministry, MinistryAdmin)

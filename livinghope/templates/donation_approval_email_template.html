@@ -1,0 +1,13 @@
+A new donation needs your approval!
+
+The donation needing approval is as follows:
+{{donation.name|safe}}
+{{donation.description|safe}}
+
+Use this link to access the Living Hope admin page to approve or delete the donation posting
+
+{{domain}}{% url 'admin:livinghope_donationposting_change' donation.id %}
+
+----------------------
+Sincerely,
+Living Hope Robot

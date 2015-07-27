@@ -1,16 +1,87 @@
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse_lazy, reverse
 from captcha.fields import CaptchaField, CaptchaTextInput
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
-from livinghope.models import Leader
+from django.contrib.sites.models import Site
+from django.conf import settings
+from livinghope.models import Leader, DonationPosting, DonationPostingImage
 from livinghope.functions import test_parsable
 # from django.utils.safestring import mark_safe
 
 # class BootstrapCaptchaField(CaptchaField):
 #     def __init__(self, *args, **kwargs):
 #         super(CaptchaField, self).__init__()
+
+class DonationPostingForm(forms.ModelForm):
+    captcha = CaptchaField(widget=CaptchaTextInput(attrs={'class':'form-control'}))
+    class Meta:
+        model = DonationPosting
+        fields = ['name', 'contact_email', 'description']
+        widgets = {'name': forms.TextInput(attrs={'class':'form-control'}),
+            'contact_email': forms.TextInput(attrs={'class':'form-control'}),
+            'description': forms.Textarea(attrs={'class':'form-control'})
+        }
+
+    def save(self):
+        donation_posting = super(DonationPostingForm, self).save()
+        subject = "Living Hope Donation Needs Approval"
+        domain = Site.objects.get(id=settings.SITE_ID).domain
+        context = {'donation':donation_posting, 'domain': domain}
+        body = render_to_string('donation_approval_email_template.html', context)
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
+                 settings.DONATION_ADMIN, fail_silently=False)
+        return donation_posting
+
+class DonationPostingImageForm(forms.ModelForm):
+    class Meta:
+        model = DonationPostingImage
+        fields = ['image', 'title']
+        widgets = {'image': forms.FileInput(attrs={'class':'form-control'}),
+            'title':forms.TextInput(attrs={'class':'form-control'})
+        }
+
+    def save(self, donation_posting):
+        cd = self.cleaned_data
+        posting_image = DonationPostingImage(
+                image=cd['image'], title=cd['title'],
+                donation_posting=donation_posting
+            )
+        posting_image.save()
+
+class ContactDonorForm(forms.Form):
+    your_name = forms.CharField(label='Your Name', max_length=100,
+                                required=True,
+                                widget=forms.TextInput(attrs={'class':'form-control'}))
+    your_email = forms.EmailField(label='Your Email', max_length=100,
+                                  required=True,
+                                  widget=forms.TextInput(attrs={'class':'form-control'}))
+ 
+    your_message =  forms.CharField(label='Your Message', required=True,
+                                widget=forms.Textarea(attrs={'class':'form-control'}))
+    captcha = CaptchaField(widget=CaptchaTextInput(attrs={'class':'form-control'}))
+
+    donation_posting = forms.ModelChoiceField(
+            queryset=DonationPosting.objects.filter(active=True, approved=True),
+            required=True,
+            widget=forms.HiddenInput())
+
+    def send_contact_email(self):
+        name = self.cleaned_data.get('your_name', 'unknown sender')
+        email = self.cleaned_data['your_email']
+        message = self.cleaned_data['your_message']
+        donation_posting = self.cleaned_data['donation_posting']
+
+        subject = 'Message from %s regarding your Living Hope donation' % name
+        donor_email = donation_posting.contact_email
+        context = {'name':name, 'email': email,
+                    'message':message, 'donation':donation_posting}
+        body = render_to_string('contact_email_donation_template.html', context)
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
+                 [donor_email], fail_silently=False)
+
 
 class ContactForm(forms.Form):
     your_name = forms.CharField(label='Your Name', max_length=100,

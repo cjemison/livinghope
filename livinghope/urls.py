@@ -20,6 +20,10 @@ urlpatterns = patterns('',
     url(r'^missions-prayer-calendar/$', views.prayer_calendar, name='missions_prayer_calendar'),
     url(r'^our-leaders/$', views.leaders, name='leaders'),
     url(r'^prayer/$', views.Prayer.as_view(), name='prayer'),
+    url(r'^donations/new/$', views.CreateDonationPosting.as_view(), 
+        name='create_donation_posting'),
+    url(r'^donations/(?P<pk>\d{1,8})/$', views.DonationPostingDetails.as_view(), name='donation_details'),
+    url(r'^donations/$', views.DonationPostingList.as_view(), name='donations'),
     url(r'^statement-of-faith/$', views.statement_of_faith, name='statement_of_faith'),
     url(r'^services/$', views.services, name='services'),
     url(r'^ministries/$', views.ministries, name='ministries'),
@@ -29,7 +33,6 @@ urlpatterns = patterns('',
     #if you change these two, change in contact_leader.js
     url(r'^get_contact_leader_form/$', views.get_contact_leader_form, name='get_contact_leader_form'),
     url(r'^process_contact_leader_form/$', views.process_contact_leader_form, name='process_contact_leader_form'),
-    
     url(r'^display-sermon-transcript/$', views.display_sermon_transcript, name='transcript_modal'),
     url(r'^report-broken-audio/$', views.report_broken_audio, name='broken_audio'),
 
