@@ -19,8 +19,9 @@ class DonationPostingForm(forms.ModelForm):
     captcha = CaptchaField(widget=CaptchaTextInput(attrs={'class':'form-control'}))
     class Meta:
         model = DonationPosting
-        fields = ['name', 'contact_email', 'description']
+        fields = ['name', 'contact_name', 'contact_email', 'description']
         widgets = {'name': forms.TextInput(attrs={'class':'form-control'}),
+            'contact_name': forms.TextInput(attrs={'class':'form-control'}),
             'contact_email': forms.TextInput(attrs={'class':'form-control'}),
             'description': forms.Textarea(attrs={'class':'form-control'})
         }
