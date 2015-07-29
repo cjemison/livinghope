@@ -66,6 +66,9 @@ class DonationPostingImage(models.Model):
     title = models.CharField(max_length=127)
     donation_posting = models.ForeignKey('DonationPosting')
 
+    def __unicode__(self):
+        return self.title
+
 class Person(models.Model):
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=50)

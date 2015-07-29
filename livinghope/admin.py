@@ -23,12 +23,17 @@ set_leader_active.short_description = "Mark selected leaders as active"
 class MissionaryImageInline(admin.StackedInline):
     model = MissionaryImage
 
+class DonationPostingImageInline(admin.StackedInline):
+    model = DonationPostingImage
+
 class DonationPostingAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_on', 'contact_name', 'contact_email',
             'active', 'approved'
         )
     ordering = ('-created_on',)
     search_fields = ['name', 'contact_name', 'contact_email']
+
+    inlines = [DonationPostingImageInline,]
 
 class MissionaryAdmin(admin.ModelAdmin):
     inlines = [MissionaryImageInline, ]

@@ -6,7 +6,9 @@ from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import EmailMessage
 from django.contrib import messages
+from django.contrib.sites.models import Site
 from django.conf import settings
 from django.forms.formsets import formset_factory
 from django.views.generic.edit import FormView
@@ -381,7 +383,7 @@ class DonationPostingDetails(DetailView):
 class CreateDonationPosting(FormView):
     template_name = 'donation_posting_form.html'
     form_class = DonationPostingForm
-    success_url = reverse_lazy('create_donation_posting')
+    success_url = reverse_lazy('donations')
     DonationImageFormset = formset_factory(DonationPostingImageForm, extra=3)
 
     def get_context_data(self, **kwargs):
@@ -416,6 +418,23 @@ class CreateDonationPosting(FormView):
         for image_form in image_formset:
             if image_form.has_changed():
                 image_form.save(donation_posting)
+
+        subject = "Living Hope Donation Needs Approval"
+        domain = Site.objects.get(id=settings.SITE_ID).domain
+        context = {'donation':donation_posting, 'domain': domain}
+        posting_images = DonationPostingImage.objects.filter(
+                donation_posting=donation_posting
+            )
+
+        body = render_to_string('donation_approval_email_template.html', context)
+        
+        email = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL,
+                settings.DONATION_ADMIN
+            )
+        for posting_image in posting_images:
+            email.attach_file(posting_image.image.file.name)
+
+        email.send(fail_silently=False)
 
         success_message = """Thank you for submitting a donation. Once approved
             by an admin, it will appear on the donations page!"""

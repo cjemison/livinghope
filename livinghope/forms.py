@@ -29,15 +29,6 @@ class DonationPostingForm(forms.ModelForm):
             'seeking': forms.Select(attrs={'class':'form-control'})
         }
 
-    def save(self):
-        donation_posting = super(DonationPostingForm, self).save()
-        subject = "Living Hope Donation Needs Approval"
-        domain = Site.objects.get(id=settings.SITE_ID).domain
-        context = {'donation':donation_posting, 'domain': domain}
-        body = render_to_string('donation_approval_email_template.html', context)
-        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
-                 settings.DONATION_ADMIN, fail_silently=False)
-        return donation_posting
 
 class DonationPostingImageForm(forms.ModelForm):
     class Meta:
