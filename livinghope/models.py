@@ -37,15 +37,21 @@ class SmartImageField(ImageField):
     attr_class = SmartImageFieldFile
 
 class DonationPosting(models.Model):
+    DONATION_TYPES = [(True, 'Seeking'),
+            (False, 'Donating')]
+
+    seeking = models.BooleanField(default=False, choices=DONATION_TYPES,
+        verbose_name="Are you donating or seeking?")
     name = models.CharField(max_length=127, 
-        verbose_name="What are you donating?")
+        verbose_name="What are you donating or looking for?")
     created_on = models.DateTimeField(auto_now_add=True)
     contact_name = models.CharField(max_length=127,
         verbose_name="What's your name?")
-    contact_email = models.CharField(max_length=127,
+    #change this later
+    contact_email = models.EmailField(max_length=254,
         verbose_name="What email should responses be sent to?")
     description = models.TextField(blank=True,
-        verbose_name="Briefly describe what you are donating")
+        verbose_name="Briefly describe what you are donating or looking for")
     active = models.BooleanField(default=True)
     approved = models.BooleanField(default=False)
 

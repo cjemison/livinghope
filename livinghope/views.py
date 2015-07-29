@@ -22,7 +22,7 @@ from livinghope.models import (SermonSeries, Sermon, Author, BannerImage,
 
 from livinghope.forms import (PrayerForm, ContactForm, ContactLeaderForm, 
         SearchVerseForm, DonationPostingForm, DonationPostingImageForm,
-        ContactDonorForm
+        DonationContactForm
     )
 from livinghope.functions import parse_string_to_verses, test_parsable
 from django.core.mail import send_mail
@@ -321,7 +321,7 @@ class Prayer(FormView):
 class DonationPostingList(ListView):
     model = DonationPosting
     template_name = 'donation_postings.html'
-    context_object_name = 'donation_list'
+    context_object_name = 'full_donation_list'
 
     # def dispatch(self):
 
@@ -334,8 +334,13 @@ class DonationPostingList(ListView):
         old_postings = DonationPosting.objects.filter(
             created_on__lt=thirty_days_ago)
         old_postings.update(active=False)
-        #do i need this?
         context = super(DonationPostingList, self).get_context_data(**kwargs)
+
+        seeking_postings = self.object_list.filter(seeking=True)
+        giving_postings = self.object_list.filter(seeking=False)
+
+        context.update({'seeking_postings':seeking_postings,
+            'giving_postings':giving_postings})
         return context
 
     def get_queryset(self):
@@ -352,13 +357,13 @@ class DonationPostingDetails(DetailView):
         if 'contact_form' in kwargs:
             contact_form = kwargs['contact_form']
         else:
-            contact_form = ContactDonorForm(
+            contact_form = DonationContactForm(
                 initial={'donation_posting':donation_posting})
         context.update({'contact_form':contact_form})
         return context
 
     def post(self, request, **kwargs):
-        contact_form = ContactDonorForm(request.POST)
+        contact_form = DonationContactForm(request.POST)
         self.object = self.get_object()
         if contact_form.is_valid():
             contact_form.send_contact_email()

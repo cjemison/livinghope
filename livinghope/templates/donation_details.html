@@ -9,8 +9,12 @@
 <div class="breadcrumb-wrapper">
    <div class="container">
       <div class="row">
-         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+          {% if donation.seeking %}
+            <h2 class="title">Sought After Donation Details</h2>
+          {% else %}
             <h2 class="title">Donation Details</h2>
+          {% endif %}
          </div>
 <!--          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
             <div class="breadcrumbs pull-right">
@@ -74,17 +78,24 @@
               <i class="fa fa-clock-o"></i>
               <span class="blog-entry-meta-date-month">Posted on {{donation.created_on}}</span>
            </div>
-           <div class="blog-entry-meta-author">
+<!--            <div class="blog-entry-meta-author">
               <i class="fa fa-user"></i>
               <span class="blog-entry-meta-author">Posted by {{donation.contact_name}}</span>
-           </div>
+           </div> -->
         </div>
         <p>
+          {% if donation.seeking %}
+            {{donation.contact_name}} seeking "{{donation.name}}"
+          {% else %}
+            {{donation.contact_name}} donating "{{donation.name}}"
+          {% endif %}
+          <br><br>
+
           {{donation.description|safe}}
         </p> 
         <hr>
-        <button class="btn btn-primary" data-toggle="modal" data-target="#contact-donor">I'm Interested!</button>
-        <a href="{% url 'donations' %}" class="pull-right btn btn-danger">Nah, take me back</a>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#contact-donor">{% if donation.seeking %}I can help!{% else %}I'm Interested!{% endif %}</button>
+        <a href="{% url 'donations' %}" class="pull-right btn btn-danger"> Take me back</a>
       </div>
     </div>
   </div>

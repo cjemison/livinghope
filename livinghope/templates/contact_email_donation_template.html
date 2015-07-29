@@ -1,12 +1,12 @@
-You've received a message from {{name}} (email: {{email}}) off of the Living Hope website in regards to a donation you posted. 
+{{name}} (email: {{email}}) has responded to a donation posting you created on the Living Hope website.
 
 
-The message is as follows:
+Here's the message!
 
 {{message|safe}}
 
-To refresh your memory, the donation you posted was:
-{{donation.name}}
+To refresh your memory, the posting you made was:
+{% if donation.seeking %}Seeking{% else %}Donating{% endif %} {{donation.name}}
 {{donation.description}}
 ----------------------
 

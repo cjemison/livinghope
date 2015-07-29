@@ -16,14 +16,17 @@ from livinghope.functions import test_parsable
 #         super(CaptchaField, self).__init__()
 
 class DonationPostingForm(forms.ModelForm):
-    captcha = CaptchaField(widget=CaptchaTextInput(attrs={'class':'form-control'}))
+    captcha = CaptchaField(widget=CaptchaTextInput(
+            attrs={'class':'form-control'}))
     class Meta:
         model = DonationPosting
-        fields = ['name', 'contact_name', 'contact_email', 'description']
+        fields = ['seeking', 'name', 'contact_name', 'contact_email', 
+            'description']
         widgets = {'name': forms.TextInput(attrs={'class':'form-control'}),
             'contact_name': forms.TextInput(attrs={'class':'form-control'}),
             'contact_email': forms.TextInput(attrs={'class':'form-control'}),
-            'description': forms.Textarea(attrs={'class':'form-control'})
+            'description': forms.Textarea(attrs={'class':'form-control'}),
+            'seeking': forms.Select(attrs={'class':'form-control'})
         }
 
     def save(self):
@@ -40,7 +43,8 @@ class DonationPostingImageForm(forms.ModelForm):
     class Meta:
         model = DonationPostingImage
         fields = ['image', 'title']
-        widgets = {'image': forms.FileInput(attrs={'class':'form-control'}),
+        widgets = {
+            # 'image': forms.FileInput(attrs={'class':'form-control'}),
             'title':forms.TextInput(attrs={'class':'form-control'})
         }
 
@@ -52,7 +56,8 @@ class DonationPostingImageForm(forms.ModelForm):
             )
         posting_image.save()
 
-class ContactDonorForm(forms.Form):
+#In the future, use subclasses for contact forms
+class DonationContactForm(forms.Form):
     your_name = forms.CharField(label='Your Name', max_length=100,
                                 required=True,
                                 widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -75,7 +80,7 @@ class ContactDonorForm(forms.Form):
         message = self.cleaned_data['your_message']
         donation_posting = self.cleaned_data['donation_posting']
 
-        subject = 'Message from %s regarding your Living Hope donation' % name
+        subject = 'Living Hope donation posting response'
         donor_email = donation_posting.contact_email
         context = {'name':name, 'email': email,
                     'message':message, 'donation':donation_posting}
