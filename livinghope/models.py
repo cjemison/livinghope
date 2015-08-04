@@ -1,8 +1,12 @@
+from django.conf import settings
+from django.contrib.sites.models import Site
+from django.core.mail import send_mail
 from django.db import models
 from django.db.models.fields.files import ImageFieldFile, ImageField
+from django.template.loader import render_to_string
+
 from ckeditor.fields import RichTextField
 from geopy.geocoders import GoogleV3
-
 class SmartImageFieldFile(ImageFieldFile):
     """
     This is an image file that, in addition to all the nice
@@ -55,10 +59,22 @@ class DonationPosting(models.Model):
     active = models.BooleanField(default=True)
     approved = models.BooleanField(default=False)
 
+    def save(self):
+        #hook into when admin approves donation posting
+        if self.id:
+            old_posting = DonationPosting.objects.get(pk=self.id)
+            #changed from not approved to approved
+            if old_posting.approved == False and self.approved == True:
+                subscribers = DonationSubscriber.objects.filter(active=True)
+                for subscriber in subscribers:
+                    subscriber.send_email(self)
+        return super(DonationPosting, self).save()
+
     def __unicode__(self):
         return "Donation of %s by %s (%s) on %s" % (self.name, 
                 self.contact_name, self.contact_email, self.created_on
             )
+
     
 class DonationPostingImage(models.Model):
     image = SmartImageField(upload_to='./donation_images/')
@@ -68,6 +84,25 @@ class DonationPostingImage(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class DonationSubscriber(models.Model):
+    email = models.EmailField(max_length=75)
+    active = models.BooleanField(default=True)
+
+    def send_email(self, posting):
+        #takes in a posting and sends out the email for it to subscriber
+        subject = "A new donation has been posted on the LH website"
+        domain = Site.objects.get(id=settings.SITE_ID).domain
+        context = {'posting': posting, 
+                'subscriber':self,
+                'domain': domain}
+        body = render_to_string('donation_subscriber_email.html', context)
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL,
+            [self.email], fail_silently=False)
+        return
+
+    def __unicode__(self):
+        return self.email
 
 class Person(models.Model):
     first_name = models.CharField(max_length=25)

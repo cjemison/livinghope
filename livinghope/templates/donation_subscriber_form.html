@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block headloaders %}
+{% endblock %}
+{% block title %}
+| Donations
+{% endblock %}
+{% block content %}
+<div class="breadcrumb-wrapper">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <h2 class="title">Subscribe to donation postings</h2>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="container">
+  <br>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+          {{message}}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="row">
+    <div class="col-md-12">
+      <a href="{% url 'donations' %}" class="btn btn-primary">
+        View all postings
+      </a>
+      <br><br>
+      <p>
+          Enter your email below in order to receive updates when a new donation is posted. Your email will not be exposed in any way to the public.
+
+          <br><br>
+          <em>If you notice that you have not received any updates when new postings are put up, please check your spam folder.</em>
+      </p>    
+    </div>
+  </div>
+  <div class="row">
+    <form id="donation-subscriber-form" role="form" method="post">
+      <div class="col-md-12 well">
+        <h3>Subscribe to Donation Postings</h3>
+        {{form.non_field_errors}}
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{field.id_for_label}}">{{field.label}}
+              {% if field.help_text %}<small>{{field.help_text}}</small>{%endif%}</label>
+            {% if field.errors %}
+              {% for error in field.errors %}
+                <div class="alert alert-danger">
+                  {{error}}
+                </div>
+              {% endfor %}
+            {% endif %}
+            {{field}}
+          </div>
+        {% endfor %}
+        <hr>
+        <button id="submit-button" type="submit" class="btn btn-primary">Submit</button><i id="submit-spinner" style="display:none;" class="fa fa-cog fa-2x fa-spin"></i>
+      </div>
+
+    </form>
+  </div>
+    
+</div>
+{% endblock %}
+
+{% block endloaders %}
+<script>
+  $(document).ready(function(){
+    $("#submit-button").click(function(){
+      $("#submit-button").attr('disabled', 'disabled');
+      $("#submit-spinner").show();
+      $(this).parents('form').submit();
+    })
+
+  })
+
+</script>
+
+{% endblock %}

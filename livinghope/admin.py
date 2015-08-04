@@ -9,7 +9,8 @@ from livinghope.models import (Author, SermonSeries, Sermon,
         LeadershipRole, SmallGroupImage, ChildrensMinistryClass,
         ChildrensMinistryTeacher, MissionsPrayerMonth,
         Book, Chapter, Verse, MinistryDocument, EventDocument,
-        SermonDocument, DonationPosting, DonationPostingImage
+        SermonDocument, DonationPosting, DonationPostingImage,
+        DonationSubscriber
     )
 
 def set_leader_inactive(modeladmin, request, queryset):
@@ -19,6 +20,10 @@ set_leader_inactive.short_description = "Mark selected leaders as inactive"
 def set_leader_active(modeladmin, request, queryset):
     queryset.update(active=True)
 set_leader_active.short_description = "Mark selected leaders as active"
+
+class DonationSubscriberAdmin(admin.ModelAdmin):
+    list_display = ('email', 'active')
+    search_fields = ['email']
 
 class MissionaryImageInline(admin.StackedInline):
     model = MissionaryImage
@@ -139,6 +144,7 @@ class MissionsPrayerMonthAdmin(admin.ModelAdmin):
 # admin.site.register(Book)
 # admin.site.register(Chapter)
 # admin.site.register(Verse)
+admin.site.register(DonationSubscriber, DonationSubscriberAdmin)
 admin.site.register(DonationPosting, DonationPostingAdmin)
 admin.site.register(MissionsPrayerMonth, MissionsPrayerMonthAdmin)
 admin.site.register(ChildrensMinistryClass, ChildrensMinistryClassAdmin)

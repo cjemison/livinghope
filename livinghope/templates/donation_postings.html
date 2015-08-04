@@ -37,32 +37,35 @@
   {% endif %}
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
       <a href="{% url 'create_donation_posting' %}" class="btn btn-primary">Make a posting</a>
-      <br><br>
-      <p>
-          Are you interested in the things your fellow churchgoers are trying to get rid of?<br>
-          When you watch <a href="http://www.mylifetime.com/shows/hoarders">Hoarders</a> are you filled with unspeakable envy? We've got you covered!<br><br>
+    </div>
+    <div class="col-md-6">
+      <p class="pull-right">
+        <a href="{% url 'donation_subscriber' %}" class="btn btn-primary">Subscribe to postings</a>
+      </p>
+    </div>
+  </div>
 
-          Simply peruse the listings below and should you be interested in anything, you can contact the current posessee so you can transform them into the possessed and yourself into the posessee!
+  <div class="row">
+    <div class="col-md-12">
+      <p>
+          In America, we are blessed with an abundance of "stuff". Often this results in a lot of clutter in our homes that we don't need but don't want to just toss into the trash.<br><br>
+
+          On the other side, while we do have a lot of stuff, there are those times when we are in need of something that we wouldn't mind obtaining used.<br><br>
+
+          In light of these two situations, you are able to make a donation posting on the Living Hope website! If you are looking to donate something that you no longer have use for, make a posting! If you're looking for something specific, make a donation posting indicating you're looking! <br><br>
+
+          Simply peruse the listings below and should you be interested in anything or be able to help someone find an item they are looking for, you can contact them directly!
 
           <br><br>
           Postings last for 30 days.
       </p>    
     </div>
   </div>
-  <div class="row">
-<!--      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div id="options">
-           <ul id="filters" class="option-set clearfix" data-option-key="filter">
-              <li><a href="#filter" data-option-value="*" class="selected">All</a></li>
-              {% for ministry in ministries %}
-                <li><a href="#filter" data-option-value=".{{ministry.name|slugify}}">{{ministry.name}}</a></li>
-              {% endfor %}
 
-           </ul>
-        </div>
-     </div> -->
+  <div class="row">
+  {% if seeking_postings or giving_postings %}
 
       {% if seeking_postings %}
         <div class="clearfix"></div>
@@ -120,6 +123,14 @@
           </div>
        </div>
      {% endif %}
+
+  {% else %}
+    <div class="col-md-12">
+      <h3 class="title">
+      There are currently no active and approved postings! Check back soon!
+      </h3>
+    </div>
+  {% endif %}
   </div>
     
 </div>

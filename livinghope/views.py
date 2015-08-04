@@ -19,12 +19,12 @@ from livinghope.models import (SermonSeries, Sermon, Author, BannerImage,
         Missionary, Leader, SmallGroup, Service, PrayerMeeting, Location, 
         BlogPost, BlogTag, SpecialEvent, Ministry, LeadershipRole, 
         MissionsPrayerMonth, ChildrensMinistryTeacher, ChildrensMinistryClass, 
-        Verse, DonationPosting, DonationPostingImage
+        Verse, DonationPosting, DonationPostingImage, DonationSubscriber
     )
 
 from livinghope.forms import (PrayerForm, ContactForm, ContactLeaderForm, 
         SearchVerseForm, DonationPostingForm, DonationPostingImageForm,
-        DonationContactForm
+        DonationContactForm, DonationSubscriberForm
     )
 from livinghope.functions import parse_string_to_verses, test_parsable
 from django.core.mail import send_mail
@@ -319,6 +319,27 @@ class Prayer(FormView):
 
         messages.success(self.request, success_message)
         return super(Prayer, self).form_valid(form)
+
+class DonationSubscriberFormView(FormView):
+    template_name = 'donation_subscriber_form.html'
+    form_class = DonationSubscriberForm
+    success_url = reverse_lazy('donations')
+
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, "You have been added to the subscriber\
+            list! You will be emailed whenever a a new donation is posted!")
+        return super(DonationSubscriberFormView, self).form_valid(form)
+
+def donation_unsubscribe(request, pk):
+    subscriber = get_object_or_404(DonationSubscriber, pk=pk)
+    email = subscriber.email
+    subscriber.active = False
+    subscriber.save()
+    messages.success(request, "%s has been successfully removed from the\
+        subscriber list!" % email)
+
+    return HttpResponseRedirect(reverse_lazy('donations'))
 
 class DonationPostingList(ListView):
     model = DonationPosting

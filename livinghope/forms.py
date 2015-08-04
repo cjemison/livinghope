@@ -7,13 +7,34 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.contrib.sites.models import Site
 from django.conf import settings
-from livinghope.models import Leader, DonationPosting, DonationPostingImage
+from livinghope.models import (Leader, DonationPosting, DonationPostingImage,
+        DonationSubscriber
+    )
 from livinghope.functions import test_parsable
 # from django.utils.safestring import mark_safe
 
 # class BootstrapCaptchaField(CaptchaField):
 #     def __init__(self, *args, **kwargs):
 #         super(CaptchaField, self).__init__()
+
+class DonationSubscriberForm(forms.ModelForm):
+    captcha = CaptchaField(widget=CaptchaTextInput(
+            attrs={'class':'form-control'}))
+    class Meta:
+        model = DonationSubscriber
+        fields = ['email']
+        widgets = {'email': forms.TextInput(attrs={'class':'form-control'})}
+
+    def clean_email(self):
+        #could do unique_on on the model but i want to have this reactivate
+        #emails that have unsubscribed
+        email = self.data.get('email')
+        if email:
+            #just get rid of the old subscriber object and allow
+            #form to create a new one.
+            subscribers = DonationSubscriber.objects.filter(email=email)
+            subscribers.delete()
+        return email
 
 class DonationPostingForm(forms.ModelForm):
     captcha = CaptchaField(widget=CaptchaTextInput(
