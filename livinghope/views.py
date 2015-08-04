@@ -578,6 +578,9 @@ def small_groups(request):
 def denomination(request):
     return render(request, 'denomination.html')
 
+class CoreValues(TemplateView):
+    template_name = 'core_values.html'
+
 
 def get_archive_post_list():
     all_posts = BlogPost.objects.all().order_by('-created_on')

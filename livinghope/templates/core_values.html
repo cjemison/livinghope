@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}
+| Sunday Service
+{% endblock %}
+{% block headloaders %}
+<style>
+.popover{
+    max-width: 90%; // Max Width of the popover (depending on the container!)
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="breadcrumb-wrapper">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <h2 class="title">Core Values</h2>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="container">
+
+<br><br>
+<div id="core-values-section">
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="accordionMod panel-group">
+        <div class="accordion-item">
+            <h4 class="accordion-toggle">Gospel Centrality</h4>
+            <section class="accordion-inner panel-body">
+                <p>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Colossians 1:5-6 (ESV)" data-content='...because of the hope laid up for you in heaven. Of this you have heard before in the word of the truth, the gospel, which has come to you, as indeed in the whole world it is bearing fruit and increasing — as it also does among you, since the day you heard it and understood the grace of God in truth...'>Colossians 1:5-6</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Colossians 2:6-7 (ESV)" data-content='Therefore, as you received Christ Jesus the Lord, so walk in him, rooted and built up in him and established in the faith, just as you were taught, abounding in thanksgiving.'>Colossians 2:6-7</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Corinthians 2:1 (ESV)" data-content='And I, when I came to you, brothers, did not come proclaiming to you the testimony of God with lofty speech or wisdom.'>1 Corinthians 2:1</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Corinthians 15:1 (ESV)" data-content='Now I would remind you, brothers, of the gospel I preached to you, which you received, in which you stand'>1 Corinthians 15:1</a>
+                    <br><br>
+                    We want to be people who are growing deeper in understanding the gospel and what it means for our lives and ministry because it is the Gospel that transforms our hearts, souls, and minds. We desire to see our lives, community, and mission through the lens of the gospel so that Christ would be glorified in everything we do. We want our focus to be on what Christ has done for us not on what we do for Him.
+                </p>
+                <br>
+            </section>
+        </div>
+        <div class="accordion-item">
+            <h4 class="accordion-toggle">Scripture</h4>
+            <section class="accordion-inner panel-body">
+                <p>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="2 Timothy 3:16 (ESV)" data-content='All Scripture is breathed out by God and profitable for teaching, for reproof, for correction, and for training in righteousness'>2 Timothy 3:16</a>
+                    <br><br>
+                    We believe in the full authority of God’s word to impact every aspect of our lives and ministry. Knowing Scripture is foundational to learning who God is and what it means to become a disciple of Christ.
+                </p>
+                <br>
+            </section>
+        </div>
+        <div class="accordion-item">
+            <h4 class="accordion-toggle">Prayer</h4>
+            <section class="accordion-inner panel-body">
+                <p>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Thessalonians 5:17 (ESV)" data-content='Pray without ceasing...'>1 Thessalonians 5:17</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="John 15:5 (ESV)" data-content='I am the vine; you are the branches. Whoever abides in me and I in him, he it is that bears much fruit, for apart from me you can do nothing.'>John 15:5</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Luke 6:12 (ESV)" data-content='In these days he went out to the mountain to pray, and all night he continued in prayer to God.'>Luke 6:12</a>
+                    <br><br>
+                    We go to God in prayer out of obedience and dependence on the Lord to continue doing the work that He’s called us to do. We believe that we cannot accomplish anything without prayer and seeking God’s wisdom and direction. In prayer, we are able to surrender our plans, ideas, and desires to God because His plans are greater.
+                </p>
+                <br>
+            </section>
+        </div>
+        <div class="accordion-item">
+            <h4 class="accordion-toggle">Stewardship</h4>
+            <section class="accordion-inner panel-body">
+                <p>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Psalm 24:1 (ESV)" data-content="The earth is the Lord's and the fullness thereof, the world and those who dwell therein...">Psalm 24:1</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Corinthians 4:1-2 (ESV)" data-content="This is how one should regard us, as servants of Christ and stewards of the mysteries of God. Moreover, it is required of stewards that they be found faithful.">1 Corinthians 4:1-2</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Corinthians 10:31 (ESV)" data-content="So, whether you eat or drink, or whatever you do, do all to the glory of God.">1 Corinthians 10:31</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Peter 4:10 (ESV)" data-content="As each has received a gift, use it to serve one another, as good stewards of God's varied grace">1 Peter 4:10</a>
+                    <br><br>
+                    As followers of Christ, we hope to live our lives in response to what Jesus Christ has done for us. We believe that God is sovereign over all things and that we are called to offer everything we have to be used for God’s glory. We seek to honor God with our whole lives and that includes our time, possessions, money, talents, and relationships.
+                </p>
+                <br>
+            </section>
+        </div>
+        <div class="accordion-item">
+            <h4 class="accordion-toggle">Diversity</h4>
+            <section class="accordion-inner panel-body">
+                <p>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Genesis 1:27 (ESV)" data-content="So God created man in his own image, in the image of God he created him; male and female he created them.">Genesis 1:27</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Matthew 28:19 (ESV)" data-content="Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit">Matthew 28:19</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Galatians 3:28 (ESV)" data-content="There is neither Jew nor Greek, there is neither slave nor free, there is no male and female, for you are all one in Christ Jesus.">Galatians 3:28</a>
+                    <br><br>
+                    We believe that every person was created in the image of God so we want to welcome all people into our church despite race, ethnicity, and socioeconomic status. We believe that God created each person with a unique cultural background so we want to embrace who we are and the unique cultures represented while not preferring one group over the other.
+                </p>
+                <br>
+            </section>
+        </div>
+        <div class="accordion-item">
+            <h4 class="accordion-toggle">Community</h4>
+            <section class="accordion-inner panel-body">
+                <p>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Acts 2:42-47 (ESV)" data-content="And they devoted themselves to the apostles' teaching and the fellowship, to the breaking of bread and the prayers. And awe came upon every soul, and many wonders and signs were being done through the apostles. And all who believed were together and had all things in common. And they were selling their possessions and belongings and distributing the proceeds to all, as any had need. And day by day, attending the temple together and breaking bread in their homes, they received their food with glad and generous hearts, praising God and having favor with all the people. And the Lord added to their number day by day those who were being saved.">Acts 2:42-47</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Hebrews 3:12-13 (ESV)" data-content="Take care, brothers, lest there be in any of you an evil, unbelieving heart, leading you to fall away from the living God. But exhort one another every day, as long as it is called “today,” that none of you may be hardened by the deceitfulness of sin.">Hebrews 3:12-13</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Galatians 5:13-26 (ESV)" data-content="For you were called to freedom, brothers. Only do not use your freedom as an opportunity for the flesh, but through love serve one another. For the whole law is fulfilled in one word: “You shall love your neighbor as yourself.” But if you bite and devour one another, watch out that you are not consumed by one another. But I say, walk by the Spirit, and you will not gratify the desires of the flesh. For the desires of the flesh are against the Spirit, and the desires of the Spirit are against the flesh, for these are opposed to each other, to keep you from doing the things you want to do. But if you are led by the Spirit, you are not under the law. Now the works of the flesh are evident: sexual immorality, impurity, sensuality, idolatry, sorcery, enmity, strife, jealousy, fits of anger, rivalries, dissensions, divisions, envy, drunkenness, orgies, and things like these. I warn you, as I warned you before, that those who do such things will not inherit the kingdom of God. But the fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control; against such things there is no law. And those who belong to Christ Jesus have crucified the flesh with its passions and desires. If we live by the Spirit, let us also keep in step with the Spirit. Let us not become conceited, provoking one another, envying one another.">Galatians 5:13-26</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Ephesians 4:1-6 (ESV)" data-content="I therefore, a prisoner for the Lord, urge you to walk in a manner worthy of the calling to which you have been called, with all humility and gentleness, with patience, bearing with one another in love, eager to maintain the unity of the Spirit in the bond of peace. There is one body and one Spirit—just as you were called to the one hope that belongs to your call - one Lord, one faith, one baptism, one God and Father of all, who is over all and through all and in all.">Ephesians 4:1-6</a>
+                    <br><br>
+                    We believe that we were made for relationships that spur us on to continue growing in the gospel. We want to see our community grow to be Christ-centered, grace-driven, and authentic in how we love and serve one another. We want to see genuine relationships form where people are encouraging and challenging one another to live a life on mission. We need community to help us confront sin and to teach us how to love others better.
+                </p>
+                <br>
+            </section>
+        </div>
+        <div class="accordion-item">
+            <h4 class="accordion-toggle">Ownership</h4>
+            <section class="accordion-inner panel-body">
+                <p>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Ephesians 4:7 (ESV)" data-content="But grace was given to each one of us according to the measure of Christ's gift.">Ephesians 4:7</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Romans 12 (ESV)" data-content="I appeal to you therefore, brothers,by the mercies of God, to present your bodies as a living sacrifice, holy and acceptable to God, which is your spiritual worship. Do not be conformed to this world, but be transformed by the renewal of your mind, that by testing you may discern what is the will of God, what is good and acceptable and perfect. For by the grace given to me I say to everyone among you not to think of himself more highly than he ought to think, but to think with sober judgment, each according to the measure of faith that God has assigned. For as in one body we have many members, and the members do not all have the same function, so we, though many, are one body in Christ, and individually members one of another. Having gifts that differ according to the grace given to us, let us use them: if prophecy, in proportion to our faith; if service, in our serving; the one who teaches, in his teaching; the one who exhorts, in his exhortation; the one who contributes, in generosity; the one who leads, with zeal; the one who does acts of mercy, with cheerfulness. Let love be genuine. Abhor what is evil; hold fast to what is good. Love one another with brotherly affection. Outdo one another in showing honor. Do not be slothful in zeal, be fervent in spirit, serve the Lord. Rejoice in hope, be patient in tribulation, be constant in prayer. Contribute to the needs of the saints and seek to show hospitality. Bless those who persecute you; bless and do not curse them. Rejoice with those who rejoice, weep with those who weep. Live in harmony with one another. Do not be haughty, but associate with the lowly. Never be wise in your own sight. Repay no one evil for evil, but give thought to do what is honorable in the sight of all. If possible, so far as it depends on you, live peaceably with all. Beloved, never avenge yourselves, but leave it to the wrath of God, for it is written, “Vengeance is mine, I will repay, says the Lord.” To the contrary, “if your enemy is hungry, feed him; if he is thirsty, give him something to drink; for by so doing you will heap burning coals on his head.” Do not be overcome by evil, but overcome evil with good.">Romans 12</a>
+                    <a href="https://www.biblegateway.com/passage/?search=1+Corinthians+12-13&version=ESV" target="_blank" class="btn-sm btn-default">1 Corinthians 12-13</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Peter 2:9 (ESV)" data-content="But you are a chosen race, a royal priesthood, a holy nation, a people for his own possession, that you may proclaim the excellencies of him who called you out of darkness into his marvelous light.">1 Peter 2:9</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Peter 4:10-11 (ESV)" data-content="As each has received a gift, use it to serve one another, as good stewards of God's varied grace: whoever speaks, as one who speaks oracles of God; whoever serves, as one who serves by the strength that God supplies—in order that in everything God may be glorified through Jesus Christ. To him belong glory and dominion forever and ever. Amen.">1 Peter 4:10-11</a>
+                    <br><br>
+                    Whenever we gather together as a church community, we visibly demonstrate our identity as the body of Christ. We are one body but many parts and each of us is called to participate in building up His church with the unique gifts and talents that God has given us. We believe that Christ is the head of the church and that the church belongs to its members. Therefore we hope that each member takes part in growing and nurturing the life of the church. We desire to raise up new leaders regularly who will continue to direct our weekly ministry activities and shepherd others to live out our mission as a church.
+                </p>
+                <br>
+            </section>
+        </div>
+        <div class="accordion-item">
+            <h4 class="accordion-toggle">Missions</h4>
+            <section class="accordion-inner panel-body">
+                <p>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Matthew 28:18-20 (ESV)" data-content="And Jesus came and said to them, “All authority in heaven and on earth has been given to me. Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, teaching them to observe all that I have commanded you. And behold, I am with you always, to the end of the age.”">Matthew 28:18-20</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Acts 1:8 (ESV)" data-content="But you will receive power when the Holy Spirit has come upon you, and you will be my witnesses in Jerusalem and in all Judea and Samaria, and to the end of the earth.">Acts 1:8</a>
+                    <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="2 Corinthians 5:18-21 (ESV)" data-content="All this is from God, who through Christ reconciled us to himself and gave us the ministry of reconciliation; that is, in Christ God was reconciling the world to himself, not counting their trespasses against them, and entrusting to us the message of reconciliation. Therefore, we are ambassadors for Christ, God making his appeal through us. We implore you on behalf of Christ, be reconciled to God. For our sake he made him to be sin who knew no sin, so that in him we might become the righteousness of God.">2 Corinthians 5:18-21</a>
+                    <br><br>
+                    The gospel is the greatest news so we long for those around us to come to know God. We are called to live our lives for the sake of the gospel and to become the hands and feet of Jesus so that the name of Christ would be exalted in the nations. We don’t want to become a cultural club that’s focused on programs but a church that’s living out its mission through relationships and service. We seek to look for ways to put our faith into action and serve where there are needs in hopes of sharing the love of Christ.
+                </p>
+                <br>
+            </section>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h3 class="title">Gospel Centrality</h3>
+        <p>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Colossians 1:5-6 (ESV)" data-content='...because of the hope laid up for you in heaven. Of this you have heard before in the word of the truth, the gospel, which has come to you, as indeed in the whole world it is bearing fruit and increasing — as it also does among you, since the day you heard it and understood the grace of God in truth...'>Colossians 1:5-6</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Colossians 2:6-7 (ESV)" data-content='Therefore, as you received Christ Jesus the Lord, so walk in him, rooted and built up in him and established in the faith, just as you were taught, abounding in thanksgiving.'>Colossians 2:6-7</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Corinthians 2:1 (ESV)" data-content='And I, when I came to you, brothers, did not come proclaiming to you the testimony of God with lofty speech or wisdom.'>1 Corinthians 2:1</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Corinthians 15:1 (ESV)" data-content='Now I would remind you, brothers, of the gospel I preached to you, which you received, in which you stand'>1 Corinthians 15:1</a>
+            <br><br>
+            We want to be people who are growing deeper in understanding the gospel and what it means for our lives and ministry because it is the Gospel that transforms our hearts, souls, and minds. We desire to see our lives, community, and mission through the lens of the gospel so that Christ would be glorified in everything we do. We want our focus to be on what Christ has done for us not on what we do for Him.
+        </p>
+        <br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h3 class="title">Scripture</h3>
+        <p>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="2 Timothy 3:16 (ESV)" data-content='All Scripture is breathed out by God and profitable for teaching, for reproof, for correction, and for training in righteousness'>2 Timothy 3:16</a>
+            <br><br>
+            We believe in the full authority of God’s word to impact every aspect of our lives and ministry. Knowing Scripture is foundational to learning who God is and what it means to become a disciple of Christ.
+        </p>
+        <br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h3 class="title">Prayer</h3>
+        <p>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Thessalonians 5:17 (ESV)" data-content='Pray without ceasing...'>1 Thessalonians 5:17</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="John 15:5 (ESV)" data-content='I am the vine; you are the branches. Whoever abides in me and I in him, he it is that bears much fruit, for apart from me you can do nothing.'>John 15:5</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Luke 6:12 (ESV)" data-content='In these days he went out to the mountain to pray, and all night he continued in prayer to God.'>Luke 6:12</a>
+            <br><br>
+            We go to God in prayer out of obedience and dependence on the Lord to continue doing the work that He’s called us to do. We believe that we cannot accomplish anything without prayer and seeking God’s wisdom and direction. In prayer, we are able to surrender our plans, ideas, and desires to God because His plans are greater.
+        </p>
+        <br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h3 class="title">Stewardship</h3>
+        <p>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Psalm 24:1 (ESV)" data-content="The earth is the Lord's and the fullness thereof, the world and those who dwell therein...">Psalm 24:1</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Corinthians 4:1-2 (ESV)" data-content="This is how one should regard us, as servants of Christ and stewards of the mysteries of God. Moreover, it is required of stewards that they be found faithful.">1 Corinthians 4:1-2</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Corinthians 10:31 (ESV)" data-content="So, whether you eat or drink, or whatever you do, do all to the glory of God.">1 Corinthians 10:31</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Peter 4:10 (ESV)" data-content="As each has received a gift, use it to serve one another, as good stewards of God's varied grace">1 Peter 4:10</a>
+            <br><br>
+            As followers of Christ, we hope to live our lives in response to what Jesus Christ has done for us. We believe that God is sovereign over all things and that we are called to offer everything we have to be used for God’s glory. We seek to honor God with our whole lives and that includes our time, possessions, money, talents, and relationships.
+        </p>
+        <br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h3 class="title">Diversity</h3>
+        <p>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Genesis 1:27 (ESV)" data-content="So God created man in his own image, in the image of God he created him; male and female he created them.">Genesis 1:27</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Matthew 28:19 (ESV)" data-content="Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit">Matthew 28:19</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Galatians 3:28 (ESV)" data-content="There is neither Jew nor Greek, there is neither slave nor free, there is no male and female, for you are all one in Christ Jesus.">Galatians 3:28</a>
+            <br><br>
+            We believe that every person was created in the image of God so we want to welcome all people into our church despite race, ethnicity, and socioeconomic status. We believe that God created each person with a unique cultural background so we want to embrace who we are and the unique cultures represented while not preferring one group over the other.
+        </p>
+        <br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h3 class="title">Community</h3>
+        <p>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Acts 2:42-47 (ESV)" data-content="And they devoted themselves to the apostles' teaching and the fellowship, to the breaking of bread and the prayers. And awe came upon every soul, and many wonders and signs were being done through the apostles. And all who believed were together and had all things in common. And they were selling their possessions and belongings and distributing the proceeds to all, as any had need. And day by day, attending the temple together and breaking bread in their homes, they received their food with glad and generous hearts, praising God and having favor with all the people. And the Lord added to their number day by day those who were being saved.">Acts 2:42-47</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Hebrews 3:12-13 (ESV)" data-content="Take care, brothers, lest there be in any of you an evil, unbelieving heart, leading you to fall away from the living God. But exhort one another every day, as long as it is called “today,” that none of you may be hardened by the deceitfulness of sin.">Hebrews 3:12-13</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Galatians 5:13-26 (ESV)" data-content="For you were called to freedom, brothers. Only do not use your freedom as an opportunity for the flesh, but through love serve one another. For the whole law is fulfilled in one word: “You shall love your neighbor as yourself.” But if you bite and devour one another, watch out that you are not consumed by one another. But I say, walk by the Spirit, and you will not gratify the desires of the flesh. For the desires of the flesh are against the Spirit, and the desires of the Spirit are against the flesh, for these are opposed to each other, to keep you from doing the things you want to do. But if you are led by the Spirit, you are not under the law. Now the works of the flesh are evident: sexual immorality, impurity, sensuality, idolatry, sorcery, enmity, strife, jealousy, fits of anger, rivalries, dissensions, divisions, envy, drunkenness, orgies, and things like these. I warn you, as I warned you before, that those who do such things will not inherit the kingdom of God. But the fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control; against such things there is no law. And those who belong to Christ Jesus have crucified the flesh with its passions and desires. If we live by the Spirit, let us also keep in step with the Spirit. Let us not become conceited, provoking one another, envying one another.">Galatians 5:13-26</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Ephesians 4:1-6 (ESV)" data-content="I therefore, a prisoner for the Lord, urge you to walk in a manner worthy of the calling to which you have been called, with all humility and gentleness, with patience, bearing with one another in love, eager to maintain the unity of the Spirit in the bond of peace. There is one body and one Spirit—just as you were called to the one hope that belongs to your call - one Lord, one faith, one baptism, one God and Father of all, who is over all and through all and in all.">Ephesians 4:1-6</a>
+            <br><br>
+            We believe that we were made for relationships that spur us on to continue growing in the gospel. We want to see our community grow to be Christ-centered, grace-driven, and authentic in how we love and serve one another. We want to see genuine relationships form where people are encouraging and challenging one another to live a life on mission. We need community to help us confront sin and to teach us how to love others better.
+        </p>
+        <br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h3 class="title">Ownership</h3>
+        <p>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Ephesians 4:7 (ESV)" data-content="But grace was given to each one of us according to the measure of Christ's gift.">Ephesians 4:7</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Romans 12 (ESV)" data-content="I appeal to you therefore, brothers,by the mercies of God, to present your bodies as a living sacrifice, holy and acceptable to God, which is your spiritual worship. Do not be conformed to this world, but be transformed by the renewal of your mind, that by testing you may discern what is the will of God, what is good and acceptable and perfect. For by the grace given to me I say to everyone among you not to think of himself more highly than he ought to think, but to think with sober judgment, each according to the measure of faith that God has assigned. For as in one body we have many members, and the members do not all have the same function, so we, though many, are one body in Christ, and individually members one of another. Having gifts that differ according to the grace given to us, let us use them: if prophecy, in proportion to our faith; if service, in our serving; the one who teaches, in his teaching; the one who exhorts, in his exhortation; the one who contributes, in generosity; the one who leads, with zeal; the one who does acts of mercy, with cheerfulness. Let love be genuine. Abhor what is evil; hold fast to what is good. Love one another with brotherly affection. Outdo one another in showing honor. Do not be slothful in zeal, be fervent in spirit, serve the Lord. Rejoice in hope, be patient in tribulation, be constant in prayer. Contribute to the needs of the saints and seek to show hospitality. Bless those who persecute you; bless and do not curse them. Rejoice with those who rejoice, weep with those who weep. Live in harmony with one another. Do not be haughty, but associate with the lowly. Never be wise in your own sight. Repay no one evil for evil, but give thought to do what is honorable in the sight of all. If possible, so far as it depends on you, live peaceably with all. Beloved, never avenge yourselves, but leave it to the wrath of God, for it is written, “Vengeance is mine, I will repay, says the Lord.” To the contrary, “if your enemy is hungry, feed him; if he is thirsty, give him something to drink; for by so doing you will heap burning coals on his head.” Do not be overcome by evil, but overcome evil with good.">Romans 12</a>
+            <a href="https://www.biblegateway.com/passage/?search=1+Corinthians+12-13&version=ESV" target="_blank" class="btn-sm btn-default">1 Corinthians 12-13</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Peter 2:9 (ESV)" data-content="But you are a chosen race, a royal priesthood, a holy nation, a people for his own possession, that you may proclaim the excellencies of him who called you out of darkness into his marvelous light.">1 Peter 2:9</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="1 Peter 4:10-11 (ESV)" data-content="As each has received a gift, use it to serve one another, as good stewards of God's varied grace: whoever speaks, as one who speaks oracles of God; whoever serves, as one who serves by the strength that God supplies—in order that in everything God may be glorified through Jesus Christ. To him belong glory and dominion forever and ever. Amen.">1 Peter 4:10-11</a>
+            <br><br>
+            Whenever we gather together as a church community, we visibly demonstrate our identity as the body of Christ. We are one body but many parts and each of us is called to participate in building up His church with the unique gifts and talents that God has given us. We believe that Christ is the head of the church and that the church belongs to its members. Therefore we hope that each member takes part in growing and nurturing the life of the church. We desire to raise up new leaders regularly who will continue to direct our weekly ministry activities and shepherd others to live out our mission as a church.
+        </p>
+        <br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h3 class="title">Missions</h3>
+        <p>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Matthew 28:18-20 (ESV)" data-content="And Jesus came and said to them, “All authority in heaven and on earth has been given to me. Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, teaching them to observe all that I have commanded you. And behold, I am with you always, to the end of the age.”">Matthew 28:18-20</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="Acts 1:8 (ESV)" data-content="But you will receive power when the Holy Spirit has come upon you, and you will be my witnesses in Jerusalem and in all Judea and Samaria, and to the end of the earth.">Acts 1:8</a>
+            <a href="#" class="btn-sm btn-default" tabindex="0" data-toggle="popover" title="2 Corinthians 5:18-21 (ESV)" data-content="All this is from God, who through Christ reconciled us to himself and gave us the ministry of reconciliation; that is, in Christ God was reconciling the world to himself, not counting their trespasses against them, and entrusting to us the message of reconciliation. Therefore, we are ambassadors for Christ, God making his appeal through us. We implore you on behalf of Christ, be reconciled to God. For our sake he made him to be sin who knew no sin, so that in him we might become the righteousness of God.">2 Corinthians 5:18-21</a>
+            <br><br>
+            The gospel is the greatest news so we long for those around us to come to know God. We are called to live our lives for the sake of the gospel and to become the hands and feet of Jesus so that the name of Christ would be exalted in the nations. We don’t want to become a cultural club that’s focused on programs but a church that’s living out its mission through relationships and service. We seek to look for ways to put our faith into action and serve where there are needs in hopes of sharing the love of Christ.
+        </p>
+        <br>
+    </div>
+</div>
+ -->
+
+
+<!--     <div class="col-md-4 col-md-4 col-sm-6 col-xs-12">
+        <h3 class="title">What we do</h3>
+            <div class="accordionMod panel-group">
+                <div class="accordion-item">
+                    <h4 class="accordion-toggle">Call to Worship</h4>
+                    <section class="accordion-inner panel-body">
+                        <p>
+                            It's all too easy to simply come to church and mentally, emotionally, and spiritually check out. We believe attending a church service is more like a family gathering than watching a movie so our "Call to Worship" is always meant to draw us back into community with each other and with God and to encourage us to consider why we worship.
+                        </p>
+                    </section>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-toggle">Praise and Worship</h4>
+                    <section class="accordion-inner panel-body">
+                        <p>
+                            This is a slight misnomer. At Living Hope we believe that praise and worship are more than just songs we sing together but rather how we live our lives. We believe that we can worship and praise God through our occupations, our relationships, in addition to our voices and songs. At the same time, we believe it's important to come together corporately to sing to God and each other what He has done for us and who He is. Perhaps the best way to describe our typical musical style would be "Hillsong mixed with time-tested hymns".
+                        </p>
+                    </section>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-toggle">Missions Updates</h4>
+                    <section class="accordion-inner panel-body">
+                        <p>
+                            We believe we are called to preach the Gospel to the ends of the earth. One way we try to encourage growth in this area is in giving monthly updates on various missionaries we are supporting and by praying together for the persecuted church in different countries. See <a href="{% url 'missions' %}">the missions page</a> for more details.
+                        </p>
+                    </section>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-toggle">Message</h4>
+                    <section class="accordion-inner panel-body">
+                        <p>
+                            Just as we worship through singing and music, we also worship through the hearing of God's word preached to us. We believe that God's word is living and active meaning that God is actively speaking to us through it into our individual circumstances and hearts. 
+                        </p>
+                    </section>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-toggle">Prayer and Response</h4>
+                    <section class="accordion-inner panel-body">
+                        <p>
+                            After hearing a message, this is an opportunity to let the truths of who God is and what He's done for us "soak in". This is also a good opportunity to respond to all of that in prayer.
+                        </p>
+                    </section>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-toggle">Offering</h4>
+                    <section class="accordion-inner panel-body">
+                        <p>
+                            Often a sensitive topic, we believe that everything we own has been provided and entrusted to us by God. We are merely stewards of the gifts that He's given so, also as an act of worship, we offer it back to Him. If you consider Living Hope to be your home church, we encourage you to participate in this way. However, if you are visiting or checking us out, please don't feel obligated in any way to give.
+                        </p>
+                    </section>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-toggle">Praise and Worship</h4>
+                    <section class="accordion-inner panel-body">
+                        <p>
+                            We typically bookend the service with musical worship as a way to emphasize that the whole service, not just the singing, is worship. For more information on "Praise and Worship", see above.
+                        </p>
+                    </section>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-toggle">Announcements</h4>
+                    <section class="accordion-inner panel-body">
+                        <p>
+                            Receive the latest news on upcoming events, new ways to get involved, and everything in between!
+                        </p>
+                    </section>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-toggle">Fellowship and Covenantal Meal</h4>
+                    <section class="accordion-inner panel-body">
+                        <p>
+                            After each service, we share a meal together knowing that food and community come hand in hand with each other. Please join us!
+                        </p>
+                    </section>
+                </div>
+            </div>
+
+    </div> -->
+</div>
+</div>
+{% endblock %}
+
+{% block endloaders %}
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover(
+      {
+        'placement':'top',
+        'trigger':'focus',
+        'viewport': '#core-values-section'
+      }
+    )
+})
+</script>
+{% endblock %}
