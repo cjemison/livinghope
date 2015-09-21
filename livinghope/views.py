@@ -392,6 +392,10 @@ class DonationPostingDetails(DetailView):
             contact_form.send_contact_email()
             success_message = "Your message has been delivered to %s!" % self.object.contact_name
             messages.success(request, success_message)
+            #update number of responses
+            number_of_responses = self.object.number_of_responses
+            self.object.number_of_responses = number_of_responses + 1
+            self.object.save()
             context = self.get_context_data(**kwargs)
             return self.render_to_response(context)
         else:

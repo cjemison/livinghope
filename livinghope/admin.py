@@ -33,7 +33,7 @@ class DonationPostingImageInline(admin.StackedInline):
 
 class DonationPostingAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_on', 'contact_name', 'contact_email',
-            'active', 'approved'
+            'active', 'approved', 'number_of_responses'
         )
     ordering = ('-created_on',)
     search_fields = ['name', 'contact_name', 'contact_email']
