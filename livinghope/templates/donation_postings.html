@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 {% block headloaders %}
 {% endblock %}
 {% block title %}
@@ -107,7 +108,12 @@
                    <div class="portfolio-item">
                     <a href="{% url 'donation_details' gp.id %}" class="portfolio-item-link">
                       <span class="portfolio-item-hover"></span>
-                      <span class="fullscreen"><i class="fa fa-search"></i></span><img src="{% static 'livinghope/mysterybox.jpg' %}" alt=" "/>
+                      <span class="fullscreen"><i class="fa fa-search"></i></span>
+                      {% if gp.donationpostingimage_set.all %}
+                        <img src="{{gp.donationpostingimage_set.all.0.image|thumbnail_url:'ss_thumb'}}" alt="{{gp.donationpostingimage_set.all.0.title}}">
+                      {% else %}
+                      <img src="{% static 'livinghope/mysterybox.jpg' %}" alt=" "/>
+                      {% endif %}
                     </a>
                       <div class="portfolio-item-title">
                          <a href="#">{{gp.name}}</a>

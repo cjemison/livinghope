@@ -58,6 +58,7 @@ class DonationPosting(models.Model):
         verbose_name="Briefly describe what you are donating or looking for")
     active = models.BooleanField(default=True)
     approved = models.BooleanField(default=False)
+    number_of_responses = models.IntegerField(default=0, max_length=3)
 
     def save(self):
         #hook into when admin approves donation posting
