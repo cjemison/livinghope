@@ -195,7 +195,7 @@
                   <a class="btn btn-primary btn-sm" href="{{sermon.recording.url}}" download><i class="fa fa-download"></i> Download Audio</a>
                   <button type="button" class="btn btn-warning btn-sm pull-right broken-audio-button" data-sermon-id="{{sermon.id}}" data-sermon-title="{{sermon.title}}" data-toggle="modal" data-target="#broken-audio-modal"><i class="fa fa-exclamation-circle"></i> Report Broken Audio</button>
                 {% endif %}
-
+                  <button type="button" class="btn btn-primary btn-sm song-suggestion-button" data-sermon-title="{{sermon.title}}" data-verse-string="{{sermon.passage}}" data-toggle="modal" data-target="#song-suggestion-modal"><i class="fa fa-music"></i> Song suggestions</button>
                 </div>
               </div>
               {% if sermon.sermondocument_set.all %}
@@ -229,6 +229,26 @@
 {% else %}
   <h3><i class="fa fa-search"></i> Sorry! No Sermons Found!</h3>
 {% endif %}
+<!-- song suggestion modal-->
+<div class="modal fade" id="song-suggestion-modal" tabindex="-1" role="dialog" aria-labelledby="transcript-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="song-suggestion-modal-label"></h4>
+      </div>
+      <div class="modal-body" id="song-suggestion-modal-body">
+        <p class="text-center">
+          <i class="text-center fa fa-cog fa-spin fa-5x"></i>
+        </p>
+        <h2 class="text-center">Loading...</h2>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- transcript modal-->
 <div class="modal fade" id="transcript-modal" tabindex="-1" role="dialog" aria-labelledby="transcript-modal-label" aria-hidden="true">
@@ -323,6 +343,39 @@
                 $('<p>' +response+'</p>').appendTo('#transcript-modal-body');
             })
         });
+
+        $('.song-suggestion-button').click(function(){
+            //clear out old modal info
+            var loading_html = '<p class="text-center"><i class="text-center fa fa-cog fa-spin fa-5x"></i></p><h2 class="text-center">Loading...</h2>'
+            $('#song-suggestion-modal-body').html(loading_html);
+            $('#song-suggestion-modal-label').html();
+
+            var sermon_title = $(this).data('sermon-title');
+            var verse_string = $(this).data('verse-string');
+            var verse_url = "http://inspirepraise.com/api/verses/?verse_string=" + verse_string;
+            $.get(verse_url, function(verse_data){
+              //get the verse ids according to inspirepraise
+              var verse_id_string = '';
+              for (var index in verse_data){
+                verse_id_string = verse_id_string + verse_data[index].id +',';
+              }
+
+              var song_url = "http://inspirepraise.com/api/songs/?verses="+verse_id_string.slice(0, -1);
+              $.get(song_url, function(song_data){
+                songs_html = ''
+                for (var index in song_data){
+                  var title = song_data[index].title
+                  var ccli = song_data[index].ccli
+                  var song_html = title +' (CCLI #' + ccli + ')<br>'
+                  songs_html = songs_html + song_html
+                }
+                var label_html = sermon_title + ' (' + verse_string + ') - Song Suggestions' 
+                $('#song-suggestion-modal-label').html(label_html);
+                $('#song-suggestion-modal-body').html(songs_html);
+              })
+
+            })
+        })
 
         $('.broken-audio-button').click(function(){
             var sermon_id = $(this).data('sermon-id');
