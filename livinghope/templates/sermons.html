@@ -371,9 +371,10 @@
                 }
                 var label_html = sermon_title + ' (' + verse_string + ') - Song Suggestions' 
                 $('#song-suggestion-modal-label').html(label_html);
-                $('#song-suggestion-modal-body').html(songs_html);
-              })
-
+                $('#song-suggestion-modal-body').fadeOut('slow', function(){
+                  $(this).html(songs_html);
+                  $(this).fadeIn('slow');
+                });
             })
         })
 
