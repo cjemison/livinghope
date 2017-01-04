@@ -30,12 +30,9 @@ from livinghope.functions import parse_string_to_verses, test_parsable
 from django.core.mail import send_mail
 from aggregate_if import Count as CountIf
 
-
-# from livinghope_proj.settings import PAYPAL_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
 import math
 import pickle
 import datetime
-# import paypalrestsdk
 
 MONTHS = {1: 'January',
           2: 'February',
@@ -49,72 +46,6 @@ MONTHS = {1: 'January',
           10: 'October',
           11: 'November',
           12: 'December'}
-
-# def paypal_create(request):
-
-#     paypalrestsdk.configure({
-#         "mode": PAYPAL_MODE,
-#         "client_id": PAYPAL_CLIENT_ID,
-#         "client_secret": PAYPAL_CLIENT_SECRET })
-
-#     payment = paypalrestsdk.Payment({
-#         "intent": "sale",
-#         "payer": {
-#             "payment_method": "paypal" },
-#         "redirect_urls": {
-#             "return_url": request.build_absolute_uri(reverse('paypal_execute')),
-#             "cancel_url": request.build_absolute_uri(reverse('giving')) },
-#         "transactions": [{
-#             "item_list": {
-#                 "items": [{
-#                     "name": "Donation",
-#                     "price": "1",
-#                     "currency": "USD",
-#                     "quantity": 1 }]},
-#             "amount":  {
-#                 "total": "1",
-#                 "currency": "USD" },
-#             "description": "donation description" }]})
-
-#     redirect_url = ""
-
-#     if payment.create():
-#         # Store payment id in user session
-#         request.session['payment_id'] = payment.id
-
-#         # Redirect the user to given approval url
-#         for link in payment.links:
-#             if link.method == "REDIRECT":
-#                 redirect_url = link.href
-#         return HttpResponseRedirect(redirect_url)
-
-#     else:
-#         messages.error(request, 'We are sorry but something went wrong. We could not redirect you to Paypal.')
-#         return HttpResponseRedirect(reverse('home'))
-
-# def paypal_execute(request):
-#     """
-#     MyApp > Paypal > Execute a Payment
-#     """
-#     payment_id = request.session['payment_id']
-#     payer_id = request.GET['PayerID']
-
-#     paypalrestsdk.configure({
-#         "mode": PAYPAL_MODE,
-#         "client_id": PAYPAL_CLIENT_ID,
-#         "client_secret": PAYPAL_CLIENT_SECRET })
-
-#     payment = paypalrestsdk.Payment.find(payment_id)
-#     payment_name = payment.transactions[0].item_list.items[0].name
-
-#     if payment.execute({"payer_id": payer_id}):
-#         # the payment has been accepted
-#         messages.success(request, 'thanks for the money dawg!')
-#     else:
-#         # the payment is not valid
-#         messages.success(request, 'thanks for nothing!!!')
-#     import pdb; pdb.set_trace()
-#     return HttpResponseRedirect(reverse('home'))
 
 def paginate(request, queryset, num_per_page):
     paginator = Paginator(queryset, num_per_page)
@@ -148,9 +79,7 @@ def queryset_to_rows(queryset, num_cols):
     return all_objects_in_rows
 
 def home(request):
-    # banner_images = BannerImage.objects.all().order_by('order')
     today = datetime.datetime.today()
-    # date_cutoff = today + datetime.timedelta(days=60)
     upcoming_events = SpecialEvent.objects.select_related('location').filter(
                                 display_on_home_page=True,
                                 display_on__lte=today,
@@ -223,7 +152,6 @@ def events(request):
     return render(request, 'events.html', context)
 
 def leaders(request):
-    #ORDER BY ORDER!!!!!
     leaders = Leader.objects.filter(
                     active=True
                 ).prefetch_related(
@@ -231,13 +159,8 @@ def leaders(request):
                     'leadershiprole_set__ministry',
                     'ministries'
                 ).order_by('order','last_name')
-    #get leaders into rows of two
-    #depending on formatting, maybe don't need rows
-    #consider modal? just thumnails of htem and then ajax modal 
-    #for details??
-    rows_of_leaders = queryset_to_rows(leaders, 2)
     ministries = Ministry.objects.all().order_by('name')
-    context = {'rows_of_leaders': rows_of_leaders, 'all_leaders': leaders, 
+    context = {'all_leaders': leaders, 
                'ministries':ministries}
     return render(request, 'leaders.html', context)
 
@@ -251,7 +174,7 @@ def sermon_series(request, series_id=None):
                                         '-start_date'
                                     )[0].series_image
     searched = False
-    if 'query' in request.GET: # this is if something was searched for
+    if 'query' in request.GET: # this is if a sermon was searched for by verse
         searched = True
         form = SearchVerseForm(request.GET)
         if form.is_valid():
@@ -266,8 +189,7 @@ def sermon_series(request, series_id=None):
                                 verse_matches=CountIf('verses', only=Q(verses__id__in=verse_ids))
                             ).select_related(
                                 'author', 'sermon_series'
-                            ).order_by('-verse_matches') #[:2] limits to 2
-            # sermons = sermons.prefetch_related('authors', 'publisher')
+                            ).order_by('-verse_matches')
             sermons = paginate(request, sermons, 20)
             
             #no longer needs just songs context element
@@ -345,10 +267,6 @@ class DonationPostingList(ListView):
     model = DonationPosting
     template_name = 'donation_postings.html'
     context_object_name = 'full_donation_list'
-
-    # def dispatch(self):
-
-    #     return super(DonationPostingList, self).dispatch()
 
     def get_context_data(self, **kwargs):
         #could make this configurable i guess
@@ -437,7 +355,6 @@ class CreateDonationPosting(FormView):
         context = self.get_context_data(form=form, image_formset=image_formset, **kwargs)
         return self.render_to_response(context)
 
-
     def form_valid(self, form, image_formset):
         donation_posting = form.save()
         for image_form in image_formset:
@@ -466,13 +383,6 @@ class CreateDonationPosting(FormView):
         messages.success(self.request, success_message)
         return super(CreateDonationPosting, self).form_valid(form)
 
-
-def paypal_payment_info_receiver(request):
-    #this is where notify_url from a paypal button redirects to
-    # implement this if we want to save basic payment info
-    # only sent if user chooses to come back to the site after transaction though
-    # unreliable
-    print request
 
 class Contact(FormView):
     template_name = 'contact_form.html'
@@ -933,8 +843,6 @@ def display_event_details(request):
                 'organizers': organizers}
     html = render_to_string('event_details_modal.html', context)
     return HttpResponse(html)
-
-
 
 def giving(request):
     return render(request, 'giving.html')

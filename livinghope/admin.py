@@ -141,9 +141,6 @@ class MissionsPrayerMonthAdmin(admin.ModelAdmin):
     ordering = ('-year', '-month')
     search_fields = ['highlight',]
 
-# admin.site.register(Book)
-# admin.site.register(Chapter)
-# admin.site.register(Verse)
 admin.site.register(DonationSubscriber, DonationSubscriberAdmin)
 admin.site.register(DonationPosting, DonationPostingAdmin)
 admin.site.register(MissionsPrayerMonth, MissionsPrayerMonthAdmin)

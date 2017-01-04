@@ -7,6 +7,8 @@ from django.template.loader import render_to_string
 
 from ckeditor.fields import RichTextField
 from geopy.geocoders import GoogleV3
+
+
 class SmartImageFieldFile(ImageFieldFile):
     """
     This is an image file that, in addition to all the nice
